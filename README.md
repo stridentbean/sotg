@@ -34,6 +34,8 @@ Please create a file server/db/config.js and model it after server/db/configExam
 
 ## Contributing
 1. Fork
+  - Clone from your GitHub fork
+  - Set this repo as your upstream remote with ''git remote add upstream https://github.com/NaiveBrontosaurus/sotg.git''
 1. Create namespaced feature branch from master
   - bug/...
   - feat/...
