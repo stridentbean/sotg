@@ -4,7 +4,7 @@
   "description": "Something over ten Giants",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git"
