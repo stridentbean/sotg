@@ -7,4 +7,5 @@ tmp/
 server/db/config.js
 build/
 dist/
+docs/
 

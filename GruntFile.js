@@ -25,11 +25,23 @@ module.exports = function(grunt) {
 
     mochaTest: {
       src: ['tests/**/*.js']
+    },
+
+    jsdoc : {
+        dist : {
+            src: ['server/**/*.js', 'tests/**/*.js'], 
+            options: {
+                destination: 'docs'
+            }
+        }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-jsdoc');
+
+  grunt.registerTask('default', ['jshint', 'mochaTest', 'jsdoc']);
 
 };
