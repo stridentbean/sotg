@@ -26,6 +26,7 @@
     "mocha": "^2.2.4"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.2",
     "bookshelf": "^0.8.1",
     "express": "^4.13.1",
@@ -33,6 +34,7 @@
     "knex": "^0.8.6",
     "morgan": "^1.6.1",
     "mysql": "^2.7.0",
+    "q": "^1.4.1",
     "underscore": "^1.8.3"
   }
 }
