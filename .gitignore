@@ -1,6 +1,7 @@
 node_modules/
 bower_components/
 *.log
+tmp/
 
 server/db/config.js
 build/
