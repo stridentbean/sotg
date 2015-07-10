@@ -1,6 +1,8 @@
 node_modules/
 bower_components/
 *.log
+tmp/
+*.DS_Store
 
 server/db/config.js
 build/
