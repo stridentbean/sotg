@@ -37,9 +37,14 @@ db.knex.schema.hasTable('User').then(function(exists) {
   }
 });
 
-db.truncateAllTables = function(callback) {
+/**
+  * Remove all tables from the database 
+  *@arg next {function} Function to run after truncation is complete
+  */
+
+db.truncateAllTables = function(next) {
   db.knex('User').truncate().then(function() {
-    callback();
+    next();
   });
 };
 
