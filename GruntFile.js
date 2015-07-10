@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 
     watch: {
       // These are the files that grunt will watch for changes.
-      files: ['Gruntfile.js', 'package.json', 'tests/*.js', 'server/**/*.js', 'index.js'],
+      files: ['Gruntfile.js', 'package.json', 'tests/**/*.js', 'server/**/*.js', 'index.js'],
       // These are the tasks that are run on each of the above files every time there is a change.
       tasks: ['jshint', 'mochaTest'],
       options: {
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
     },
 
     mochaTest: {
-      src: ['tests/*.js']
+      src: ['tests/**/*.js']
     }
   });
 

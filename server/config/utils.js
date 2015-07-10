@@ -1,12 +1,7 @@
 var _ = require('underscore');
 
 var generateApiKey = function() {
-  //TODO make sure unique API KEY
-  var apiKey = '';
-  var storageUtil = require('./storage/StorageUtility.js');
-  do {
-    apiKey = randomString(40, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-  } while (!storageUtil.isApiKeyUniqueue(apiKey));
+  return randomString(40, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
 };
 
 var randomString = function(length, chars) {
