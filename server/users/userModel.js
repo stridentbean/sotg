@@ -1,6 +1,11 @@
 var db = require('../db/schema');
 var utils = require('../config/utils.js');
 
+/**
+ * Creates a new User.
+ * @class
+ */
+
 var User = db.Model.extend({
   tableName: 'User',
   hasTimestamps: true,
