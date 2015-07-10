@@ -1,3 +1,8 @@
+/**
+  * Schema for mySql
+  *@module db/schema
+  */
+
 var config = require('./config.js');
 var knex = require('knex')({
   client: 'mysql',
