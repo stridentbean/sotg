@@ -25,10 +25,9 @@
 ## Requirements
 
 - Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- mysql
+
+Please create a file server/db/config.js and model it after server/db/configExample.js 
 
 ## Development
 
