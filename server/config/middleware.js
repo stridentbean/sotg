@@ -1,6 +1,7 @@
 var morgan = require('morgan'); // used for logging incoming request
 var helpers = require('./helpers.js');
 var bodyParser = require('body-parser');
+var path = require('path');
 
 module.exports = function(app, express) {
   //routes
@@ -13,6 +14,10 @@ module.exports = function(app, express) {
   app.use(bodyParser.json());
   app.use(express.static(__dirname + '/../../client'));
 
+  app.all('/*', function(req, res, next) {
+      res.sendFile(path.resolve('client/index.html'));
+  });
+ 
   app.use('/api/users', userRouter); //TODO Decide wither we should use APU/...
   app.use(helpers.errorLogger);
   app.use(helpers.errorHandler);
