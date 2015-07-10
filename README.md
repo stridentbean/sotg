@@ -69,6 +69,25 @@ npm install
 bower install
 ```
 
+### Docker
+
+- If you're using Mac, you'll have to install boot2docker and docker: https://docs.docker.com/installation/mac/
+- Download the [Boot2Docker-x.x.x.pkg](https://github.com/boot2docker/osx-installer/releases/tag/v1.7.0) file.
+- Install Boot2Docker by double-clicking the package.
+  - The installer places Boot2Docker and VirtualBox in your "Applications" folder.
+  - The ``docker`` and ``boot2docker`` binaries will be in your ``/usr/local/bin`` directory.
+- __To run docker from the command line__
+  1. Create a new Boot2Docker virtual machine
+    - ``boot2docker init``
+  2. Start the ``boot2docker`` VM.
+    - ``boot2docker start``
+  3. Display the environment variables for the Docker client.
+    - ``boot2docker shellinit``
+  4. Set the environment variables in your shell with the following:
+    - ``$(boot2docker shellinit)``
+  5. Run the hello-world container to verify your setup.
+    - ``docker run hello-world``
+    
 ### Roadmap
 
 View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
