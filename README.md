@@ -17,6 +17,8 @@
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
     1. [Tasks](#tasks)
+1. [Docker](#docker)
+  1. [Common Docker Error Messages](#common-docker-error-messages)
 1. [Team](#team)
 
 ## Usage
@@ -87,7 +89,21 @@ bower install
     - ``$(boot2docker shellinit)``
   5. Run the hello-world container to verify your setup.
     - ``docker run hello-world``
-    
+
+#### Common Docker Error Messages
+
+- [ERROR] InnoDB: Cannot allocate memory for the buffer pool
+  - You might receive this error while trying to start the MySQL server on a VPS with limited resourcs (such as a $5 DigitalOcean droplet.
+  - This is caused by not having enough memory. The solution https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-12-04
+- MySQL ERROR! The server quit without updating PID file...
+  - Seems to be fixed with a reboot.
+  - This could be because of an edit to your my.cnf file that MySQL is unhappy with.
+  - It could also be for some other reason I haven't been able to narrow down.
+- ...dial unix /var/run/docker.sock: no such file or directory. Are you trying to connect to a TLS-enabled daemon without TLS?...
+  - Started getting this after a boot2docker upgrade.
+  - After running $(boot2docker shellinit) I got a different error: An error occurred trying to connect: Get https://192.168.59.103:2376/v1.19/containers/json: x509: certificate is valid for 127.0.0.1, 10.0.2.15, not 192.168.59.103
+  - __*Fixed with*__ restarting the docker service inside boot2docker -- ``boot2docker ssh 'sudo /etc/init.d/docker restart'
+
 ### Roadmap
 
 View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
