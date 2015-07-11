@@ -37,6 +37,7 @@
 - ``sudo npm install -g bower``
 - ``npm install``
 - ``bower install``
+- Good to go
 
 
 ### Initialize Dev Environment
