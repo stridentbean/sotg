@@ -74,7 +74,7 @@ describe('Account Signin', function() {
     db.truncateAllTables(function() {
       var options = {
         'method': 'POST',
-        'uri': 'http://127.0.0.1:' + PORT + '/users/signup',
+        'uri': 'http://localhost:' + PORT + '/users/signup',
         'json': {
           'username': USER,
           'password': PASS,
