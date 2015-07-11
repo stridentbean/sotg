@@ -13,15 +13,13 @@ describe('User', function() {
   var user;
   var PASS = 'password';
   var USER = 'user';
-  var EMAIL = 'test@gmail.com';
 
   //create the user then call the it functions
   beforeEach(function(next) {
     db.truncateAllTables(function() {
       new User({
           username: USER,
-          password: PASS,
-          email: EMAIL
+          password: PASS
         })
         .save()
         .then(function(model) {
