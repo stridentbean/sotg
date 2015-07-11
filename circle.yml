@@ -4,5 +4,7 @@ machine:
     MYSQL_DATABASE_USER: 'ubuntu'
     MYSQL_DATABASE_PASSWORD: ''
 test: 
+  override:
+    - grunt test
   pre:
     - node index.js &
