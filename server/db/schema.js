@@ -3,7 +3,7 @@
   *@module db/schema
   */
 
-var config = require('./config.js');
+var config = process.env.MYSQL_DATABASE ? {} : require('./config.js');
 var knex = require('knex')({
   client: 'mysql',
   //TODO find the proper address for the 
