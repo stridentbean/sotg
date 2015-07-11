@@ -1,7 +1,7 @@
-var User = require('../../../server/users/userModel.js');
-var db = require('../../../server/db/schema.js');
-var Q = require('q');
-var should = require('chai').should();
+var User = require('../../../server/users/userModel.js'),
+  db = require('../../../server/db/schema.js'),
+  Q = require('q'),
+  should = require('chai').should();
 
 /**
  * Describes how a user should work

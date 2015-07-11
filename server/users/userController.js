@@ -1,7 +1,8 @@
 //imports
 var User = require('./userModel.js'),
   jwt = require('jwt-simple'),
-  db = require('../db/schema.js');
+  db = require('../db/schema.js'),
+  utils = require('../config/utils.js');
 
 //globals
 //TODO get a better phrase
@@ -43,6 +44,7 @@ module.exports = {
           });
         }
       });
+
   },
 
   /** signup */
@@ -53,38 +55,34 @@ module.exports = {
       console.log('signup username: ' + username);
       console.log('signup password: ' + password);
 
-    // check to see if user already exists
-    new User({
-        username: username
-      })
-      .fetch()
-      .then(function(user) {
-        if (user) {
-          next(new Error('User already exist!'));
-        } else {
-          // make a new user if not one
-          new User({
-            username: username,
-            password: password
-          }).save().then(function(newUser) {
-            // create token to send back for auth
-            var token = jwt.encode(user, SECRET);
-            res.json({
-              token: token
+    if (utils.validateEmail(username)) {
+      // check to see if user already exists
+      new User({
+          username: username
+        })
+        .fetch()
+        .then(function(user) {
+          if (user) {
+            next(new Error('User already exist!'));
+          } else {
+            // make a new user if not one
+            new User({
+              username: username,
+              password: password
+            }).save().then(function(newUser) {
+              // create token to send back for auth
+              var token = jwt.encode(user, SECRET);
+              res.json({
+                token: token
+              });
+
+              return newUser;
             });
-
-
-            return newUser;
-          });
-        }
-      });
-    // .then(function(user) {
-    //   // create token to send back for auth
-    //   var token = jwt.encode(user, SECRET);
-    //   res.json({
-    //     token: token
-    //   });
-    // });
+          }
+        });
+    } else {
+      return next(new Error('Username should be a valid email'));
+    }
   },
 
   /** checkAuth */
