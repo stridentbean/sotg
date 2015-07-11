@@ -21,7 +21,8 @@ module.exports = {
   signin: function(req, res, next) {
     var username = req.body.username,
       password = req.body.password;
-
+    console.log('signin username: ' + username);
+    console.log('signin password: ' + password);
     new User({
         username: username
       })
@@ -49,6 +50,8 @@ module.exports = {
   signup: function(req, res, next) {
     var username = req.body.username,
       password = req.body.password;
+      console.log('signup username: ' + username);
+      console.log('signup password: ' + password);
 
     // check to see if user already exists
     new User({
