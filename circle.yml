@@ -3,3 +3,6 @@ machine:
     MYSQL_DATABASE: 'circle_test'
     MYSQL_DATABASE_USER: 'ubuntu'
     MYSQL_DATABASE_PASSWORD: ''
+test: 
+  pre:
+    - npm start
