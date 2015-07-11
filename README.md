@@ -30,21 +30,22 @@
 ### Requirements
 
 - Node 0.10.x
-- mysql
+- MySQL
 
 ### Installing Dependencies
 
-From within the root directory:
+- ``sudo npm install -g bower``
+- ``npm install``
+- ``bower install``
+- Good to go
 
-```sh
-sudo npm install -g bower
-npm install
-bower install
-```
 
 ### Initialize Dev Environment
-- Copy start.sh.example to start.sh and edit the environment variables to match your local machine.
+- Copy start.example.sh to start.sh and edit the environment variables to match your local machine
+- Copy config.example.js to config.js and edit the config variables to match your local machine (You may have to run ``chmod +x start.sh`` if you create a new file instead of copying the example file)
+- Run ``grunt test`` to run tests
 - Run ``npm start`` to launch server
+- The console will tell you what port the server is running on
 
 ## Contributing
 1. Fork
