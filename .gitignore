@@ -4,7 +4,7 @@ bower_components/
 tmp/
 *.DS_Store
 
-server/db/config.js
+start.sh
 build/
 dist/
 docs/
