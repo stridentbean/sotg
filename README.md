@@ -25,12 +25,27 @@
 
 > Some usage instructions
 
-## Requirements
+## Development
+
+### Requirements
 
 - Node 0.10.x
 - mysql
 
-Please create a file server/db/config.js and model it after server/db/configExample.js 
+### Installing Dependencies
+
+From within the root directory:
+
+```sh
+sudo npm install -g bower
+npm install
+bower install
+```
+
+### Initialize Dev Environment
+- Using start.sh.example, create start.sh and fill in with your own details.
+- Run ``chmod +x start.sh`` to make the script executable.
+- Run ``npm start`` to launch server
 
 ## Contributing
 1. Fork
@@ -61,20 +76,7 @@ Please create a file server/db/config.js and model it after server/db/configExam
 - Newline at end of file
 - Not specified above: [Crockford's Style](http://javascript.crockford.com/code.html)
 
-## Development
-
-### Installing Dependencies
-
-From within the root directory:
-
-```sh
-sudo npm install -g bower
-npm install
-bower install
-```
-
 ### Docker
-
 - If you're using Mac, you'll have to install boot2docker and docker: https://docs.docker.com/installation/mac/
 - Download the [Boot2Docker-x.x.x.pkg](https://github.com/boot2docker/osx-installer/releases/tag/v1.7.0) file.
 - Install Boot2Docker by double-clicking the package.

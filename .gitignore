@@ -4,6 +4,7 @@ bower_components/
 tmp/
 *.DS_Store
 
+start.sh
 build/
 dist/
 docs/
