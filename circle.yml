@@ -7,4 +7,4 @@ test:
   override:
     - grunt test
   pre:
-    - node index.js &
+    - node index.js
