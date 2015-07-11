@@ -35,30 +35,25 @@ describe('User', function() {
     should.exist(user);
   });
 
-  it('should salt a password', function() {
-    should.exist(user.get('salt'));
-    user.get('salt').should.not.equal(PASS);
-  });
-
   it('should create an api key', function() {
     should.exist(user.get('apiKey'));
     user.get('apiKey').should.not.equal('');
   });
 
-  it('should compare passwords', function(next) {
+  it('should compare correct passwords', function(next) {
+    user
+      .comparePassword(PASS, function(isMatch) {
+        isMatch.should.equal(true);
+        next();
+      });
+  });
+
+  it('should compare incorrect passwords', function(next) {
     user
       .comparePassword('notthepass', function(isMatch) {
         isMatch.should.equal(false);
-        second();
+        next();
       });
-
-    var second = function() {
-      user
-        .comparePassword(PASS, function(isMatch) {
-          isMatch.should.equal(true);
-          next();
-        });
-    };
   });
 
 });

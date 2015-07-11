@@ -1,3 +1,8 @@
+/**
+  * Schema for mySql
+  *@module db/schema
+  */
+
 var config = require('./config.js');
 var knex = require('knex')({
   client: 'mysql',
@@ -28,7 +33,7 @@ db.knex.schema.hasTable('User').then(function(exists) {
       user.timestamps();
       user.string('username');
       user.string('password');
-      user.string('salt');
+      // user.string('salt'); bcrypt takes care of this for us
       user.string('email');
       user.string('apiKey');
     }).then(function(table) {
@@ -37,9 +42,14 @@ db.knex.schema.hasTable('User').then(function(exists) {
   }
 });
 
-db.truncateAllTables = function(callback) {
+/**
+  * Remove all tables from the database 
+  *@arg next {function} Function to run after truncation is complete
+  */
+
+db.truncateAllTables = function(next) {
   db.knex('User').truncate().then(function() {
-    callback();
+    next();
   });
 };
 
