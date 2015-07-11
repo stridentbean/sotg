@@ -23,7 +23,7 @@ describe('Account Creation', function() {
   it('Signup creates a user record', function(next) {
     var options = {
       'method': 'POST',
-      'uri': 'http://localhost:8000/users/signup',
+      'uri': 'http://localhost:' + PORT + '/users/signup',
       'json': {
         'username': USER,
         'password': PASS,
