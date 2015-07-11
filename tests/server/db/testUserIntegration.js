@@ -3,7 +3,7 @@ var User = require('../../../server/users/userModel.js'),
   request = require('request'),
   Q = require('q'),
   should = require('chai').should(),
-  PORT = process.env.MYSQL_DATABASE_USER || 8000;
+  PORT = 8000;
 
 /**
  * Describes how a user account is created
