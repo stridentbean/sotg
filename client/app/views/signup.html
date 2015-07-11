@@ -1,7 +1,7 @@
 <div ng-controller="signupController as signup">
   <h2>Sign up!</h2>
   <form>
-    Email: <input type="email" ng-model="signup.user.email" required />
+    Email: <input type="email" ng-model="signup.user.username" required />
     Password: <input type="password" ng-model="signup.user.password" required />
     <input type="submit" ng-click="signup.signUpUser()" />
   </form>

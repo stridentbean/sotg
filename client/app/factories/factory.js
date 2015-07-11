@@ -8,7 +8,7 @@ angular.module('sotgFactory', [])
       data: user
     })
     .then(function(res){
-      console.log('worked');
+      console.log(res);
     });
   };
   authFactory.login = function(user){
@@ -18,7 +18,7 @@ angular.module('sotgFactory', [])
       data: user
     })
     .then(function(res){
-      console.log('worked');
+      console.log(res);
     });    
   };
   return authFactory;
