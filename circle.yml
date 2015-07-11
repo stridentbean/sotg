@@ -1,10 +1,7 @@
 machine:
+  node:
+    version: 0.10.22
   environment:
     MYSQL_DATABASE: 'circle_test'
     MYSQL_DATABASE_USER: 'ubuntu'
     MYSQL_DATABASE_PASSWORD: ''
-test: 
-  override:
-    - grunt test
-  pre:
-    - node index.js
