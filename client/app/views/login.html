@@ -1,3 +1,8 @@
-<div>
-  <h2>Log In!</h2>
+<div ng-controller="loginController as login">
+  <h2>Log in!</h2>
+  <form>
+    Email: <input type="email" ng-model="login.user.email" required />
+    Password: <input type="password" ng-model="login.user.password" required />
+    <input type="submit" ng-click="login.logInUser()" />
+  </form>
 </div>
