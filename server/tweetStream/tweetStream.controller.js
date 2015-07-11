@@ -1,4 +1,5 @@
 var Twit = require('twit');
+var StreamHelpers = require('StreamHelpers.js');
 var T = new Twit(require('./config/twitterAPICredentials.js'));
 
 var Stream = function(options) {
@@ -8,7 +9,7 @@ var Stream = function(options) {
 
   /* Handle events related to Twitter Streaming API protocol */
   this.stream.on('delete', function(deleteMessage) {
-    //delete the status indicated by message
+    StreamHelpers.deleteTweet(deleteMessage.status.id);
   });
 
   this.stream.on('limit', function(limitMessage) {
