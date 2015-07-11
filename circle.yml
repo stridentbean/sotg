@@ -5,4 +5,4 @@ machine:
     MYSQL_DATABASE_PASSWORD: ''
 test: 
   pre:
-    - node index.js
+    - node index.js &
