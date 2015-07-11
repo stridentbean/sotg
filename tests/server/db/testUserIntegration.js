@@ -22,7 +22,7 @@ describe('Account Creation', function() {
   it('Signup creates a user record', function(next) {
     var options = {
       'method': 'POST',
-      'uri': 'http://127.0.0.1:8000/users/signup',
+      'uri': 'http://localhost:8000/users/signup',
       'json': {
         'username': USER,
         'password': PASS,
@@ -46,7 +46,7 @@ describe('Account Creation', function() {
   it('Signup should reject a bad username', function(next) {
     var options = {
       'method': 'POST',
-      'uri': 'http://127.0.0.1:8000/users/signup',
+      'uri': 'http://localhost:8000/users/signup',
       'json': {
         'username': 'userNotAnEmail',
         'password': PASS,
