@@ -6,8 +6,7 @@ tmp/
 
 server/db/config.js
 start.sh
-server/db/config.js
-server/config/twitterAPICredentials.js
+streaming/config.js
 build/
 dist/
 docs/
