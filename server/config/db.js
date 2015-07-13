@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 // If env variable RDS_HOSTNAME is set, we are on AWS and
 // if we have MYSQL_DATABASE, we are on CircleCI and
 // don't need to use db/config.js
 var config = (process.env.RDS_HOSTNAME || process.env.MYSQL_DATABASE) ? {} : require('../db/config.js');
+=======
+var config = require('./config.js').db;
+>>>>>>> (refactor) Refactor tests to conform to styleguide.
 var knex = require('knex')({
   client: 'mysql',
   //TODO find the proper address for the 
@@ -18,6 +22,7 @@ var knex = require('knex')({
   }
 });
 
+<<<<<<< HEAD
 var bookshelf = require('bookshelf')(knex);
 
 bookshelf.truncateAllTables = function(next) {
@@ -27,3 +32,6 @@ bookshelf.truncateAllTables = function(next) {
 };
 
 module.exports = bookshelf;
+=======
+var bookshelf = module.exports = require('bookshelf')(knex);
+>>>>>>> (refactor) Refactor tests to conform to styleguide.
