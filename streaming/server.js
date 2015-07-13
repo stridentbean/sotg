@@ -1,33 +1,37 @@
-var credentials = require('./config.js'), 
-    request = require('request'), 
-    Twit = require('twit'), 
-    Timer = require('timer-stopwatch'),
-    PORT = process.env.PORT || 6000; //All streaming servers will be on port 6XXX
+var credentials = require('./config.js'),
+  request = require('request'),
+  Twit = require('twit'),
+  Timer = require('timer-stopwatch'),
+  API = process.env.API_ADDRESS || 'localhost',
+  HANDLER = process.env.HANDLER_ADDRESS || 'localhost',
+  PORT = process.env.PORT || 6000; //All streaming servers will be on port 6XXX
 
 var T = new Twit(credentials);
 
 //spin up server
 //start a stopwatch 
-  //during each interval: 
-  // 1. get list of keywords from API
-  // 2. open up streaming connection to twitter w/ those keywords
-  // 3. start mining data
+//during each interval: 
+// 1. get list of keywords from API
+// 2. open up streaming connection to twitter w/ those keywords
+// 3. start mining data
 
-  //at the end of interval
-  // 1. close streaming connection
-  // 2. delay of 10s, get new keywords
-  // 3. open new streaming connection w new keywords
+//at the end of interval
+// 1. close streaming connection
+// 2. delay of 10s, get new keywords
+// 3. open new streaming connection w new keywords
 
 //say there are no keywords
-  //option 1: turn on sample
-  //option 2: get tweets by current popular trends? 
+//option 1: turn on sample
+//option 2: get tweets by current popular trends? 
 
 var startTimer = function() {
-  return new Timer(15*1000*60, { almostDoneMS: 10000 });
+  return new Timer(15 * 1000 * 60, {
+    almostDoneMS: 10000
+  });
 }
 
 var timer = startTimer();
-    stream = null;
+stream = null;
 
 timer.on('almostdone', function() {
   stream.stop();
@@ -39,35 +43,70 @@ timer.on('done', function() {
 });
 
 var startStream = function() {
-    //request()
-    //on success
-    stream = T.stream('statuses/filter', track: trackArray);
+  var options = {
+    'method': 'GET',
+    'uri': API + ':' + PORT + '/getKeywords',
+  };
 
-
-}
- 
-stream.on('tweet', function (tweet) {
-
-});
-
-stream.on('delete', function(deleteMessage) {
-  fs.appendFile('deleteMessage.json', JSON.stringify(deleteMessage), function(err) {
-    if(err) console.error(err);
+  request(options, function(error, res, body) {
+    if (error) {
+      console.error(error);
+    } else if (body === null) {
+      stream = T.stream('statuses/sample');
+      initStream(stream);
+    } else {
+      stream = T.stream('statuses/filter', {
+        track: trackArray
+      });
+      initStream(stream);
+    }
   });
-});
 
-stream.on('limit', function(limitMessage) {
-  fs.appendFile('limitMessage.json', JSON.stringify(limitMessage), function(err) {
-    if(err) console.error(err);
+};
+
+var initStream = function(stream) {
+  stream.on('tweet', function(tweet) {
+    //make a POST request to tweet handler, with tweet contents
+    var options = {
+      'method': 'POST',
+      'uri': HANDLER + ':' + PORT + '/tweet',
+      'json': tweet
+    };
+
+    request(options, function(error, res, body) {
+      if (error) {
+        console.error(error);
+      }
+    });
   });
-});
 
-stream.on('scrub_geo', function(scrubGeoMessage) {
-  fs.appendFile('scrubGeoMessage.json', JSON.stringify(scrubGeoMessage), function(err) {
-    if(err) console.error(err);
+  stream.on('delete', function(deleteMessage) {
+    //make a DELETE request to tweet handler, with deleteMessage
+    var options = {
+      'method': 'DELETE',
+      'uri': HANDLER + ':' + PORT + '/tweet',
+      'json': deleteMessage
+    };
+
+    request(options, function(error, res, body) {
+      if (error) {
+        console.error(error);
+      }
+    });
   });
-});
 
-stream.on('reconnect', function(request, response, connectInterval) {
-  console.log(request, response, connectInterval);
-});
+  stream.on('scrub_geo', function(scrubGeoMessage) {
+    //make a POST request to tweet handler, with geoMessage
+    var options = {
+      'method': 'POST',
+      'uri': HANDLER + ':' + PORT + '/tweet/scrubGeo',
+      'json': scrubGeoMessage
+    };
+  });
+
+  stream.on('reconnect', function(request, response, connectInterval) {
+    console.log(request, response, connectInterval);
+  });
+};
+
+startStream();
