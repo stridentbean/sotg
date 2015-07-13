@@ -4,6 +4,7 @@ var User = require('../../../server/users/userModel.js'),
   Q = require('q'),
   should = require('chai').should(),
   PORT = 8001; //this port is used to test
+  schema = require('../../../server/db/schema.js'),
 
 /**
  * Describes how a user account is created

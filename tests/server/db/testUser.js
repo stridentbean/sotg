@@ -1,7 +1,6 @@
 var User = require('../../../server/users/userModel.js'),
-  db = require('../../../server/config/db.js');
-  Q = require('q'),
-  schema = require('../../../server/db/schema.js');
+  schema = require('../../../server/db/schema.js'),
+  db = require('../../../server/config/db.js'),
   should = require('chai').should();
 
 /**
