@@ -4,8 +4,9 @@ machine:
     MYSQL_DATABASE: 'circle_test'
     MYSQL_DATABASE_USER: 'ubuntu'
     MYSQL_DATABASE_PASSWORD: ''
+  post:
+    - node index.js:
+      background: true
 test: 
   override:
     - grunt test
-  pre:
-    - node index.js &
