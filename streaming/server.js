@@ -30,7 +30,7 @@ var startTimer = function() {
   return new Timer(15 * 1000 * 60, {
     almostDoneMS: 10000
   });
-}
+};
 
 var timer = startTimer();
 stream = null;
