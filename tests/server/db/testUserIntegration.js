@@ -10,82 +10,32 @@ var User = require('../../../server/users/userModel.js'),
  * @class
  */
 
-describe('Account Creation', function() {
-  var PASS = 'password';
-  var USER = 'user2@gmail.com';
-
+describe('User Integration', function() {
+  var app = require('../../../server/server.js');
+  var port = 8000;
+  var server;
   before(function(done) {
-    var app = require('../../../server/server.js');
-    var port = 8000;
-    app.listen(port);
+    server = app.listen(port);
     console.log('Listening on port 8000');
     done();
   });
 
   after(function(done) {
-    app.close();
+    server.close();
     console.log('Server stopped listening');
     done();
   });
-
-  beforeEach(function(next) {
-    db.truncateAllTables(function() {
-      next();
+  
+  describe('Account Creation', function() {
+    var PASS = 'password';
+    var USER = 'user2@gmail.com';
+    beforeEach(function(next) {
+      db.truncateAllTables(function() {
+        next();
+      });
     });
-  });
 
-  it('Signup creates a user record', function(next) {
-    var options = {
-      'method': 'POST',
-      'uri': 'http://localhost:' + PORT + '/users/signup',
-      'json': {
-        'username': USER,
-        'password': PASS,
-      }
-    };
-
-    request(options, function(error, res, body) {
-      new User({
-          username: USER
-        })
-        .fetch()
-        .then(function(user) {
-          user.get('username').should.equal(USER);
-          should.exist(user.get('apiKey'));
-          user.get('apiKey').should.be.a('string');
-          next();
-        });
-    });
-  });
-
-  it('Signup should reject a bad username', function(next) {
-    var options = {
-      'method': 'POST',
-      'uri': 'http://localhost:' + PORT + '/users/signup',
-      'json': {
-        'username': 'userNotAnEmail',
-        'password': PASS,
-      }
-    };
-
-    request(options, function(error, res, body) {
-      should.exist(res.body.error);
-      next();
-    });
-  });
-});
-
-/**
- * Describes how a user account is signed into
- * @class
- */
-
-describe('Account Signin', function() {
-  var PASS = 'password';
-  var USER = 'user2@gmail.com';
-
-  beforeEach(function(next) {
-    db.truncateAllTables(function() {
+    it('Signup creates a user record', function(next) {
       var options = {
         'method': 'POST',
         'uri': 'http://localhost:' + PORT + '/users/signup',
@@ -96,41 +46,95 @@ describe('Account Signin', function() {
       };
 
       request(options, function(error, res, body) {
+        new User({
+            username: USER
+          })
+          .fetch()
+          .then(function(user) {
+            user.get('username').should.equal(USER);
+            should.exist(user.get('apiKey'));
+            user.get('apiKey').should.be.a('string');
+            next();
+          });
+      });
+    });
+
+    it('Signup should reject a bad username', function(next) {
+      var options = {
+        'method': 'POST',
+        'uri': 'http://localhost:' + PORT + '/users/signup',
+        'json': {
+          'username': 'userNotAnEmail',
+          'password': PASS,
+        }
+      };
+
+      request(options, function(error, res, body) {
+        should.exist(res.body.error);
         next();
       });
     });
   });
 
-  it('Signin to a user record', function(next) {
-    var options = {
-      'method': 'POST',
-      'uri': 'http://127.0.0.1:' + PORT + '/users/signin',
-      'json': {
-        'username': USER,
-        'password': PASS,
-      }
-    };
+  /**
+   * Describes how a user account is signed into
+   * @class
+   */
 
-    request(options, function(error, res, body) {
-      should.exist(res.body.token);
-      res.body.token.should.be.a('string');
-      next();
+  describe('Account Signin', function() {
+    var PASS = 'password';
+    var USER = 'user2@gmail.com';
+
+    beforeEach(function(next) {
+      db.truncateAllTables(function() {
+        var options = {
+          'method': 'POST',
+          'uri': 'http://localhost:' + PORT + '/users/signup',
+          'json': {
+            'username': USER,
+            'password': PASS,
+          }
+        };
+
+        request(options, function(error, res, body) {
+          next();
+        });
+      });
+    });
+
+    it('Signin to a user record', function(next) {
+      var options = {
+        'method': 'POST',
+        'uri': 'http://127.0.0.1:' + PORT + '/users/signin',
+        'json': {
+          'username': USER,
+          'password': PASS,
+        }
+      };
+
+      request(options, function(error, res, body) {
+        should.exist(res.body.token);
+        res.body.token.should.be.a('string');
+        next();
+      });
+    });
+
+    it('Signin should reject a bad username/password combo', function(next) {
+      var options = {
+        'method': 'POST',
+        'uri': 'http://127.0.0.1:' + PORT + '/users/signin',
+        'json': {
+          'username': 'userNotAnEmail',
+          'password': PASS,
+        }
+      };
+
+      request(options, function(error, res, body) {
+        should.exist(res.body.error);
+        next();
+      });
     });
   });
-
-  it('Signin should reject a bad username/password combo', function(next) {
-    var options = {
-      'method': 'POST',
-      'uri': 'http://127.0.0.1:' + PORT + '/users/signin',
-      'json': {
-        'username': 'userNotAnEmail',
-        'password': PASS,
-      }
-    };
-
-    request(options, function(error, res, body) {
-      should.exist(res.body.error);
-      next();
-    });
-  });
+  
 });
+
