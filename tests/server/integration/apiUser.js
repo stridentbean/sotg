@@ -22,16 +22,66 @@ describe('User Integration', function() {
     done();
   });
   
-  describe('Account Creation', function() {
+
+  describe('User', function() {
+
+    var user;
     var PASS = 'password';
-    var USER = 'user2@gmail.com';
-    beforeEach(function(next) {
+    var USER = 'user';
+
+    //create the user then call the it functions
+    beforeEach(function(done) {
       db.truncateAllTables(function() {
-        next();
+        new User({
+            username: USER,
+            password: PASS
+          })
+          .save()
+          .then(function(model) {
+            user = model;
+            done();
+          });
       });
     });
 
-    it('Signup creates a user record', function(next) {
+    it('should create a user', function() {
+      should.exist(user);
+    });
+
+    it('should create an api key', function() {
+      should.exist(user.get('apiKey'));
+      user.get('apiKey').should.not.equal('');
+    });
+
+    it('should compare correct passwords', function(next) {
+      user
+        .comparePassword(PASS, function(isMatch) {
+          isMatch.should.equal(true);
+          next();
+        });
+    });
+
+    it('should compare incorrect passwords', function(next) {
+      user
+        .comparePassword('notthepass', function(isMatch) {
+          isMatch.should.equal(false);
+          next();
+        });
+    });
+
+  });
+
+  describe('Account Creation', function() {
+    var PASS = 'password';
+    var USER = 'user2@gmail.com';
+
+    beforeEach(function(done) {
+      db.truncateAllTables(function() {
+        done();
+      });
+    });
+
+    it('Signup creates a user record', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://localhost:' + PORT + '/users/signup',
@@ -50,12 +100,12 @@ describe('User Integration', function() {
             user.get('username').should.equal(USER);
             should.exist(user.get('apiKey'));
             user.get('apiKey').should.be.a('string');
-            next();
+            done();
           });
       });
     });
 
-    it('Signup should reject a bad username', function(next) {
+    it('Signup should reject a bad username', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://localhost:' + PORT + '/users/signup',
@@ -67,7 +117,7 @@ describe('User Integration', function() {
 
       request(options, function(error, res, body) {
         should.exist(res.body.error);
-        next();
+        done();
       });
     });
   });
@@ -81,7 +131,7 @@ describe('User Integration', function() {
     var PASS = 'password';
     var USER = 'user2@gmail.com';
 
-    beforeEach(function(next) {
+    beforeEach(function(done) {
       db.truncateAllTables(function() {
         var options = {
           'method': 'POST',
@@ -93,12 +143,12 @@ describe('User Integration', function() {
         };
 
         request(options, function(error, res, body) {
-          next();
+          done();
         });
       });
     });
 
-    it('Signin to a user record', function(next) {
+    it('Signin to a user record', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://localhost:' + PORT + '/users/signin',
@@ -111,11 +161,11 @@ describe('User Integration', function() {
       request(options, function(error, res, body) {
         should.exist(res.body.token);
         res.body.token.should.be.a('string');
-        next();
+        done();
       });
     });
 
-    it('Signin should reject a bad username/password combo', function(next) {
+    it('Signin should reject a bad username/password combo', function(done) {
       var options = {
         'method': 'POST',
         'uri': 'http://localhost:' + PORT + '/users/signin',

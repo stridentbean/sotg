@@ -8,7 +8,6 @@ var User = require('../../../server/users/userModel.js'),
  * @class
  */
 
-describe('User', function() {
 
   var user;
   var PASS = 'password';
