@@ -1,5 +1,11 @@
 machine:
   environment:
+    DISPLAY: 8000
     MYSQL_DATABASE: 'circle_test'
     MYSQL_DATABASE_USER: 'ubuntu'
     MYSQL_DATABASE_PASSWORD: ''
+test: 
+  override:
+    - grunt test
+  pre:
+    - node index.js &

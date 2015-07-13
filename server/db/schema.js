@@ -34,7 +34,6 @@ db.knex.schema.hasTable('User').then(function(exists) {
       user.string('username');
       user.string('password');
       // user.string('salt'); bcrypt takes care of this for us
-      user.string('email');
       user.string('apiKey');
     }).then(function(table) {
       console.log('Created table', table);

@@ -1,6 +1,8 @@
+![](http://circleci.com/gh/repoOwner/repoName.png?circle-token=1ff3a6f86c4cf8eab85de1a25f989b132d5d3eb5)
+
 # Project Name
 
-> Pithy project description
+> Essoteegee
 
 ## Team
 
