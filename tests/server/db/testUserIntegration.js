@@ -14,6 +14,20 @@ describe('Account Creation', function() {
   var PASS = 'password';
   var USER = 'user2@gmail.com';
 
+  before(function(done) {
+    var app = require('../../../server/server.js');
+    var port = 8000;
+    app.listen(port);
+    console.log('Listening on port 8000');
+    done();
+  });
+
+  after(function(done) {
+    app.close();
+    console.log('Server stopped listening');
+    done();
+  });
+
   beforeEach(function(next) {
     db.truncateAllTables(function() {
       next();
