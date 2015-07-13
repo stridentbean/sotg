@@ -9,7 +9,7 @@ var User = require('./userModel.js'),
 var SECRET = 'superDupperSecret';
 
 /**
- * A module that controllers user activities
+ * A module that controls user activities
  * @module users/userController
  */
 
