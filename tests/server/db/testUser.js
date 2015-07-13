@@ -1,6 +1,7 @@
 var User = require('../../../server/users/userModel.js'),
   db = require('../../../server/config/db.js');
   Q = require('q'),
+  schema = require('../../../server/db/schema.js');
   should = require('chai').should();
 
 /**
@@ -15,8 +16,8 @@ describe('User', function() {
   var USER = 'user';
 
   //create the user then call the it functions
-  beforeEach(function(done) {
-    db.truncateAllTables(function() {
+  before(function(done) {
+    schema.truncateAllTables(function() {
       new User({
         username: USER,
         password: PASS

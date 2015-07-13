@@ -1,5 +1,5 @@
 var User = require('../../../server/users/userModel.js'),
-  db = require('../../../server/db/schema.js'),
+  db = require('../../../server/config/db.js'),
   request = require('request'),
   Q = require('q'),
   should = require('chai').should(),
@@ -11,7 +11,7 @@ var User = require('../../../server/users/userModel.js'),
  */
 
 describe('User Integration', function() {
-  
+
   var app = require('../../../server/server.js');
   var port = 8000;
   var server;
@@ -31,7 +31,7 @@ describe('User Integration', function() {
     var USER = 'user2@gmail.com';
 
     beforeEach(function(done) {
-      db.truncateAllTables(function() {
+      schema.truncateAllTables(function() {
         done();
       });
     });
