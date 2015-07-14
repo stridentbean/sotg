@@ -7,6 +7,7 @@ var knex = require('knex')({
     user: process.env.RDS_USERNAME || process.env.MYSQL_DATABASE_USER || config.user,
     password: process.env.RDS_PASSWORD || process.env.MYSQL_DATABASE_PASSWORD || config.password,
     database: process.env.RDS_DB_NAME || process.env.MYSQL_DATABASE || config.database,
+    port: process.env.RDS_PORT || '3306',
     charset: 'utf8'
   }
 });
