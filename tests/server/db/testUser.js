@@ -1,5 +1,5 @@
 var User = require('../../../server/users/userModel.js'),
-  db = require('../../../server/db/schema.js'),
+  db = require('../../../server/config/db.js'),
   Q = require('q'),
   should = require('chai').should();
 
@@ -24,9 +24,7 @@ describe('User', function() {
         .save()
         .then(function(model) {
           user = model;
-          setTimeout(function() {
-            next();
-          }, 1000);
+          next();
         });
     });
   });

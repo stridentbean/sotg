@@ -22,7 +22,6 @@ db.knex.schema.hasTable('User').then(function(exists) {
       user.string('apiKey');
     }).then(function(table) {
       console.log('Created table', table);
-      sendIt();
     });
   }
 });
@@ -49,9 +48,11 @@ db.knex.schema.hasTable('Hashtag').then(function(exists) {
   }
 });
 
+setTimeout(function() {
+}, 1000);
+module.exports = db;
 /**
   * Remove all tables from the database 
   *@arg next {function} Function to run after truncation is complete
   */
 
-module.exports = db;
