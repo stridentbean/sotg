@@ -1,6 +1,14 @@
+/**
+ * factory to interact with backend server for authentication
+ * @class
+ */
 angular.module('sotgFactory', [])
 .factory('Auth', function($http, $location, $window){
   var authFactory = {};
+  /**
+ * method to sign up users
+ * @function
+ */
   authFactory.signup = function(user){
     return $http({
       method: 'POST',
@@ -11,6 +19,11 @@ angular.module('sotgFactory', [])
       console.log(res);
     });
   };
+  /**
+   * method to log in users
+   * @function
+   */
+
   authFactory.login = function(user){
     return $http({
       method: 'POST',
