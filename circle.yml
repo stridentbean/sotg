@@ -5,7 +5,7 @@ machine:
     MYSQL_DATABASE_USER: 'ubuntu'
     MYSQL_DATABASE_PASSWORD: ''
   post:
-    - ./start.sh
+    - start.sh
     - sleep 1
 test: 
   override:
