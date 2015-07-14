@@ -10,3 +10,5 @@ module.exports = function(port) {
   var server = app.listen(port || PORT); 
   return server;
 };
+
+module.exports();
