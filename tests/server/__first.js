@@ -1,5 +1,5 @@
-var User = require('../../../server/users/userModel.js'),
-  db = require('../../../server/db/schema.js'),
+var User = require('../../server/users/userModel.js'),
+  db = require('../../server/db/schema.js'),
   request = require('request'),
   Q = require('q'),
   should = require('chai').should(),
@@ -11,7 +11,9 @@ var User = require('../../../server/users/userModel.js'),
  */
 
 describe('Server Start', function() {
-  var app = require('../../../server/server.js');
+  var app = require('../../server/server.js');
+  var port = 8000;
+  var server;
   before(function(done) {
     app.start();
     setTimeout(function() {
