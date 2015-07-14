@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "grunt test",
-    "start": "./start.sh"
+    "start": "node index.js"
+    // "start": "./start.sh",
+    // "ebstart": "node index.js"
   },
   "repository": {
     "type": "git"
