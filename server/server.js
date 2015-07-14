@@ -6,16 +6,4 @@ var app = express(),
 
 require('./config/middleware.js')(app, express);
 
-module.exports = {
-  start: function() {
-    server = app.listen(PORT);
-    console.log('Server is listening on ' + PORT);
-  },
-
-  stop: function() {
-    server.close();
-  }
-};
-
-//TODO: have server start
-// module.exports.start();
+module.exports = server = app.listen(PORT); 

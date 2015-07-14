@@ -4,6 +4,9 @@ machine:
     MYSQL_DATABASE: 'circle_test'
     MYSQL_DATABASE_USER: 'ubuntu'
     MYSQL_DATABASE_PASSWORD: ''
+  post:
+    - node server/server.js
+    - sleep 1
 test: 
   override:
     - grunt test

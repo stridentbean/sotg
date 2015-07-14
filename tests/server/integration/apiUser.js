@@ -11,17 +11,14 @@ var User = require('../../../server/users/userModel.js'),
  */
 
 describe('User Integration', function() {
-  var app = require('../../../server/server.js');
-  var port = 8000;
 
   before(function(done) {
-    app.start()
-    done();
+    setTimeout(function() {
+      done();
+    }, 1000);
   });
 
   after(function(done) {
-    app.stop();
-    console.log('Server stopped listening');
     done();
   });
   
