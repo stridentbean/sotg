@@ -3,7 +3,7 @@ var User = require('../../../server/users/userModel.js'),
   request = require('request'),
   Q = require('q'),
   should = require('chai').should(),
-  PORT = 8000;
+  PORT = 8001; //this port is used to test
 
 /**
  * Describes how a user account is created
@@ -11,17 +11,14 @@ var User = require('../../../server/users/userModel.js'),
  */
 
 describe('User Integration', function() {
-  var app = require('../../../server/server.js');
-  var port = 8000;
-
+  var app = require('../../../server/server.js')(PORT);
   before(function(done) {
-    app.start()
-    done();
+    setTimeout(function() {
+      done();
+    }, 1000);
   });
 
   after(function(done) {
-    app.stop();
-    console.log('Server stopped listening');
     done();
   });
   

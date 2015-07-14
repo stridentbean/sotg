@@ -5,7 +5,6 @@ tmp/
 *.DS_Store
 
 server/db/config.js
-start.sh
 streaming/config.js
 build/
 dist/

@@ -2,20 +2,13 @@ var express = require('express');
 
 var app = express(),
   server, 
-  PORT = 8000;
+  PORT = 8000;  //default port
 
 require('./config/middleware.js')(app, express);
 
-module.exports = {
-  start: function() {
-    server = app.listen(PORT);
-    console.log('Server is listening on ' + PORT);
-  },
-
-  stop: function() {
-    server.close();
-  }
+module.exports = function(port) {
+  var server = app.listen(port || PORT); 
+  return server;
 };
 
-//TODO: have server start
-// module.exports.start();
+module.exports();
