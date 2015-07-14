@@ -29,12 +29,18 @@ db.knex.schema.hasTable('User').then(function(exists) {
 db.knex.schema.hasTable('Tweet').then(function(exists) {
   if(!exists) {
     db.knex.schema.createTable('Tweet', function(tweet) {
-      tweet.bigInteger('id');
+      // tweet.integer('id');
+      tweet.string('idStr');
+      tweet.integer('userId');
       tweet.string('text');
-      tweet.string('GPS');
-      tweet.timestamp('timestamp');
+      tweet.string('source');
+      tweet.float('longitude');
+      tweet.float('latitude');
+      tweet.string('tweetCreatedAt');
       //hashtags as a foreign key
-      tweet.json('urls');
+      tweet.text('entities');
+    }).then(function(table) {
+      console.log('Created table', table);
     });
   }
 });
@@ -44,6 +50,8 @@ db.knex.schema.hasTable('Hashtag').then(function(exists) {
     db.knex.schema.createTable('Hashtag', function(hashtag) {
       hashtag.increments('id').primary();
       hashtag.string('tag');
+    }).then(function(table) {
+      console.log('Created table', table);
     });
   }
 });

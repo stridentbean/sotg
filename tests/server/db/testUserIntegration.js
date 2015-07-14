@@ -13,14 +13,14 @@ var User = require('../../../server/users/userModel.js'),
 describe('User Integration', function() {
   var app = require('../../../server/server.js');
   var port = 8000;
-  var server;
+
   before(function(done) {
-    server = app.listen(port);
+    app.start()
     done();
   });
 
   after(function(done) {
-    server.close();
+    app.stop();
     console.log('Server stopped listening');
     done();
   });

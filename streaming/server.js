@@ -2,9 +2,11 @@ var credentials = require('./config.js'),
   request = require('request'),
   Twit = require('twit'),
   Timer = require('timer-stopwatch'),
-  API = process.env.API_ADDRESS || 'localhost',
-  HANDLER = process.env.HANDLER_ADDRESS || 'localhost',
-  PORT = process.env.PORT || 6000; //All streaming servers will be on port 6XXX
+  API_ADDRESS = process.env.API_ADDRESS || 'localhost',
+  HANDLER_ADDRESS = process.env.HANDLER_ADDRESS || 'localhost',
+  API_PORT = process.env.API_PORT || 8000, 
+  HANDLER_PORT = process.env.HANDLER_PORT || 6000; //All handler 
+
 
 var T = new Twit(credentials);
 
@@ -28,7 +30,7 @@ var startTimer = function() {
   return new Timer(15 * 1000 * 60, {
     almostDoneMS: 10000
   });
-}
+};
 
 var timer = startTimer();
 stream = null;
@@ -45,7 +47,7 @@ timer.on('done', function() {
 var startStream = function() {
   var options = {
     'method': 'GET',
-    'uri': API + ':' + PORT + '/getKeywords',
+    'uri': API_ADDRESS + ':' + API_PORT + '/getKeywords',
   };
 
   request(options, function(error, res, body) {
@@ -69,7 +71,7 @@ var initStream = function(stream) {
     //make a POST request to tweet handler, with tweet contents
     var options = {
       'method': 'POST',
-      'uri': HANDLER + ':' + PORT + '/tweet',
+      'uri': HANDLER_ADDRESS + ':' + HANDLER_PORT + '/tweet',
       'json': tweet
     };
 
@@ -84,7 +86,7 @@ var initStream = function(stream) {
     //make a DELETE request to tweet handler, with deleteMessage
     var options = {
       'method': 'DELETE',
-      'uri': HANDLER + ':' + PORT + '/tweet',
+      'uri': HANDLER_ADDRESS + ':' + HANDLER_PORT + '/tweet',
       'json': deleteMessage
     };
 
@@ -99,7 +101,7 @@ var initStream = function(stream) {
     //make a POST request to tweet handler, with geoMessage
     var options = {
       'method': 'POST',
-      'uri': HANDLER + ':' + PORT + '/tweet/scrubGeo',
+      'uri': HANDLER_ADDRESS + ':' + HANDLER_PORT + '/tweet/scrubGeo',
       'json': scrubGeoMessage
     };
   });
