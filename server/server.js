@@ -16,3 +16,6 @@ module.exports = {
     server.close();
   }
 };
+
+//TODO: have server start
+// module.exports.start();
