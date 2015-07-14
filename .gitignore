@@ -4,7 +4,6 @@ bower_components/
 tmp/
 *.DS_Store
 
-server/db/config.js
 streaming/config.js
 build/
 dist/
