@@ -16,10 +16,7 @@ describe('User Integration', function() {
   var server;
   before(function(done) {
     server = app.listen(port);
-    console.log('Listening on port 8000');
-    setTimeout(function() {
-      done();
-    }, 1000);
+    done();
   });
 
   after(function(done) {
