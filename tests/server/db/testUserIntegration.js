@@ -21,7 +21,6 @@ describe('User Integration', function() {
 
   after(function(done) {
     server.close();
-    console.log('Server stopped listening');
     done();
   });
   
