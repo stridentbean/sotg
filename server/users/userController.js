@@ -50,7 +50,7 @@ module.exports = {
 
   signup: function(req, res, next) {
     var username = req.body.username,
-      password = req.body.password;
+        password = req.body.password;
 
     if (utils.validateEmail(username)) {
       // check to see if user already exists
