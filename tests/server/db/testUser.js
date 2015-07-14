@@ -15,7 +15,7 @@ describe('User', function() {
   var USER = 'user';
 
   //create the user then call the it functions
-  beforeEach(function(next) {
+  before(function(next) {
     db.truncateAllTables(function() {
       new User({
           username: USER,
@@ -24,7 +24,9 @@ describe('User', function() {
         .save()
         .then(function(model) {
           user = model;
-          next();
+          setTimeout(function() {
+            next();
+          }, 1000);
         });
     });
   });

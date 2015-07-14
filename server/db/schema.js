@@ -2,22 +2,7 @@
   * Schema for mySql
   *@module db/schema
   */
-
-var config = process.env.MYSQL_DATABASE ? {} : require('./config.js');
-var knex = require('knex')({
-  client: 'mysql',
-  //TODO find the proper address for the 
-  connection: process.env.CLEARDB_DATABASE_URL || {
-    host: process.env.MYSQL_DATABASE_SERVER || config.host, // TODO: Set hardcoded host as env variable.
-    user: process.env.MYSQL_DATABASE_USER || config.user,
-    password: process.env.MYSQL_DATABASE_PASSWORD || config.password,
-    database: process.env.MYSQL_DATABASE || config.database,
-    charset: 'utf8'
-  }
-});
-
-var db = require('bookshelf')(knex);
-
+var db = require('../config/db.js');  
 //drop all tables. 
 if (false) {
   db.knex.schema.dropTableIfExists('User').then(function(table) {
@@ -37,6 +22,7 @@ db.knex.schema.hasTable('User').then(function(exists) {
       user.string('apiKey');
     }).then(function(table) {
       console.log('Created table', table);
+      sendIt();
     });
   }
 });
@@ -50,7 +36,6 @@ db.knex.schema.hasTable('Tweet').then(function(exists) {
       tweet.timestamp('timestamp');
       //hashtags as a foreign key
       tweet.json('urls');
-
     });
   }
 });
@@ -68,11 +53,5 @@ db.knex.schema.hasTable('Hashtag').then(function(exists) {
   * Remove all tables from the database 
   *@arg next {function} Function to run after truncation is complete
   */
-
-db.truncateAllTables = function(next) {
-  db.knex('User').truncate().then(function() {
-    next();
-  });
-};
 
 module.exports = db;
