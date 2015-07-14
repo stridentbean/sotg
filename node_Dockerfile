@@ -1,0 +1,6 @@
+FROM node
+ENV MYSQL_DATABASE_SERVER sotg-db
+WORKDIR /app
+COPY . /app
+RUN npm install nodemon bower -g && npm install && bower install --allow-root
+CMD ["npm", "start"]

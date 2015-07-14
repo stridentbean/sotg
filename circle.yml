@@ -7,5 +7,3 @@ machine:
 test: 
   override:
     - grunt test
-  pre:
-    - node index.js &
