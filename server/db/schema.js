@@ -30,8 +30,8 @@ db.knex.schema.hasTable('Tweet').then(function(exists) {
   if(!exists) {
     db.knex.schema.createTable('Tweet', function(tweet) {
       // tweet.integer('id');
-      tweet.string('idStr');
-      tweet.integer('userId');
+      tweet.string('tweetId');
+      tweet.string('userId');
       tweet.string('text');
       tweet.string('source');
       tweet.float('longitude');
