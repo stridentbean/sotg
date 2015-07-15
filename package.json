@@ -27,6 +27,7 @@
     "mocha": "^2.2.4"
   },
   "dependencies": {
+    "aws-sdk": "^2.1.39",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^2.9.33",
     "body-parser": "^1.13.2",
@@ -38,9 +39,9 @@
     "morgan": "^1.6.1",
     "mysql": "^2.7.0",
     "q": "^1.4.1",
+    "request": "^2.58.0",
     "timer-stopwatch": "^0.1.6",
     "twit": "^2.1.0",
-    "request": "^2.58.0",
     "underscore": "^1.8.3"
   }
 }
