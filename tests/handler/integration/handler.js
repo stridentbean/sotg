@@ -11,7 +11,7 @@
 
 // describe('TweetHandler', function() {
 //   var app = require('../../../tweetHandler/server.js')(PORT);
-//   var tweet = require('../../data/tweet.json');
+//   var tweet = require('../../data/tweet.js');
 
 //   before(function(next) {
 //     setTimeout(function() {
@@ -43,7 +43,7 @@
 
 //     it('insert a tweet into the db', function(next) {
 //       new Tweet({
-//           idStr: tweet.id_str
+//           tweetId: tweet.id_str
 //         })
 //         .fetch()
 //         .then(function(tweet) {
@@ -72,7 +72,7 @@
 
 //       request(options, function(error, res, body) {
 //         new Tweet({
-//             idStr: tweet.id_str
+//             tweetId: tweet.id_str
 //           })
 //           .fetch()
 //           .then(function(tweet) {
@@ -99,7 +99,7 @@
 
 //       request(options, function(error, res, body) {
 //         new Tweet({
-//             idStr: tweet.id_str
+//             tweetId: tweet.id_str
 //           })
 //           .fetch()
 //           .then(function(tweet) {

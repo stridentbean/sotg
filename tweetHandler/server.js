@@ -7,6 +7,7 @@ var app = express(),
 require('./config/middleware.js')(app, express);
 
 module.exports = function(port) {
+  console.log('port', (port||PORT));
   var server = app.listen(port || PORT); 
   return server;
 };
