@@ -32,7 +32,7 @@ queue.prototype.tweetToDB = function() {
     parsedTweet.latitute = tweet.coordinates.coordinates[1];
   }
 
-  //TODO: add sentiment analysis stuff
+  //TODO: add sentiment analysis stuff and things
 
   new Tweet(parsedTweet)
     .save()

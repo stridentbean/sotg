@@ -58,7 +58,7 @@ var startStream = function() {
       initStream(stream);
     } else {
       stream = T.stream('statuses/filter', {
-        track: trackArray
+        track: trackArray 
       });
       initStream(stream);
     }
