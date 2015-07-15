@@ -64,10 +64,10 @@ module.exports = {
       tweets.forEach(function(tweet) {
         tweet.latitude = null;
         tweet.longitude = null;
-      })
+      });
       tweets.save().then(function() {
         console.log('tweets geo data updated to NULL');
       });
-    })
+    });
   }
 };

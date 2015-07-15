@@ -5,7 +5,9 @@ var queue = module.exports = function(type) {
 
 queue.prototype.enQ = function(item) {
   this.storage.push(item);
-  if (this.size() > 100) this.process();
+  if (this.size() > 100) {
+    this.process();
+  }
 };
 
 queue.prototype.deQ = function() {
