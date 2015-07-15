@@ -1,28 +1,11 @@
-var queue = module.exports = function(type) {
-  this.storage = [];
-  this.type = type;
-};
+var Tweet = require('../tweets/tweetModel.js'),
+  db = require('../../server/db/schema.js'),
+  async = require('async');
 
-queue.prototype.enQ = function(item) {
-  this.storage.push(item);
-  if (this.size() > 100) {
-    this.process();
-  }
-};
-
-queue.prototype.deQ = function() {
-  return this.storage.shift();
-};
-
-queue.prototype.size = function() {
-  return this.storage.length;
-};
-
-queue.prototype.tweetToDB = function() {
-  var tweet = this.deQ();
+var saveToDB = function(tweet, callback) {
   var parsedTweet = {
-    idStr: tweet.id_str,
-    userId: tweet.user.id,
+    tweetId: tweet.id_str,
+    userId: tweet.user.id_str,
     entities: JSON.stringify(tweet.entities),
     tweetCreatedAt: tweet.created_at, //TODO : This needs to be formatted correctly as a date
     text: tweet.text,
@@ -31,25 +14,28 @@ queue.prototype.tweetToDB = function() {
 
   if (!!tweet.coordinates) {
     parsedTweet.longitude = tweet.coordinates.coordinates[0];
-    parsedTweet.latitute = tweet.coordinates.coordinates[1];
+    parsedTweet.latitude = tweet.coordinates.coordinates[1];
   }
 
-  //TODO: add sentiment analysis stuff and things
-
-  new Tweet(parsedTweet)
-    .save()
-    .then(function(tweet) {
-      if (tweet) {
-        return tweet;
-      } else {
-        return next(new Error('Could not save tweet to the Database!'));
-      }
-    });
+  //TODO: add sentiment analysis stuff
+  try {
+    new Tweet(parsedTweet)
+      .save()
+      .then(function(tweet) {
+        if (tweet) {
+          return callback();
+        } else {
+          next(new Error('Could not save tweet to the Database!'));
+          return callback();
+        }
+      });
+  } catch (err) {
+    console.log('parsedTweet:', parsedTweet);
+    console.log('error:', err);
+  }
 };
 
-queue.prototype.deleteFromDB = function() {
-  var deleteMessage = this.deQ();
-
+var deleteFromDB = function(deleteMessage, callback) {
   new Tweet({
       idStr: deleteMessage.status.id_str
     })
@@ -62,3 +48,23 @@ queue.prototype.deleteFromDB = function() {
       }
     });
 };
+
+// var nullifyGeoData = function(tweet, callback) {
+//   new Tweet({
+//     userId: scrubGeoMessage.scrub_geo.user_id 
+//   })
+//   .fetchAll(function(tweets) {
+//     tweets.forEach(function(tweet) {
+//       tweet.latitude = null;
+//       tweet.longitude = null;
+//     });
+//     tweets.save().then(function() {
+//       console.log('tweets geo data updated to NULL');
+//       return callback();
+//     });
+//   });
+// };
+
+module.exports.insertionQ = async.queue(saveToDB, 10);
+// module.exports.deletionQ = async.queue(deleteFromDB, 10);
+// module.exports.scrubGeoQ = async.queue(nullifyGeoData, 10);
