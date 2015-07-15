@@ -64,9 +64,7 @@ var startStream = function() {
   //   }
   // });
   
-  stream = T.stream('statuses/filter', {
-    track : ['coke', 'iran', 'nuclear', '#iranDeal']
-  });
+  stream = T.stream('statuses/sample');
 
   initStream(stream);
 };

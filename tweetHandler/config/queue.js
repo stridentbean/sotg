@@ -18,53 +18,74 @@ var saveToDB = function(tweet, callback) {
   }
 
   //TODO: add sentiment analysis stuff
-  try {
-    new Tweet(parsedTweet)
-      .save()
-      .then(function(tweet) {
-        if (tweet) {
-          return callback();
-        } else {
-          next(new Error('Could not save tweet to the Database!'));
-          return callback();
-        }
-      });
-  } catch (err) {
-    console.log('parsedTweet:', parsedTweet);
-    console.log('error:', err);
-  }
+  new Tweet(parsedTweet)
+    .save()
+    .then(function(tweet) {
+      if (tweet) {
+        return callback();
+      } else {
+        next(new Error('Could not save tweet to the Database!'));
+        return callback();
+      }
+    });
 };
 
 var deleteFromDB = function(deleteMessage, callback) {
   new Tweet({
-      idStr: deleteMessage.status.id_str
+      tweetId: deleteMessage.delete.status.id_str
     })
     .fetch()
     .then(function(tweet) {
       if (tweet) {
         tweet.destroy();
+        console.log('Successfully DELETE');
       } else {
-        this.enQ(deleteMessage);
+        console.log('Doesn\'t exist');
+        // setTimeout(function() {
+          console.log(deletionQ.length());
+          deletionQ.push(deleteMessage);
+        // }, 100);
       }
     });
 };
 
-// var nullifyGeoData = function(tweet, callback) {
-//   new Tweet({
-//     userId: scrubGeoMessage.scrub_geo.user_id 
-//   })
-//   .fetchAll(function(tweets) {
-//     tweets.forEach(function(tweet) {
-//       tweet.latitude = null;
-//       tweet.longitude = null;
-//     });
-//     tweets.save().then(function() {
-//       console.log('tweets geo data updated to NULL');
-//       return callback();
-//     });
-//   });
-// };
+var nullifyGeoData = function(tweet, callback) {
+  new Tweet({
+    userId: scrubGeoMessage.scrub_geo.user_id 
+  })
+  .fetchAll(function(tweets) {
+    tweets.forEach(function(tweet) {
+      tweet.latitude = null;
+      tweet.longitude = null;
+    });
+    tweets.save().then(function() {
+      console.log('tweets geo data updated to NULL');
+      return callback();
+    });
+  });
+};
 
-module.exports.insertionQ = async.queue(saveToDB, 10);
-// module.exports.deletionQ = async.queue(deleteFromDB, 10);
-// module.exports.scrubGeoQ = async.queue(nullifyGeoData, 10);
+module.exports.addEventually = function(tweet) {
+  insertionQ.push(tweet);
+};
+
+module.exports.deleteEventually = function(deleteMessage) {
+  deletionQ.push(deleteMessage);
+  if(deletionQ.length() > 10 && deletionQ.idle()) {
+    console.log('start deletion procedure');
+    deletionQ.resume();
+  }
+};
+
+module.exports.scrubGeoEventually = function(scrubGeoMessage) {
+  scrubGeoQ.push(scrubGeoMessage);
+  if(scrubGeoQ.length() > 10 && scrubGeoQ.idle()) {
+    scrubGeoQ.resume();
+  }
+};
+
+var insertionQ = async.queue(saveToDB, 10);
+var deletionQ = async.queue(deleteFromDB, 1);
+deletionQ.pause(); //don't start deletionQ until there are 10 delete messages present
+var scrubGeoQ = async.queue(nullifyGeoData, 1);
+scrubGeoQ.pause();

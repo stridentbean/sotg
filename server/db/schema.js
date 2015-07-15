@@ -30,7 +30,7 @@ db.knex.schema.hasTable('Tweet').then(function(exists) {
   if(!exists) {
     db.knex.schema.createTable('Tweet', function(tweet) {
       // tweet.integer('id');
-      tweet.string('tweetId');
+      tweet.string('tweetId').primary();
       tweet.string('userId');
       tweet.string('text');
       tweet.string('source');
