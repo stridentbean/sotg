@@ -1,14 +1,16 @@
 var Tweet = require('./tweetModel.js'),
   db = require('../../server/db/schema.js');
 
-/**
- * A module that handles all tweet endpoints
- * @module tweets/tweetController
- */
+
+  /**
+   * A module that handles all tweet endpoints
+   * @module tweets/tweetController
+   */
 
 module.exports = {
   handleInsert: function(req, res, next) {
     var tweet = req.body;
+    
     var parsedTweet = {
       idStr: tweet.id_str,
       userId: tweet.user.id,
@@ -20,8 +22,10 @@ module.exports = {
 
     if (!!tweet.coordinates) {
       parsedTweet.longitude = tweet.coordinates.coordinates[0];
-      parsedTweet.latitute = tweet.coordinates.coordinates[1];
+      parsedTweet.latitude = tweet.coordinates.coordinates[1];
     }
+
+    //TODO: add sentiment analysis stuff
 
     new Tweet(parsedTweet)
       .save()
@@ -35,10 +39,35 @@ module.exports = {
   },
 
   handleDelete: function(req, res, next) {
-    console.log('handleDelete');
+    var deleteMessage = req.body;
+    
+    new Tweet({
+        idStr: deleteMessage.status.id_str
+      })
+      .fetch()
+      .then(function(tweet) {
+        if (tweet) {
+          tweet.destroy();
+        } else {
+          this.enQ(deleteMessage);
+        }
+      });
   },
 
   handleScrubGeo: function(req, res, next) {
-    console.log('handleScrubGeo');
+    var scrubGeoMessage = req.body;
+
+    new Tweet({
+      userId: scrubGeoMessage.scrub_geo.user_id 
+    })
+    .fetchAll(function(tweets) {
+      tweets.forEach(function(tweet) {
+        tweet.latitude = null;
+        tweet.longitude = null;
+      });
+      tweets.save().then(function() {
+        console.log('tweets geo data updated to NULL');
+      });
+    });
   }
 };
