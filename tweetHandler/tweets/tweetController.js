@@ -36,7 +36,7 @@ module.exports = {
           return next(new Error('Could not save tweet to the Database!'));
         }
       });
-  },
+ },
 
   handleDelete: function(req, res, next) {
     var deleteMessage = req.body;
