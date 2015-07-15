@@ -4,9 +4,14 @@ bower_components/
 tmp/
 *.DS_Store
 
-server/db/config.js
 streaming/config.js
 build/
 dist/
 docs/
+start.sh
+server/db/config.js
 
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
