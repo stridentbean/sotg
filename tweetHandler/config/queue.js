@@ -1,5 +1,6 @@
 var Tweet = require('../tweets/tweetModel.js'),
   db = require('../../server/db/schema.js'),
+  sentiment = require('sentiment'), 
   async = require('async');
 
 var saveToDB = function(tweet, callback) {
@@ -30,7 +31,8 @@ var saveToDB = function(tweet, callback) {
     parsedTweet.latitude = null;
   }
 
-  //TODO: Add sentiment analysis
+  //Naive sentiment analysis
+  parsedTweet.sentiment = sentiment(parsedTweet.text).comparative;
 
   new Tweet(parsedTweet)
     .save()
@@ -106,8 +108,7 @@ module.exports.scrubGeoEventually = function(scrubGeoMessage) {
   }
 };
 
-var insertionQ = async.queue(saveToDB, 10);
-module.exports.insertionQ = insertionQ;
+var insertionQ = async.queue(saveToDB, 100);
 var deletionQ = async.queue(deleteFromDB, 1);
 deletionQ.pause(); //don't start deletionQ until there are 10 delete messages present
 var scrubGeoQ = async.queue(nullifyGeoData, 1);

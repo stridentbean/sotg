@@ -32,7 +32,7 @@ db.knex.schema.hasTable('Tweet').then(function(exists) {
       // tweed IDs come back as strings because they are too large
       // for JS ints. But bookshelf doesn't let you store 'id'
       // as a string because it's a reserved word for ints only
-      tweet.string('tweetId').primary();
+      tweet.string('tweetId');
       tweet.string('userId');
       tweet.string('text');
       tweet.string('source');
@@ -40,8 +40,8 @@ db.knex.schema.hasTable('Tweet').then(function(exists) {
       tweet.float('latitude');
       tweet.integer('retweetCount');
       tweet.integer('favoriteCount');
-      tweet.string('lang');
       tweet.string('tweetCreatedAt');
+      tweet.string('lang');
       tweet.float('sentiment');
     }).then(function(table) {
       console.log('Created table', table);
