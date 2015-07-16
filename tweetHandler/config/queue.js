@@ -6,18 +6,32 @@ var saveToDB = function(tweet, callback) {
   var parsedTweet = {
     tweetId: tweet.id_str,
     userId: tweet.user.id_str,
-    entities: JSON.stringify(tweet.entities),
-    tweetCreatedAt: tweet.created_at, //TODO : This needs to be formatted correctly as a date
+    tweetCreatedAt: tweet.created_at, 
     text: tweet.text,
-    source: tweet.source
+    source: tweet.source, 
+    retweetCount: tweet.retweet_count, 
+    favoriteCount: tweet.favorite_count, 
+    lang: tweet.lang, 
   };
 
-  if (!!tweet.coordinates) {
+  if (tweet.coordinates !== null) {
     parsedTweet.longitude = tweet.coordinates.coordinates[0];
     parsedTweet.latitude = tweet.coordinates.coordinates[1];
+  } else if (tweet.place !== null) {
+    //calculate latitude & longitude from bounding box
+    var bounding_box = tweet.place.bounding_box.coordinates[0], 
+        longitude = (bounding_box[0][0] + bounding_box[2][0]) / 2, 
+        latitude = (bounding_box[0][1] + bounding_box[1][1]) / 2;
+
+    parsedTweet.longitude = longitude;
+    parsedTweet.latitude = latitude;
+  } else {
+    parsedTweet.longitude = null;
+    parsedTweet.latitude = null;
   }
 
-  //TODO: add sentiment analysis stuff
+  //TODO: Add sentiment analysis
+
   new Tweet(parsedTweet)
     .save()
     .then(function(tweet) {
