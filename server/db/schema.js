@@ -62,28 +62,6 @@ db.knex.schema.hasTable('Keyword').then(function(exists) {
   }
 });
 
-// db.knex.schema.hasTable('TweetHashtagIntersection').then(function(exists) {
-//   if(!exists) {
-//     db.knex.schema.createTable('TweetHashtagIntersection', function(hashtag) {
-//       hashtag.increments('id').primary();
-//       hashtag.string('tag');
-//     }).then(function(table) {
-//       console.log('Created table', table);
-//     });
-//   }
-// });
-
-// db.knex.schema.hasTable('Hashtag').then(function(exists) {
-//   if(!exists) {
-//     db.knex.schema.createTable('Hashtag', function(hashtag) {
-//       hashtag.increments('id').primary();
-//       hashtag.string('tag');
-//     }).then(function(table) {
-//       console.log('Created table', table);
-//     });
-//   }
-// });
-
 setTimeout(function() {
 }, 1000);
 module.exports = db;
