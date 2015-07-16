@@ -8,19 +8,21 @@ var request = require('request'),
   HANDLER_PORT = process.env.HANDLER_PORT || 6000; //All handler 
 var credentials;
 
-// try {
-//   stats = fs.lstatSync('./config.js');
-//   if (stats.isDirectory()) {
-//     credentials = require('./config');
-//   } else {
-//     credentials = {
-//       consumer_key: process.env.CONSUMER_KEY, 
-//       consumer_secret: process.env.CONSUMER_SECRET, 
-//       access_token: process.env.ACCESS_TOKEN, 
-//       access_token_secret: process.env.TOKEN_SECRET
-//     };
-//   }
-// }
+try {
+  stats = fs.lstatSync('./config.js');
+  if (stats.isDirectory()) {
+    credentials = require('./config');
+  } else {
+    credentials = {
+      consumer_key: process.env.CONSUMER_KEY, 
+      consumer_secret: process.env.CONSUMER_SECRET, 
+      access_token: process.env.ACCESS_TOKEN, 
+      access_token_secret: process.env.TOKEN_SECRET
+    };
+  }
+}
+catch(err) {
+}
 var T = new Twit(credentials);
 
 //spin up server
