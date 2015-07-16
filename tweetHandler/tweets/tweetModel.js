@@ -1,5 +1,5 @@
 var db = require('../../server/db/schema');
-var HashTag = require('../hashTags/HashTag.js');
+var HashTag = require('../hashTags/hashTag.js');
 
 var Tweet = db.Model.extend({
   tableName: 'Tweet',

@@ -2,8 +2,8 @@ var credentials = require('./config.js'),
   request = require('request'),
   Twit = require('twit'),
   Timer = require('timer-stopwatch'),
-  API_ADDRESS = process.env.API_ADDRESS || 'localhost',
-  HANDLER_ADDRESS = process.env.HANDLER_ADDRESS || 'localhost',
+  API_ADDRESS = process.env.API_ADDRESS || '127.0.0.1',
+  HANDLER_ADDRESS = process.env.HANDLER_ADDRESS || '127.0.0.1',
   API_PORT = process.env.API_PORT || 8000, 
   HANDLER_PORT = process.env.HANDLER_PORT || 6000; //All handler 
 
@@ -45,25 +45,28 @@ timer.on('done', function() {
 });
 
 var startStream = function() {
-  var options = {
-    'method': 'GET',
-    'uri': API_ADDRESS + ':' + API_PORT + '/getKeywords',
-  };
+  // var options = {
+  //   'method': 'GET',
+  //   'uri': API_ADDRESS + ':' + API_PORT + '/getKeywords',
+  // };
 
-  request(options, function(error, res, body) {
-    if (error) {
-      console.error(error);
-    } else if (body === null) {
-      stream = T.stream('statuses/sample');
-      initStream(stream);
-    } else {
-      stream = T.stream('statuses/filter', {
-        track: trackArray 
-      });
-      initStream(stream);
-    }
-  });
+  // request(options, function(error, res, body) {
+  //   if (error) {
+  //     console.error(error);
+  //   } else if (body === null) {
+  //     stream = T.stream('statuses/sample');
+  //     initStream(stream);
+  //   } else {
+  //     stream = T.stream('statuses/filter', {
+  //       track: trackArray 
+  //     });
+  //     initStream(stream);
+  //   }
+  // });
+  
+  stream = T.stream('statuses/sample');
 
+  initStream(stream);
 };
 
 var initStream = function(stream) {
@@ -71,7 +74,7 @@ var initStream = function(stream) {
     //make a POST request to tweet handler, with tweet contents
     var options = {
       'method': 'POST',
-      'uri': HANDLER_ADDRESS + ':' + HANDLER_PORT + '/tweet',
+      'uri': 'http://' + HANDLER_ADDRESS + ':' + HANDLER_PORT + '/tweets',
       'json': tweet
     };
 
@@ -86,7 +89,7 @@ var initStream = function(stream) {
     //make a DELETE request to tweet handler, with deleteMessage
     var options = {
       'method': 'DELETE',
-      'uri': HANDLER_ADDRESS + ':' + HANDLER_PORT + '/tweet',
+      'uri': 'http://' + HANDLER_ADDRESS + ':' + HANDLER_PORT + '/tweets',
       'json': deleteMessage
     };
 
@@ -101,7 +104,7 @@ var initStream = function(stream) {
     //make a POST request to tweet handler, with geoMessage
     var options = {
       'method': 'POST',
-      'uri': HANDLER_ADDRESS + ':' + HANDLER_PORT + '/tweet/scrubGeo',
+      'uri': 'http://' + HANDLER_ADDRESS + ':' + HANDLER_PORT + '/tweets/scrubGeo',
       'json': scrubGeoMessage
     };
   });
