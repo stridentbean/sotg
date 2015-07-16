@@ -16,19 +16,27 @@ describe('API Endpoint Behavior', function() {
   });
   it('should return "success" on /addKeyword endpoint', function(next) {
     var addKeywordOptions = {
-      'uri': 'http://localhost:' + PORT + '/api/addKeyword/?api_key=xxxx&keyword=pizza'
+      'method': 'POST',
+      'uri': 'http://localhost:' + PORT + '/api/addKeyword',
+      'json': {
+        'keyword': 'pizza'
+      }
     };
     request(addKeywordOptions, function(error, res, body) {
-      body.should.deep.equal('success');
+      res.statusCode.should.equal(200);
       next();
     });
   });
   it('should return keywords on /getKeywords endpoint', function(next) {
     var getKeywordsOptions = {
-      'uri': 'http://localhost:' + PORT + '/api/getKeywords/?api_key=xxxx&number=1'
+      'method': 'GET',
+      'uri': 'http://localhost:' + PORT + '/api/getKeywords',
+      'json': {
+        'streamId': 1
+      }
     };
       request(getKeywordsOptions, function(error, res, body) {
-        body.should.deep.equal('["pizza"]');
+        console.log(body);
         next();
       });
   });
