@@ -38,9 +38,11 @@ db.knex.schema.hasTable('Tweet').then(function(exists) {
       tweet.string('source');
       tweet.float('longitude');
       tweet.float('latitude');
+      tweet.integer('retweetCount');
+      tweet.integer('favoriteCount');
+      tweet.string('lang');
       tweet.string('tweetCreatedAt');
-      //hashtags as a foreign key
-      tweet.text('entities');
+      tweet.float('sentiment');
     }).then(function(table) {
       console.log('Created table', table);
     });
