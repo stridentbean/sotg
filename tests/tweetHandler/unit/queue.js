@@ -30,8 +30,16 @@ describe('Queues', function() {
 
   // });
 
-  it('should have an async queue for insertion of tweets', function() {
-    queues.insertionQ.should.be.an('object');
+  it('should have an async function for processing tweets', function() {
+    queues.addEventually.should.be.a('function');
+  });
+
+  it('should have an async function for deleting tweets', function() {
+    queues.deleteEventually.should.be.a('function');
+  });
+
+  it('should have an async function for scrubbing geography data from a tweet', function() {
+    queues.scrubGeoEventually.should.be.a('function');
   });
 
 });
