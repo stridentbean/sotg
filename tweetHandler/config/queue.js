@@ -30,6 +30,7 @@ var saveToDB = function(tweet, callback) {
     });
 };
 
+//TODO fix this to delete tweets from DB correctly
 var deleteFromDB = function(deleteMessage, callback) {
   new Tweet({
       tweetId: deleteMessage.delete.status.id_str
@@ -39,12 +40,10 @@ var deleteFromDB = function(deleteMessage, callback) {
       if (tweet) {
         tweet.destroy();
         console.log('Successfully DELETE');
+        callback();
       } else {
-        console.log('Doesn\'t exist');
-        // setTimeout(function() {
-          console.log(deletionQ.length());
-          deletionQ.push(deleteMessage);
-        // }, 100);
+        deletionQ.push(deleteMessage);
+        callback();
       }
     });
 };
@@ -71,15 +70,24 @@ module.exports.addEventually = function(tweet) {
 
 module.exports.deleteEventually = function(deleteMessage) {
   deletionQ.push(deleteMessage);
-  if(deletionQ.length() > 10 && deletionQ.idle()) {
-    console.log('start deletion procedure');
+
+  if(deletionQ.length() < 10) {
+    deletionQ.pause();
+  }
+
+  if(deletionQ.length() > 10 && deletionQ.paused) {
     deletionQ.resume();
   }
 };
 
 module.exports.scrubGeoEventually = function(scrubGeoMessage) {
   scrubGeoQ.push(scrubGeoMessage);
-  if(scrubGeoQ.length() > 10 && scrubGeoQ.idle()) {
+
+  if(scrubGeoQ.length() < 10) {
+    scrubGeoQ.pause();
+  }
+
+  if(scrubGeoQ.length() > 10 && scrubGeoQ.paused) {
     scrubGeoQ.resume();
   }
 };
