@@ -6,6 +6,6 @@ module.exports = function(app) {
   app.get('/location', apiController.getLocation);
   app.get('/sentiment', apiController.getSentiment);
   app.get('/time', apiController.getTime);
-  app.get('/addKeyword', apiController.addKeyword);
+  app.post('/addKeyword', apiController.addKeyword);
   app.get('/getKeywords', apiController.getKeywords);
 };
