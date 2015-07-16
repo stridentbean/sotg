@@ -85,6 +85,7 @@ module.exports.scrubGeoEventually = function(scrubGeoMessage) {
 };
 
 var insertionQ = async.queue(saveToDB, 10);
+module.exports.insertionQ = insertionQ;
 var deletionQ = async.queue(deleteFromDB, 1);
 deletionQ.pause(); //don't start deletionQ until there are 10 delete messages present
 var scrubGeoQ = async.queue(nullifyGeoData, 1);
