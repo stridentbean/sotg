@@ -1,23 +1,39 @@
 var Tweet = require('../tweets/tweetModel.js'),
   db = require('../../server/db/schema.js'),
+  sentiment = require('sentiment'), 
   async = require('async');
 
 var saveToDB = function(tweet, callback) {
   var parsedTweet = {
     tweetId: tweet.id_str,
     userId: tweet.user.id_str,
-    entities: JSON.stringify(tweet.entities),
-    tweetCreatedAt: tweet.created_at, //TODO : This needs to be formatted correctly as a date
+    tweetCreatedAt: tweet.created_at, 
     text: tweet.text,
-    source: tweet.source
+    source: tweet.source, 
+    retweetCount: tweet.retweet_count, 
+    favoriteCount: tweet.favorite_count, 
+    lang: tweet.lang, 
   };
 
-  if (!!tweet.coordinates) {
+  if (tweet.coordinates !== null) {
     parsedTweet.longitude = tweet.coordinates.coordinates[0];
     parsedTweet.latitude = tweet.coordinates.coordinates[1];
+  } else if (tweet.place !== null) {
+    //calculate latitude & longitude from bounding box
+    var bounding_box = tweet.place.bounding_box.coordinates[0], 
+        longitude = (bounding_box[0][0] + bounding_box[2][0]) / 2, 
+        latitude = (bounding_box[0][1] + bounding_box[1][1]) / 2;
+
+    parsedTweet.longitude = longitude;
+    parsedTweet.latitude = latitude;
+  } else {
+    parsedTweet.longitude = null;
+    parsedTweet.latitude = null;
   }
 
-  //TODO: add sentiment analysis stuff
+  //Naive sentiment analysis
+  parsedTweet.sentiment = sentiment(parsedTweet.text).comparative;
+
   new Tweet(parsedTweet)
     .save()
     .then(function(tweet) {
@@ -30,6 +46,7 @@ var saveToDB = function(tweet, callback) {
     });
 };
 
+//TODO fix this to delete tweets from DB correctly
 var deleteFromDB = function(deleteMessage, callback) {
   new Tweet({
       tweetId: deleteMessage.delete.status.id_str
@@ -39,12 +56,10 @@ var deleteFromDB = function(deleteMessage, callback) {
       if (tweet) {
         tweet.destroy();
         console.log('Successfully DELETE');
+        callback();
       } else {
-        console.log('Doesn\'t exist');
-        // setTimeout(function() {
-          console.log(deletionQ.length());
-          deletionQ.push(deleteMessage);
-        // }, 100);
+        deletionQ.push(deleteMessage);
+        callback();
       }
     });
 };
@@ -71,21 +86,29 @@ module.exports.addEventually = function(tweet) {
 
 module.exports.deleteEventually = function(deleteMessage) {
   deletionQ.push(deleteMessage);
-  if(deletionQ.length() > 10 && deletionQ.idle()) {
-    console.log('start deletion procedure');
+
+  if(deletionQ.length() < 10) {
+    deletionQ.pause();
+  }
+
+  if(deletionQ.length() > 10 && deletionQ.paused) {
     deletionQ.resume();
   }
 };
 
 module.exports.scrubGeoEventually = function(scrubGeoMessage) {
   scrubGeoQ.push(scrubGeoMessage);
-  if(scrubGeoQ.length() > 10 && scrubGeoQ.idle()) {
+
+  if(scrubGeoQ.length() < 10) {
+    scrubGeoQ.pause();
+  }
+
+  if(scrubGeoQ.length() > 10 && scrubGeoQ.paused) {
     scrubGeoQ.resume();
   }
 };
 
-var insertionQ = async.queue(saveToDB, 10);
-module.exports.insertionQ = insertionQ;
+var insertionQ = async.queue(saveToDB, 100);
 var deletionQ = async.queue(deleteFromDB, 1);
 deletionQ.pause(); //don't start deletionQ until there are 10 delete messages present
 var scrubGeoQ = async.queue(nullifyGeoData, 1);

@@ -86,7 +86,7 @@ var startStream = function() {
 
 var initStream = function(stream) {
   stream.on('tweet', function(tweet) {
-    //make a POST request to tweet handler, with tweet contents
+    //make a DELETE request to tweet handler, with tweet contents
     var options = {
       'method': 'POST',
       'uri': 'http://' + HANDLER_ADDRESS + ':' + HANDLER_PORT + '/tweets',
@@ -101,7 +101,7 @@ var initStream = function(stream) {
   });
 
   stream.on('delete', function(deleteMessage) {
-    //make a DELETE request to tweet handler, with deleteMessage
+    //make a POST request to tweet handler, with deleteMessage
     var options = {
       'method': 'DELETE',
       'uri': 'http://' + HANDLER_ADDRESS + ':' + HANDLER_PORT + '/tweets',
