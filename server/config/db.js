@@ -20,10 +20,7 @@ var knex = require('knex')({
 
 var bookshelf = require('bookshelf')(knex);
 
-bookshelf.truncateAllTables = function(next) {
-  knex('User').truncate().then(function() {
-    next();
-  });
-};
+
 
 module.exports = bookshelf;
+var bookshelf = module.exports = require('bookshelf')(knex);

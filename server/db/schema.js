@@ -2,7 +2,10 @@
   * Schema for mySql
   *@module db/schema
   */
-var db = require('../config/db.js');  
+
+var config = process.env.MYSQL_DATABASE ? {} : require('./config.js');
+var db = require('../config/db.js');
+
 //drop all tables. 
 if (false) {
   db.knex.schema.dropTableIfExists('User').then(function(table) {
@@ -61,6 +64,12 @@ db.knex.schema.hasTable('Keyword').then(function(exists) {
     });
   }
 });
+
+db.truncateAllTables = function(next) {
+  db.knex('User').truncate().then(function() {
+    next();
+  });
+};
 
 setTimeout(function() {
 }, 1000);
