@@ -65,6 +65,12 @@ db.knex.schema.hasTable('Keyword').then(function(exists) {
   }
 });
 
+db.truncateAllTables = function(next) {
+  db.knex('User').truncate().then(function() {
+    next();
+  });
+};
+
 setTimeout(function() {
 }, 1000);
 module.exports = db;

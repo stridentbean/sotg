@@ -8,11 +8,11 @@ var User = require('../../../server/users/userModel.js'),
  * @class
  */
 
-
+describe('User', function() {
+  
   var user;
   var PASS = 'password';
   var USER = 'user';
-
   //create the user then call the it functions
   before(function(next) {
     db.truncateAllTables(function() {
