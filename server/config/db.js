@@ -20,10 +20,5 @@ var knex = require('knex')({
 
 var bookshelf = require('bookshelf')(knex);
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> feat/throttling Completed util to add apiTransactions
 module.exports = bookshelf;
 var bookshelf = module.exports = require('bookshelf')(knex);
