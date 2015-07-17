@@ -1,11 +1,12 @@
 var Keyword = require('./keywordModel.js'),
   db = require('../db/schema.js');
 
-var getLeastUsedStream = function() {
-  return 1;
-};
 
 module.exports = {
+
+  getLeastUsedStream: function() {
+    return [];
+  },
 
   // Right now, we are aren't checking to see if this api_key was given to us by an authenticated user.
   // What if Alice sends a GET request with Bob's API key? Is that a problem?
