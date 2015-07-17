@@ -2,11 +2,12 @@ var request = require('request'),
   fs = require('fs'),
   Twit = require('twit'),
   Timer = require('timer-stopwatch'),
+  credentials = require('./config.js'),
   API_ADDRESS = process.env.API_ADDRESS || '127.0.0.1',
   HANDLER_ADDRESS = process.env.HANDLER_ADDRESS || '127.0.0.1',
   API_PORT = process.env.API_PORT || 8000, 
   HANDLER_PORT = process.env.HANDLER_PORT || 6000; //All handler 
-var credentials;
+
 
 try {
   stats = fs.lstatSync('./config.js');
@@ -41,47 +42,48 @@ var T = new Twit(credentials);
 //option 1: turn on sample
 //option 2: get tweets by current popular trends? 
 
-var startTimer = function() {
-  return new Timer(15 * 1000 * 60, {
+//set globals 
+var timer = null, stream = null, keywords = [];
+
+var createTimer = function() {
+  timer = new Timer((15 * 1000 * 60), {
     almostDoneMS: 10000
+  });
+ 
+  timer.on('almostdone', function() {
+    stream.stop();
+  });
+
+  timer.on('done', function() {
+    createTimer();
+    timer.start();
+    startStream();
   });
 };
 
-var timer = startTimer();
-stream = null;
-
-timer.on('almostdone', function() {
-  stream.stop();
-});
-
-timer.on('done', function() {
-  timer = startTimer();
-  startStream();
-});
-
 var startStream = function() {
-  // var options = {
-  //   'method': 'GET',
-  //   'uri': API_ADDRESS + ':' + API_PORT + '/getKeywords',
-  // };
+  var options = {
+    'method': 'GET',
+    'uri': 'http://' + API_ADDRESS + ':' + API_PORT + '/api/keywords',
+    'json' : {
+      streamId: 1
+    }
+  };
 
-  // request(options, function(error, res, body) {
-  //   if (error) {
-  //     console.error(error);
-  //   } else if (body === null) {
-  //     stream = T.stream('statuses/sample');
-  //     initStream(stream);
-  //   } else {
-  //     stream = T.stream('statuses/filter', {
-  //       track: trackArray 
-  //     });
-  //     initStream(stream);
-  //   }
-  // });
-  
-  stream = T.stream('statuses/sample');
-
-  initStream(stream);
+  request(options, function(error, res, body) {
+    console.log(body);
+    if (error) {
+      console.error(error);
+    } else if (body.length === 0) {
+      stream = T.stream('statuses/sample');
+      initStream(stream);
+    } else {
+      stream = T.stream('statuses/filter', {
+        track: body
+      });
+      initStream(stream);
+    }
+  });
 };
 
 var initStream = function(stream) {
@@ -129,4 +131,9 @@ var initStream = function(stream) {
   });
 };
 
+//init global timer, start timer
+createTimer();
+timer.start();
+
+//init global stream
 startStream();
