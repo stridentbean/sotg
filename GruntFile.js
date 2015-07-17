@@ -17,7 +17,7 @@ module.exports = function(grunt) {
       // These are the files that grunt will watch for changes.
       files: ['Gruntfile.js', 'package.json', 'tests/**/*.js', 'server/**/*.js', 'streaming/**/*.js', 'tweetHandler/**/*.js'],
       // These are the tasks that are run on each of the above files every time there is a change.
-      tasks: ['jshint', 'mochaTest'],
+      tasks: ['jshint', 'auto_install', 'mochaTest'],
       options: {
         atBegin: true
       }
@@ -27,13 +27,25 @@ module.exports = function(grunt) {
       src: ['tests/**/*.js']
     },
 
-    jsdoc : {
-        dist : {
-            src: ['server/**/*.js', 'streaming/**/*.js', 'tweetHandler/**/*.js', 'tests/**/*.js'], 
-            options: {
-                destination: 'docs'
-            }
+    jsdoc: {
+      dist: {
+        src: ['server/**/*.js', 'streaming/**/*.js', 'tweetHandler/**/*.js', 'tests/**/*.js'],
+        options: {
+          destination: 'docs'
         }
+      }
+    },
+
+    auto_install: {
+      local: {},
+      subdir: {
+        options: {
+          cwd: 'subdir',
+          stdout: true,
+          stderr: true,
+          failOnError: true
+        }
+      }
     }
   });
 
@@ -41,6 +53,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-jsdoc');
+  grunt.loadNpmTasks('grunt-auto-install');
 
   grunt.registerTask('default', ['jshint', 'mochaTest', 'jsdoc']);
   grunt.registerTask('test', 'mochaTest');
