@@ -6,10 +6,26 @@
 var config = process.env.MYSQL_DATABASE ? {} : require('./config.js');
 var db = require('../config/db.js');
 
-//drop all tables. 
+/**
+ * Remove all tables from the database 
+ */
+
 if (false) {
   db.knex.schema.dropTableIfExists('User').then(function(table) {
-    console.log('Dropped table', table);
+    console.log('Dropped table User');
+
+    db.knex.schema.dropTableIfExists('User').then(function(table) {
+      console.log('Dropped table User');
+    });
+
+  });
+
+  db.knex.schema.dropTableIfExists('Tweet').then(function(table) {
+    console.log('Dropped table Tweet');
+  });
+
+  db.knex.schema.dropTableIfExists('Keyword').then(function(table) {
+    console.log('Dropped table Keyword');
   });
 }
 
@@ -24,13 +40,26 @@ db.knex.schema.hasTable('User').then(function(exists) {
       // user.string('salt'); bcrypt takes care of this for us
       user.string('apiKey');
     }).then(function(table) {
-      console.log('Created table', table);
+      console.log('Created table User');
+
+      db.knex.schema.hasTable('ApiTransactions').then(function(exists) {
+        if (!exists) {
+          db.knex.schema.createTable('ApiTransactions', function(user) {
+            user.increments('id').primary();
+            user.timestamps();
+            user.integer('userId').references('User.id').notNullable();
+          }).then(function(table) {
+            console.log('Created table ApiTransactions');
+          });
+        }
+      });
+      
     });
   }
 });
 
 db.knex.schema.hasTable('Tweet').then(function(exists) {
-  if(!exists) {
+  if (!exists) {
     db.knex.schema.createTable('Tweet', function(tweet) {
       // tweed IDs come back as strings because they are too large
       // for JS ints. But bookshelf doesn't let you store 'id'
@@ -47,35 +76,22 @@ db.knex.schema.hasTable('Tweet').then(function(exists) {
       tweet.string('lang');
       tweet.float('sentiment');
     }).then(function(table) {
-      console.log('Created table', table);
+      console.log('Created table Tweet');
     });
   }
 });
 
 db.knex.schema.hasTable('Keyword').then(function(exists) {
-  if(!exists) {
+  if (!exists) {
     db.knex.schema.createTable('Keyword', function(keyword) {
       keyword.increments('id').primary();
       keyword.string('keyword');
       keyword.integer('streamId');
       keyword.timestamps();
     }).then(function(table) {
-      console.log('Created table', table);
+      console.log('Created table Keyword');
     });
   }
 });
 
-db.truncateAllTables = function(next) {
-  db.knex('User').truncate().then(function() {
-    next();
-  });
-};
-
-setTimeout(function() {
-}, 1000);
 module.exports = db;
-/**
-  * Remove all tables from the database 
-  *@arg next {function} Function to run after truncation is complete
-  */
-
