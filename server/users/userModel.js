@@ -1,10 +1,9 @@
-var db = require('../config/db.js'),
-  utils = require('../config/utils.js'),
+var SECRET = 'SECRET';
+var db = require('../db/schema'),
   bcrypt = require('bcrypt-nodejs'),
   Promise = require('bluebird'),
-  jwt = require('jwt-simple');
-// TODO: Secret
-var SECRET = 'SECRET';
+  uuid = require('uuid');
+
 /**
  * Creates a new User
  * @class
@@ -30,7 +29,7 @@ var User = db.Model.extend({
    */
 
   generateApiKey: function() {
-    this.set("apiKey", utils.generateApiKey());
+    this.set("apiKey", uuid.v4());
   },
 
   /**

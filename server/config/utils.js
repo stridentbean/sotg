@@ -1,6 +1,7 @@
 var _ = require('underscore'),
   db = require('../db/schema.js'),
   User = require('../users/userModel.js'),
+  Tweet = require('../../tweetHandler/tweets/tweetModel.js'), 
   ApiTransaction = require('../apiTransactions/apiTransactionModel.js'),
   uuid = require('uuid');
 
@@ -28,27 +29,31 @@ var checkforAPIKey = module.exports.checkforAPIKey = function(apiKey) {
     });
 };
 
-/**
- * Generates a new API Key
- *@function
- */
-var generateApiKey = module.exports.generateApiKey = function() {
-  return uuid.v4();
-};
-
 var getApiKey = module.exports.getApiKey = function(username, cb) {
   new User({
     username: username
-    //authentication strategy?
   })
   .fetch()
   .then(function(user) {
     if(user) {
-      cb(user.apiKey);
+      cb(user.get('apiKey'));
     } else {
       cb(undefined);
     }
   });
+};
+
+var searchDbForTweets = module.exports.searchDbForTweets = function(keyword, cb) {
+  var tweets = [];
+  new Tweet()
+    .query('where', 'text', 'like', '%' + keyword + '%')
+    .fetchAll()
+    .then(function(collection) {
+      collection.forEach(function(tweet) {
+        tweets.push(tweet);
+      });
+      cb(tweets);
+    });
 };
 
 /**
