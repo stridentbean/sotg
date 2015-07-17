@@ -11,7 +11,7 @@ var _ = require('underscore'),
 
 
 /**
- * Checks to ensure users are not assigned the same API key.
+ * Check for api key
  *@function
  */
 var checkforAPIKey = module.exports.checkforAPIKey = function(apiKey) {
@@ -21,9 +21,9 @@ var checkforAPIKey = module.exports.checkforAPIKey = function(apiKey) {
     .fetch()
     .then(function(user) {
       if (user) {
-        return true;
+        return user;
       } else {
-        return false;
+        return undefined;
       }
     });
 };
@@ -34,6 +34,21 @@ var checkforAPIKey = module.exports.checkforAPIKey = function(apiKey) {
  */
 var generateApiKey = module.exports.generateApiKey = function() {
   return uuid.v4();
+};
+
+var getApiKey = module.exports.getApiKey = function(username, cb) {
+  new User({
+    username: username
+    //authentication strategy?
+  })
+  .fetch()
+  .then(function(user) {
+    if(user) {
+      cb(user.apiKey);
+    } else {
+      cb(undefined);
+    }
+  });
 };
 
 /**

@@ -30,7 +30,6 @@ var User = db.Model.extend({
    */
 
   generateApiKey: function() {
-    //TODO this does not gaurentee uniqueness 
     this.set("apiKey", utils.generateApiKey());
   },
 
