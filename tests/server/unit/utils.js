@@ -9,14 +9,23 @@ var Utils = require('../../../server/config/utils.js'),
 
 describe('Utils', function() {
 
-  it('should validate correct emails', function() {
-    Utils.validateEmail('blarg@gmail.com').should.equal(true);
+  describe('validateEmail', function() {
+
+    it('should validate correct emails', function() {
+      Utils.validateEmail('blarg@gmail.com').should.equal(true);
+    });
+
+    it('should invalidate correct emails', function() {
+      Utils.validateEmail('blarggmailcom').should.equal(false);
+      Utils.validateEmail('blarg@gmailcom').should.equal(false);
+      Utils.validateEmail('blarggmail.com').should.equal(false);
+      Utils.validateEmail('blarg;gmail.com').should.equal(false);
+    });
+
   });
 
-  it('should invalidate correct emails', function() {
-    Utils.validateEmail('blarggmailcom').should.equal(false);
-    Utils.validateEmail('blarg@gmailcom').should.equal(false);
-    Utils.validateEmail('blarggmail.com').should.equal(false);
-    Utils.validateEmail('blarg;gmail.com').should.equal(false);
+  describe('insertApiTransaction', function() {
+
   });
+
 });
