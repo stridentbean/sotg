@@ -2,28 +2,19 @@ var request = require('request'),
   fs = require('fs'),
   Twit = require('twit'),
   Timer = require('timer-stopwatch'),
-  credentials = require('./config.js'),
+  credentials = process.env.CONSUMER_KEY ? null : require('./config.js'),
   API_ADDRESS = process.env.API_ADDRESS || '127.0.0.1',
   HANDLER_ADDRESS = process.env.HANDLER_ADDRESS || '127.0.0.1',
   API_PORT = process.env.API_PORT || 8000, 
   HANDLER_PORT = process.env.HANDLER_PORT || 6000; //All handler 
 
+credentials = credentials || {
+  consumer_key: process.env.CONSUMER_KEY, 
+  consumer_secret: process.env.CONSUMER_SECRET, 
+  access_token: process.env.ACCESS_TOKEN, 
+  access_token_secret: process.env.TOKEN_SECRET
+};
 
-try {
-  stats = fs.lstatSync('./config.js');
-  if (stats.isDirectory()) {
-    credentials = require('./config');
-  } else {
-    credentials = {
-      consumer_key: process.env.CONSUMER_KEY, 
-      consumer_secret: process.env.CONSUMER_SECRET, 
-      access_token: process.env.ACCESS_TOKEN, 
-      access_token_secret: process.env.TOKEN_SECRET
-    };
-  }
-}
-catch(err) {
-}
 var T = new Twit(credentials);
 
 //spin up server
