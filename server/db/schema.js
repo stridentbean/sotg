@@ -11,8 +11,8 @@ var db = require('../config/db.js');
  */
 
 if (false) {
-  db.knex.schema.dropTableIfExists('User').then(function(table) {
-    console.log('Dropped table User');
+  db.knex.schema.dropTableIfExists('ApiTransaction').then(function(table) {
+    console.log('Dropped table ApiTransaction');
 
     db.knex.schema.dropTableIfExists('User').then(function(table) {
       console.log('Dropped table User');
@@ -42,18 +42,19 @@ db.knex.schema.hasTable('User').then(function(exists) {
     }).then(function(table) {
       console.log('Created table User');
 
-      db.knex.schema.hasTable('ApiTransactions').then(function(exists) {
+      db.knex.schema.hasTable('ApiTransaction').then(function(exists) {
         if (!exists) {
-          db.knex.schema.createTable('ApiTransactions', function(user) {
-            user.increments('id').primary();
-            user.timestamps();
-            user.integer('userId').references('User.id').notNullable();
+          db.knex.schema.createTable('ApiTransaction', function(apiTransaction) {
+            apiTransaction.increments('id').primary();
+            apiTransaction.timestamps();
+            apiTransaction.integer('userId').unsigned().references('User.id').notNullable();
+            apiTransaction.string('route');
           }).then(function(table) {
-            console.log('Created table ApiTransactions');
+            console.log('Created table ApiTransaction');
           });
         }
       });
-      
+
     });
   }
 });
@@ -93,5 +94,23 @@ db.knex.schema.hasTable('Keyword').then(function(exists) {
     });
   }
 });
+
+db.truncateAllTables = function(done) {
+
+  db.knex.raw('delete from ApiTransaction').then(function(then) {
+
+  });
+  db.knex.raw('delete from User').then(function(then) {
+
+  });
+  db.knex.raw('delete from Tweet').then(function(then) {
+
+  });
+  db.knex.raw('delete from Keyword').then(function(then) {
+
+  });
+
+  done();
+};
 
 module.exports = db;

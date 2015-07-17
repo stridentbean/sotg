@@ -1,4 +1,6 @@
 var Utils = require('../../../server/config/utils.js'),
+  User = require('../../../server/users/userModel.js'),
+  ApiTransaction = require('../../../server/apiTransactions/apiTransactionModel.js'),
   db = require('../../../server/config/db.js'),
   should = require('chai').should();
 
@@ -26,6 +28,52 @@ describe('Utils', function() {
 
   describe('insertApiTransaction', function() {
 
+    var user;
+    var PASS = 'password';
+    var USER = 'user';
+    var routeOne = '/api/keywords/';
+
+    //insert user into database
+    before(function(done) {
+      db.truncateAllTables(function() {
+        new User({
+            username: USER,
+            password: PASS
+          })
+          .save()
+          .then(function(model) {
+            user = model;
+            done();
+          });
+      });
+    });
+
+    it('should insert a transaction', function(done) {
+      Utils.insertApiTransaction(routeOne, user, function() {
+
+        new ApiTransaction({
+            userId: user.get('id')
+          })
+          .fetchAll()
+          .then(function(apiTransactions) {
+            should.exist(apiTransactions);
+            done();
+          });
+      });
+
+    });
+
+    it('should execute without a callback', function(done) {
+      try {
+        Utils.insertApiTransaction(routeOne, user);
+      } catch (err) {
+        console.log(err);
+        should.not.exist(err);
+      }
+      //this forces the test to be listed when grunt test is run
+      true.should.equal(true);
+      done();
+    });
   });
 
 });
