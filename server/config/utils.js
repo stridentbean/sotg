@@ -1,6 +1,9 @@
+
 var _ = require('underscore'),
+  db = require('../db/schema.js'),
   User = require('../users/userModel.js'),
-  ApiTransaction = require('../apiTransactions/apiTransactionModel.js');
+  ApiTransaction = require('../apiTransactions/apiTransactionModel.js'),
+  uuid = require('uuid');
 
 /**
  * A module of commonly used functions
@@ -9,13 +12,38 @@ var _ = require('underscore'),
 
 module.exports = {
 
+
+  /**
+   * Checks to ensure users are not assigned the same API key.
+   *@function
+   */
+  checkforAPIKey: function(apiKey) {
+    //Side note: Not sure how necessary this check is. The uuid should be 
+    //unique every time a new key is generated.
+    new User({
+      apiKey: apiKey
+    })
+    .fetch()
+    .then(function(user) {
+      if(user) {
+        return true;
+      } else  {
+        return false;
+      }
+    }); 
+  }, 
+
   /**
    * Generates a new API Key
    *@function
    */
-
   generateApiKey: function() {
-    return this.randomString(40, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    var key = uuid.v4();
+    if(checkforAPIKey(key)) {
+      return generateApiKey();
+    } else {
+      return key;
+    }
   },
 
   /**

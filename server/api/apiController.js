@@ -8,7 +8,7 @@ module.exports = {
 
     //TODO: set token header on frontend AJAX request
     var session_token = req.headers['x-access-token'],
-      app_name = req.query.app_name;
+        app_name = req.query.app_name;
 
     //for testing purposes
     console.log('session_token: ' + session_token);
