@@ -9,7 +9,7 @@ machine:
 dependencies:
   pre:
     - pip install awsebcli
-    - eb init thesis -p Node.js -r us-west-2
+    - eb init sotg -p Node.js -r us-west-2
 test: 
   override:
     - grunt test
