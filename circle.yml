@@ -17,7 +17,7 @@ deployment:
   staging:
     branch: master
     commands:
-      - eb deploy thesis-staging --timeout 10
+      - eb deploy sotg-staging --timeout 10
   production:
     branch: production
     commands:
