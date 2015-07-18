@@ -49,6 +49,7 @@ var searchDbForTweets = module.exports.searchDbForTweets = function(keyword, cb)
     .query('where', 'text', 'like', '%' + keyword + '%')
     .fetchAll()
     .then(function(collection) {
+      collection = collection.slice(-1000);
       collection.forEach(function(tweet) {
         tweets.push(tweet);
       });
@@ -56,6 +57,27 @@ var searchDbForTweets = module.exports.searchDbForTweets = function(keyword, cb)
     });
 };
 
+var getTweetsBySentiment = module.exports.getTweetsBySentiment = function(keyword, sentiment, cb) {
+  var tweets = [], comparator = null;
+  if(sentiment === 'positive') {
+    comparator = '>';
+  } else {
+    comparator = '<';
+  }
+  new Tweet() 
+    .query(function(qb) {
+      qb.where('text', 'like', '%'+keyword+'%')
+        .andWhere('sentiment', comparator, '0');
+    })
+    .fetchAll()
+    .then(function(collection) {
+      collection = collection.slice(-1000);
+      collection.forEach(function(tweet) {
+        tweets.push(tweet);
+      });
+      cb(tweets);
+    });
+};
 /**
  * Inserts an ApiTransaction for the route and user
  *@function

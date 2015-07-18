@@ -43,11 +43,11 @@ module.exports = {
 
   getSentiment: function(req, res, next) {
     //QUESTION: should be either positive/negative or something else?
-    var sentiment_value = req.query.sentiment_value,
+    var sentiment = req.query.sentiment,
         keyword = req.query.keyword;
         api_key = req.query.api_key;
 
-    utils.getTweetsBySentiment(keyword, sentiment_value, function(tweetArray) {
+    utils.getTweetsBySentiment(keyword, sentiment, function(tweetArray) {
       res.status(200).send(tweetArray);
     });
   },
