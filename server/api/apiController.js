@@ -52,13 +52,20 @@ module.exports = {
     });
   },
 
-  getTime: function(req, res, next) {
-    var time_range = req.query.time_range,
-      keyword = req.query.keyword;
-      api_key = req.query.api_key;
+  getTimeRange: function(req, res, next) {
+    //Time can be entered as any input accepted by Javascript's Date constructor specified by MDN: 
+    //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+    var timeStart = new Date(parseInt(req.query.timeStart)).getTime(),
+        timeEnd = new Date(parseInt(req.query.timeEnd)).getTime(), 
+        keyword = req.query.keyword, 
+        api_key = req.query.api_key;
 
-    console.log('time_range: ' + time_range);
-    console.log('keyword: ' + keyword);
-    console.log('api_key: ' + api_key);
+    utils.getTweetsByTimeRange(keyword, timeStart, timeEnd, function(err, tweetArray) {
+      if(err) {
+        res.status(404).send(err);
+      } else {
+        res.status(200).send(tweetArray);
+      }
+    });
   }
 };

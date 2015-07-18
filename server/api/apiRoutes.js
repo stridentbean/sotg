@@ -5,7 +5,7 @@ module.exports = function(app) {
   app.get('/key', apiController.getKey);
   app.get('/search', apiController.getSearch);
   app.get('/sentiment', apiController.getSentiment);
-  app.get('/time', apiController.getTime);
+  app.get('/time', apiController.getTimeRange);
   app.post('/keywords', keywordController.addKeyword);
   app.get('/keywords', keywordController.getKeywords);
 };

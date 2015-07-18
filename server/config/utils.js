@@ -78,6 +78,29 @@ var getTweetsBySentiment = module.exports.getTweetsBySentiment = function(keywor
       cb(tweets);
     });
 };
+
+var getTweetsByTimeRange = module.exports.getTweetsByTimeRange = function(keyword, timeStart, timeEnd, cb) {
+  
+  if(timeStart > timeEnd) {
+    cb('Invalid time range: Starting time must come before ending time');
+  }
+
+  var tweets = [];
+  new Tweet()
+    .query(function(qb) {
+      qb.where('text', 'like', '%'+keyword+'%')
+        .andWhere('tweetCreatedAt', '>', timeStart.toString())
+        .andWhere('tweetCreatedAt', '<', timeEnd.toString());
+    })
+    .fetchAll()
+    .then(function(collection) {
+      collection = collection.slice(-1000);
+      collection.forEach(function(tweet) {
+        tweets.push(tweet);
+      });
+      cb(null, tweets);
+    });
+}
 /**
  * Inserts an ApiTransaction for the route and user
  *@function
