@@ -2,6 +2,7 @@ var SECRET = 'SECRET';
 var db = require('../db/schema'),
   bcrypt = require('bcrypt-nodejs'),
   Promise = require('bluebird'),
+  jwt = require('jwt-simple'),
   uuid = require('uuid');
 
 /**
