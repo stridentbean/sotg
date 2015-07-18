@@ -34,6 +34,7 @@ module.exports = {
         res.status(400);
         res.send(err);
       } else {
+        res.status(201);
         res.send(response);
       }
     });
@@ -52,12 +53,13 @@ module.exports = {
       User.addUser({
         username: username,
         password: password
-      }, function(err, resposne) {
+      }, function(err, response) {
         if (err) {
           res.status(400);
           res.send(err);
         } else {
           // The model is currently returning a token. TODO: Handle it.
+          res.status(201);
           res.send(response);
         }
       });
