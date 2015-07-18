@@ -73,7 +73,7 @@ db.knex.schema.hasTable('Tweet').then(function(exists) {
       tweet.float('latitude');
       tweet.integer('retweetCount');
       tweet.integer('favoriteCount');
-      tweet.string('tweetCreatedAt');
+      tweet.bigInteger('tweetCreatedAt');
       tweet.string('lang');
       tweet.float('sentiment');
     }).then(function(table) {
