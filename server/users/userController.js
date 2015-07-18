@@ -34,6 +34,7 @@ module.exports = {
         res.status(400);
         res.send(err);
       } else {
+        res.status(201);
         res.send(response);
       }
     });
@@ -42,7 +43,6 @@ module.exports = {
   /** signup */
 
   signup: function(req, res, next) {
-    console.log('gets here');
     var username = req.body.username,
         password = req.body.password;
 
@@ -52,12 +52,13 @@ module.exports = {
       User.addUser({
         username: username,
         password: password
-      }, function(err, resposne) {
+      }, function(err, response) {
         if (err) {
           res.status(400);
           res.send(err);
         } else {
           // The model is currently returning a token. TODO: Handle it.
+          res.status(201);
           res.send(response);
         }
       });

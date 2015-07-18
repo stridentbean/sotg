@@ -100,7 +100,7 @@ var getTweetsByTimeRange = module.exports.getTweetsByTimeRange = function(keywor
       });
       cb(null, tweets);
     });
-}
+};
 /**
  * Inserts an ApiTransaction for the route and user
  *@function
