@@ -45,6 +45,7 @@
     "sentiment": "^1.0.2",
     "timer-stopwatch": "^0.1.6",
     "twit": "^2.1.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "uuid": "^2.0.1"
   }
 }

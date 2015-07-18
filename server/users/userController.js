@@ -42,6 +42,7 @@ module.exports = {
   /** signup */
 
   signup: function(req, res, next) {
+    console.log('gets here');
     var username = req.body.username,
         password = req.body.password;
 

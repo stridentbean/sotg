@@ -7,7 +7,7 @@ var saveToDB = function(tweet, callback) {
   var parsedTweet = {
     tweetId: tweet.id_str,
     userId: tweet.user.id_str,
-    tweetCreatedAt: tweet.created_at, 
+    tweetCreatedAt: parseInt(tweet.timestamp_ms), 
     text: tweet.text,
     source: tweet.source, 
     retweetCount: tweet.retweet_count, 
