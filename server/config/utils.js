@@ -1,4 +1,6 @@
-var _ = require('underscore');
+var _ = require('underscore'),
+  User = require('../users/userModel.js'),
+  ApiTransaction = require('../apiTransactions/apiTransactionModel.js');
 
 /**
  * A module of commonly used functions
@@ -38,5 +40,28 @@ module.exports = {
   validateEmail: function(email) {
     var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     return re.test(email);
+  },
+
+  /**
+   * Inserts an ApiTransaction for the route and user
+   *@function
+   *@arg route {string} The api route
+   *@arg user {User} The user making the api call
+   */
+  insertApiTransaction: function(route, user, done) {
+
+    new ApiTransaction({
+        userId: user.get('id'),
+        route: route
+      })
+      .save()
+      .then(function(apiTransaction) {
+
+
+        //if there is a callback, call it 
+        if (!!done) {
+          done();
+        }
+      });
   }
 };
