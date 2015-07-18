@@ -41,20 +41,19 @@ db.knex.schema.hasTable('User').then(function(exists) {
       user.string('apiKey');
     }).then(function(table) {
       console.log('Created table User');
+    });
+  }
+});
 
-      db.knex.schema.hasTable('ApiTransaction').then(function(exists) {
-        if (!exists) {
-          db.knex.schema.createTable('ApiTransaction', function(apiTransaction) {
-            apiTransaction.increments('id').primary();
-            apiTransaction.timestamps();
-            apiTransaction.integer('userId').unsigned().references('User.id').notNullable();
-            apiTransaction.string('route');
-          }).then(function(table) {
-            console.log('Created table ApiTransaction');
-          });
-        }
-      });
-
+db.knex.schema.hasTable('ApiTransaction').then(function(exists) {
+  if (!exists) {
+    db.knex.schema.createTable('ApiTransaction', function(apiTransaction) {
+      apiTransaction.increments('id').primary();
+      apiTransaction.timestamps();
+      apiTransaction.integer('userId').unsigned().references('User.id').notNullable();
+      apiTransaction.string('route');
+    }).then(function(table) {
+      console.log('Created table ApiTransaction');
     });
   }
 });
@@ -94,6 +93,8 @@ db.knex.schema.hasTable('Keyword').then(function(exists) {
     });
   }
 });
+
+
 
 db.truncateAllTables = function(done) {
 
