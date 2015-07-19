@@ -3,7 +3,6 @@
   *@module db/schema
   */
 
-var config = process.env.RDS_DB_NAME || process.env.MYSQL_DATABASE ? {} : require('./config.js');
 var db = require('../config/db.js');
 
 /**

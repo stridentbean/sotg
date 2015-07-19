@@ -9,7 +9,7 @@ machine:
 dependencies:
   pre:
     - pip install awsebcli
-    - eb init thesis -p Node.js -r us-west-2
+    - eb init sotg -p Node.js -r us-west-2
 test: 
   override:
     - grunt test
@@ -17,7 +17,7 @@ deployment:
   staging:
     branch: master
     commands:
-      - eb deploy thesis-staging --timeout 10
+      - eb deploy sotg-staging --timeout 10
   production:
     branch: production
     commands:
