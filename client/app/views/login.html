@@ -1,10 +1,15 @@
-<div ng-controller="loginController as login">
-  <form class="col-md-offset-3 col-md-6">
-    <h2>Log in!</h2>
-    Email: <input type="email" ng-model="login.user.username" required />
-    Password: <input type="password" ng-model="login.user.password" required />
-    <input type="submit" ng-click="login.logInUser()" />
-  </form>
-  <div class="col-md-3"></div>
-
+<div class="two column centered row" ng-controller="loginController as login">
+    <div class="column">
+      <form class="ui form">
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" name="user-email" ng-model="login.user.username" placeholder="text@blahblah.com" required/>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" ng-model="login.user.password" placeholder="******" required />
+        </div>
+        <button class="ui button" type="submit" ng-click="login.logInUser()">Sign Up</button>
+      </form>
+    </div>
 </div>

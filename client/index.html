@@ -5,23 +5,25 @@
     <base href="/index.html">
   </head>
   <body ng-app="essoteegeeApp">
-  <header>
-  <div class="navbar">
-    <div class="container">
-      <ul class="nav nav-pills">
-        <li role="presentation" class="active navLarge" ui-sref="/">Home</li>
-        <li role="presentation" class="navLarge" ui-sref="signup">Sign up</li>
-        <li role="presentation" class="navLarge" ui-sref="login">Log in</li>
-        <li role="presentation" class="navLarge">Documentation</li>
-      </ul>
+  <!-- TODO: Make this a fixed menu bar -->
+  <div class="ui stackable menu">
+    <div class="item">
+      <img src="assets/globosaurus.png">
     </div>
+    <a class="item" ui-sref="/">Home</a>
+    <a class="item" ui-sref="/">Getting Started</a>
+    <a class="item" ui-sref="/">API Documentation</a>
+    <div class="right menu">
+      <a class="item" ui-sref="login">Login</a>
+      <a class="item" ui-sref="signup">Signup</a>
     </div>
-  </header>    
-    <div ui-view></div>
-    <link rel="stylesheet" href="style.css"> 
+  </div>
+  <div class="ui page main grid" ui-view></div>
     <link rel="stylesheet" href="bower_components/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" href="style.css"> 
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/semantic-ui/dist/semantic.min.js"></script>
     <script src="app/app.js"></script>
     <script src="app/controllers/signupController.js"></script>
