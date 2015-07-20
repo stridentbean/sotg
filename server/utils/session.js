@@ -12,6 +12,7 @@ exports.isLoggedIn = function(req, res) {
 exports.checkUser = function(req, res, next){
   if (!exports.isLoggedIn(req)){
     res.status(403);
+    res.end();
   } else {
     next();
   }

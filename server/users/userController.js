@@ -67,17 +67,13 @@ module.exports = {
     }
   },
 
-  /** checkAuth */
-
-  checkAuth: function(req, res, next) {
-    console.log('checking auth');
-  },
-
   getProfile: function(req, res, next) {
-    res.status(200).send({
+    res.status(200);
+    res.send({
       username: 'sampleUser', 
       apiKey: 'thisApiKey', 
       keywords: ['a', 'keywords', 'array']
     });
+    res.end();
   }
 };
