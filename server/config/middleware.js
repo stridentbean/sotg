@@ -2,6 +2,7 @@ var morgan = require('morgan'); // used for logging incoming request
 var helpers = require('./helpers.js');
 var bodyParser = require('body-parser');
 var path = require('path');
+var session = require('express-session');
 
 module.exports = function(app, express) {
   //routes
@@ -14,7 +15,9 @@ module.exports = function(app, express) {
   }));
   app.use(bodyParser.json());
   app.use(express.static(__dirname + '/../../client'));
-
+  
+  app.use(session({secret: 'whatever', cookie: {maxAge: 360000}}));
+  
   app.use('/users', userRouter); 
   app.use('/api', apiRouter);
  

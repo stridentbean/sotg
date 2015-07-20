@@ -35,7 +35,6 @@ module.exports = {
         res.send(err);
       } else {
         res.status(201);
-        res.send(response);
       }
     });
   },
@@ -59,7 +58,6 @@ module.exports = {
         } else {
           // The model is currently returning a token. TODO: Handle it.
           res.status(201);
-          res.send(response);
         }
       });
     } else {

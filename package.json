@@ -35,6 +35,7 @@
     "body-parser": "^1.13.2",
     "bookshelf": "^0.8.1",
     "express": "^4.13.1",
+    "express-session": "^1.11.3",
     "grunt-jsdoc-plugin": "^0.1.4",
     "jwt-simple": "^0.3.0",
     "knex": "^0.8.6",

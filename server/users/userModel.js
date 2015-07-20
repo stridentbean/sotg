@@ -2,8 +2,8 @@ var SECRET = 'SECRET';
 var db = require('../db/schema'),
   bcrypt = require('bcrypt-nodejs'),
   Promise = require('bluebird'),
-  jwt = require('jwt-simple'),
-  uuid = require('uuid');
+  uuid = require('uuid'),
+  sessionUtils = require('../utils/session.js');
 
 /**
  * Creates a new User
@@ -59,9 +59,7 @@ var User = db.Model.extend({
         new User(user)
         .save()
         .then(function(newUser) {
-          // create token to send back for auth
-          var token = jwt.encode(user, SECRET);
-          callback(null, token);
+          sessionUtils.createSession(req, res, newUser);
         });
       }
     });
@@ -80,9 +78,7 @@ var User = db.Model.extend({
             callback(new Error('Error comparing passwords.'));
           } else {
             if (isMatch) {
-              console.log("Passwords match, sending back token");
-              var token = jwt.encode(foundUser, SECRET);
-              callback(null, {token: token});
+              sessionUtils.createSession(req, res, foundUser.get('username'));
             } else {
               callback(new Error('Passwords don\'t match.'));
             }
