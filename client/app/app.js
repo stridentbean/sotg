@@ -15,6 +15,10 @@ essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProv
     .state('login',{
       url: '/login',
       templateUrl: 'app/views/login.html'
+    })
+    .state('profile', {
+      url: '/profile',
+      templateUrl: 'app/views/profile.html'
     });
 
 });
