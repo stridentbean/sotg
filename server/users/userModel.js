@@ -2,8 +2,9 @@ var SECRET = 'SECRET';
 var db = require('../db/schema'),
   bcrypt = require('bcrypt-nodejs'),
   Promise = require('bluebird'),
-  uuid = require('uuid'),
-  sessionUtils = require('../utils/session.js');
+  jwt = require('jwt-simple'),
+  Kewyword = require('../api/keywordModel.js'),
+  uuid = require('uuid');
 
 /**
  * Creates a new User
@@ -22,6 +23,10 @@ var User = db.Model.extend({
   initialize: function() {
     this.on('creating', this.hashPassword);
     this.on('creating', this.generateApiKey);
+  },
+
+  keywords: function() {
+    return this.belongsToMany(Keyword);
   },
 
   /**
