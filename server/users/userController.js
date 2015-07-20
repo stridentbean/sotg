@@ -29,12 +29,13 @@ module.exports = {
     User.authenticate({
       username: username,
       password: password
-    }, function(err, response) {
+    }, req, res, function(err, response) {
       if (err) {
         res.status(400);
         res.send(err);
       } else {
         res.status(201);
+        res.end();
       }
     });
   },
@@ -51,13 +52,14 @@ module.exports = {
       User.addUser({
         username: username,
         password: password
-      }, function(err, response) {
+      }, req, res, function(err, response) {
         if (err) {
           res.status(400);
           res.send(err);
         } else {
           // The model is currently returning a token. TODO: Handle it.
           res.status(201);
+          res.end();
         }
       });
     } else {

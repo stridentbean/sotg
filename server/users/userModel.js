@@ -48,24 +48,26 @@ var User = db.Model.extend({
       });
   },
 
-  addUser: function(user, callback) {
+  addUser: function(user, req, res, callback) {
     new User({username: user.username})
     .fetch()
     .then(function(foundUser) {
       if (foundUser) {
-        callback(new Error('User already exist!'));
+        callback({
+          error: 'User already exists.'
+        });
       } else {
         // make a new user if not one
         new User(user)
         .save()
         .then(function(newUser) {
-          sessionUtils.createSession(req, res, newUser);
+          callback(null, sessionUtils.createSession(req, res, newUser));
         });
       }
     });
   },
 
-  authenticate: function(user, callback) {
+  authenticate: function(user, req, res, callback) {
     new User({username: user.username})
     .fetch()
     .then(function(foundUser) {
@@ -78,7 +80,7 @@ var User = db.Model.extend({
             callback(new Error('Error comparing passwords.'));
           } else {
             if (isMatch) {
-              sessionUtils.createSession(req, res, foundUser.get('username'));
+              callback(null, sessionUtils.createSession(req, res, foundUser.get('username')));
             } else {
               callback(new Error('Passwords don\'t match.'));
             }
