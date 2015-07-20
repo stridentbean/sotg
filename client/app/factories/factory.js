@@ -45,14 +45,12 @@ angular.module('sotgFactory', [])
 
   authFactory.profile = function(){
     return $http({
-      url: 'users/profile',
+      method: 'GET', 
+      url: 'users/profile'
     })
     .success(function(data, status, headers, config){
-      console.log(status);
     })
     .error(function(data, status, headers, config){
-      console.log(status);
-      console.log(data);
     });
   };
   return authFactory;

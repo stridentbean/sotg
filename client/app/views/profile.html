@@ -1,3 +1,8 @@
 <div ng-controller="profileController as profile">
   <h2>HI</h2>
+  <h2 ng-show="profile.username">username :  {{profile.username}} </h2>
+  <h2 ng-show="profile.apiKey">API Key :  {{profile.apiKey}} </h2>
+  <ul>
+    <ul ng-repeat="keyword in profile.keywords">{{keyword}}</li>
+  </ul>
 </div>
