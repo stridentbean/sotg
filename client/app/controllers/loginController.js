@@ -6,7 +6,7 @@ angular.module('loginCtrl', [])
     console.log(vm.user);
     Auth.login(vm.user)
     .then(function(){
-      console.log('success');
+      $location.path('/profile');
     })
     .catch(function(err){
       console.log(err);

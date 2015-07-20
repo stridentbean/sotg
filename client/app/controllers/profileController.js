@@ -8,6 +8,6 @@ angular.module('profileCtrl', [])
       vm.keywords = res.data.keywords
     })
     .catch(function(err){
-      $location.path('/');
+      $location.path('/login');
     });
 });

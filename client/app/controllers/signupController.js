@@ -6,7 +6,7 @@ angular.module('signupCtrl', [])
     console.log(vm.user);
     Auth.signup(vm.user)
     .then(function(){
-      console.log('success');
+      $location.path('/profile');
     })
     .catch(function(err){
       console.log(err);
