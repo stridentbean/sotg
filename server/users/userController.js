@@ -27,7 +27,7 @@ module.exports = {
     var user = {
       username: req.body.username, 
       password: req.body.password 
-    }
+    };
     
     User.authenticate(user, req, res, function(err, response) {
       if (err) {
