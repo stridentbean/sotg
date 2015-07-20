@@ -61,7 +61,7 @@ var User = db.Model.extend({
         new User(user)
         .save()
         .then(function(newUser) {
-          sessionUtils.createSession(req, res, newUser);
+          sessionUtils.createSession(req, res, newUser.get('username'));
         });
       }
     });
@@ -80,7 +80,6 @@ var User = db.Model.extend({
             callback(new Error('Error comparing passwords.'));
           } else {
             if (isMatch) {
-              console.log('foundUser: ' + foundUser.get('username'));
               sessionUtils.createSession(req, res, foundUser.get('username'));
             } else {
               callback(new Error('Passwords don\'t match.'));

@@ -2,7 +2,8 @@
 var User = require('./userModel.js'),
   jwt = require('jwt-simple'),
   db = require('../db/schema.js'),
-  utils = require('../config/utils.js');
+  utils = require('../config/utils.js'), 
+  sessionUtils = require('../utils/session.js');
 
 // Create an empty Bookshelf User model to interact with the database.
 User = new User();
@@ -23,18 +24,17 @@ module.exports = {
    */
 
   signin: function(req, res, next) {
-    var username = req.body.username,
-      password = req.body.password;
+    var user = {
+      username: req.body.username, 
+      password: req.body.password 
+    }
     
-    User.authenticate({
-      username: username,
-      password: password
-    }, req, res, function(err, response) {
+    User.authenticate(user, req, res, function(err, response) {
       if (err) {
         res.status(400);
         res.send(err);
       } else {
-        res.status(201);
+        res.status(201); 
         res.end();
       }
     });
@@ -74,7 +74,10 @@ module.exports = {
   },
 
   getProfile: function(req, res, next) {
-    console.log(req.session);
-    res.end();
+    res.status(200).send({
+      username: 'sampleUser', 
+      apiKey: 'thisApiKey', 
+      keywords: ['a', 'keywords', 'array']
+    });
   }
 };
