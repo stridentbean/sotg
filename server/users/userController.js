@@ -67,13 +67,10 @@ module.exports = {
     }
   },
 
-  getProfile: function(req, res, next) {
-    res.status(200);
-    res.send({
-      username: 'sampleUser', 
-      apiKey: 'thisApiKey', 
-      keywords: ['a', 'keywords', 'array']
-    });
-    res.end();
+  getProfile: function(req, res) {
+    var user = {
+      username: req.session.user
+    };
+    User.getProfile(user, req, res);
   }
 };

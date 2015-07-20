@@ -100,6 +100,30 @@ var User = db.Model.extend({
     bcrypt.compare(candidatePassword, this.get('password'), function(err, isMatch) {
       callback(isMatch);
     });
+  }, 
+
+  getProfile: function(user, req, res) {
+    new User(user)
+    .fetch()
+    .then(function(user) {
+      if(user) {
+        res.status(200);
+        res.send({
+          username: user.get('username'), 
+          apiKey: user.get('apiKey'), 
+          keywords: ['a', 'keywords', 'array']
+        });
+        res.end();
+      } else {
+        res.status(200);
+        res.send({
+          username: 'poop', 
+          apiKey: 'poopApiKey', 
+          keywords: ['a', 'poop', 'array']
+        });
+        res.end();
+      }
+    });
   }
 });
 
