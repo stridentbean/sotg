@@ -71,5 +71,10 @@ module.exports = {
 
   checkAuth: function(req, res, next) {
     console.log('checking auth');
+  },
+
+  getProfile: function(req, res, next) {
+    console.log(req.session);
+    res.end();
   }
 };

@@ -42,5 +42,18 @@ angular.module('sotgFactory', [])
       console.log(data);
     });
   };
+
+  authFactory.profile = function(){
+    return $http({
+      url: 'users/profile',
+    })
+    .success(function(data, status, headers, config){
+      console.log(status);
+    })
+    .error(function(data, status, headers, config){
+      console.log(status);
+      console.log(data);
+    });
+  };
   return authFactory;
 });
