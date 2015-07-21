@@ -22,6 +22,10 @@ essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProv
     })
     .state('logout', {
       controller: 'logoutController'
+    })
+    .state('documentation', {
+      url: '/documentation',
+      templateUrl: 'app/views/documentation.html'
     });
 
 });

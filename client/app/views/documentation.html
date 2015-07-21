@@ -1,0 +1,77 @@
+<div class="ui three columns">
+  <div class="ui vertical sticky inverted menu">
+     <div class="item">
+        <div class="header">Tweets</div>
+        <div class="menu">
+          <a class="item">Stuff</a>
+          <a class="item">Stuff</a>
+        </div>
+      </div>
+     <div class="item">
+        <div class="header">Keywords</div>
+        <div class="menu">
+          <a class="item">Stuff</a>
+          <a class="item">Stuff</a>
+        </div>
+      </div>
+     <div class="item">
+        <div class="header">Sentiment</div>
+        <div class="menu">
+          <a class="item">Stuff</a>
+          <a class="item">Stuff</a>
+        </div>
+      </div>
+     <div class="item">
+        <div class="header">Time</div>
+        <div class="menu">
+          <a class="item">Stuff</a>
+          <a class="item">Stuff</a>
+        </div>
+      </div>
+  </div>
+</div>
+  <div class="ui nine columns masthead vertical segment">
+    <h2 class="ui dividing header">
+      <i class="search icon blue"></i>
+      <div class="content">Search for Tweets
+        <div class="sub header">Find tweets by your specified keyword</div>
+      </div>
+    </h2>
+    <p>Use our endpoint 'api/search' when you want to search our database for Tweets based on keyword. You can only specify one keyword at a time.</p>
+    <h5>Endpoint example:</h5>
+    <div class="ui secondary segment center aligned">
+      <h5>'GET' request: http://www.sotg.xyz/api/search?apiKey=YOUR_API_KEY&keyword=YOUR_KEYWORD</h5>
+    </div>
+    
+    <div class="ui hidden divider"></div>    
+    
+    <h2 class="ui dividing header">
+      <i class="zoom icon blue"></i>
+      <div class="content">Add and Delete Keywords
+        <div class="sub header">Keep track of and modify the keywords you request</div>
+      </div>
+    </h2>
+    <p>Use our endpoint 'api/keywords' when you want our servers to track a keyword or if you want us to stop tracking a keyword you have already requested.</p>
+    <h5>To add keywords:</h5>
+    <div class="ui secondary segment center aligned">
+      <h5>'POST' request: http://www.sotg.xyz/api/keywords?apiKey=YOUR_API_KEY&keyword=YOUR_KEYWORD</h5>
+    </div>
+    <h5>To delete keywords:</h5>
+    <div class="ui secondary segment center aligned">
+      <h5>'DELETE' request: http://www.sotg.xyz/api/keywords?apiKey=YOUR_API_KEY&keyword=YOUR_KEYWORD</h5>
+    </div>
+    
+    <h2 class="ui dividing header">
+      <i class="heartbeat icon blue"></i>
+      <div class="content">Find Tweets by Sentiment
+        <div class="sub header">Discover whether keywords have positive or negative connotations on Twitter</div>
+      </div>
+    </h2>
+    
+    <h2 class="ui dividing header">
+      <i class="wait icon blue"></i>
+      <div class="content">Find Tweets by Time Range
+        <div class="sub header">See how keywords propagate over time</div>
+      </div>
+    </h2>
+  </div>
