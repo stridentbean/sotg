@@ -2,7 +2,7 @@ var User = require('../users/userModel.js'),
   utils = require('../config/utils.js');
 
 var authAPIKey = module.exports.authAPIKey = function(req, res, next) {
-  var apiKey = req.body.apiKey,
+  var apiKey = req.query.apiKey,
     route = req.route.path;
     requestMethod = Object.keys(req.route.methods)[0];    //post, delete, get...
 
@@ -16,7 +16,7 @@ var authAPIKey = module.exports.authAPIKey = function(req, res, next) {
     .fetch()
     .then(function(user) {
       if (user) {
-        req.body.userId = user.get('id');
+        req.query.userId = user.get('id');
         next(); //go to next function to resolve API request
 
         utils.insertApiTransaction(requestMethod, route, user); //record apir usage
