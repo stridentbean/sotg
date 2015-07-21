@@ -1,10 +1,12 @@
+process.env.PORT = PORT = 8001; // Set port for test server
+process.env.NODE_ENV = 'test';
+
 var User = require('../../../server/users/userModel.js'),
   db = require('../../../server/config/db.js'),
   request = require('request'),
   Q = require('q'),
   should = require('chai').should(),
   schema = require('../../../server/db/schema.js');
-  process.env.PORT = PORT = 8001;
 
 /**
  * Describes how a user account is created
@@ -17,7 +19,7 @@ describe('User Integration', function() {
     port;
 
   before(function(done) {
-    server = require('../../../server/server.js');
+    require('../../../server/server.js'); // Spin up the server
     setTimeout(function() {
       schema.truncateAllTables(done);
     }, 1000);

@@ -1,10 +1,13 @@
-var PORT = 8001,
-  request = require('request'),
+process.env.PORT = PORT = 8001; // Set port env for test server;
+process.env.NODE_ENV = 'test';
+
+var request = require('request'),
   queue = require('../../../server/utils/queue.js'),
-  should = require('chai').should();
+  should = require('chai').should(),
+  PORT;
 
 describe('API Endpoint Behavior', function() {
-  var app = require('../../../server/server.js')(PORT);
+  require('../../../server/server'); // Spin up the server;
   before(function(done) {
     setTimeout(function() {
       done();
