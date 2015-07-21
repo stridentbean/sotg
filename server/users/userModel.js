@@ -6,6 +6,7 @@ var db = require('../db/schema'),
   Keyword = require('../api/keywordModel.js'),
   sessionUtils = require('../utils/session.js'),
   uuid = require('uuid');
+  KeywordUser = require('../api/keywordUserModel.js');
 
 /**
  * Creates a new User
@@ -27,7 +28,7 @@ var User = db.Model.extend({
   },
 
   keywords: function() {
-    return this.belongsToMany(Keyword);
+    return this.belongsToMany(Keyword).through(KeywordUser);
   },
 
   /**

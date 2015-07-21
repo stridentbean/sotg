@@ -3,10 +3,10 @@ var KeywordModel = require('./keywordModel.js');
 
 module.exports = {
   getKeywords: function(req, res, next) {
-    console.log("Getting keyword ", req.body.keyword,
-      " for user ", req.body.userId);
-    new KeywordModel({keyword: req.body.keyword})
-    .fetch()
+    console.log("Getting keywords for user ", req.body.userId);
+    new KeywordUserModel({})
+    .where({user_id: req.body.userId})
+    .fetchAll()
     .then(function(keyword) {
       if (keyword) {
         var keyword_id = keyword.get('id');
