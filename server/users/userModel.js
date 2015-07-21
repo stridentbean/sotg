@@ -115,13 +115,9 @@ var User = db.Model.extend({
         });
         res.end();
       } else {
-        res.status(200);
-        res.send({
-          username: 'poop', 
-          apiKey: 'poopApiKey', 
-          keywords: ['a', 'poop', 'array']
+        res.status.send({
+          error: 'Cannot find user!'
         });
-        res.end();
       }
     });
   }
