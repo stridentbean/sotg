@@ -72,7 +72,6 @@ module.exports = {
   },
 
   keywords: function(req, res) {
-    console.log("Inside userController:keywords");
     new User({id: req.body.userId})
     .keywords()
     .fetch()
