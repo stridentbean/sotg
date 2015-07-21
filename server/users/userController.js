@@ -63,7 +63,8 @@ module.exports = {
         }
       });
     } else {
-      return next({
+      res.status(404);
+      res.send({
         error: 'Username should be a valid email'
       });
     }
