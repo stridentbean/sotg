@@ -3,8 +3,8 @@ var User = require('../../../server/users/userModel.js'),
   request = require('request'),
   Q = require('q'),
   should = require('chai').should(),
-  PORT = 8001; //this port is used to test
-  schema = require('../../../server/db/schema.js'),
+  schema = require('../../../server/db/schema.js');
+  process.env.PORT = PORT = 8001;
 
 /**
  * Describes how a user account is created
@@ -13,18 +13,14 @@ var User = require('../../../server/users/userModel.js'),
 
 describe('User Integration', function() {
 
-  var app = require('../../../server/server.js');
-  var port = 8000;
-  var server;
+  var server,
+    port;
 
   before(function(done) {
+    server = require('../../../server/server.js');
     setTimeout(function() {
-      done();
+      schema.truncateAllTables(done);
     }, 1000);
-  });
-
-  after(function(done) {
-    done();
   });
   
   describe('Account Creation', function() {
@@ -136,6 +132,16 @@ describe('User Integration', function() {
         res.statusCode.should.equal(404);
         done();
       });
+    });
+  });
+
+  describe("User API", function() {
+
+    xit('/users/keywords should return list of keywords', function() {
+      var options = {
+        'method': 'GET',
+        'uri': 'http://localhost:' + PORT + '/users/keywords'
+      };
     });
   });
   
