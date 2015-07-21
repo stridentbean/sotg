@@ -31,6 +31,18 @@ var keyword_user_join = db.Model.extend({
         });
       }
     });
+  },
+
+  getKeywords: function(keyword, userId, callback) {
+    new keyword_user_join({
+      keyword_id: keyword,
+      user_id: userId
+    })
+    .fetchAll()
+    .then(function(keyword_user) {
+      console.log(keyword_user);
+      callback(keyword_user);
+    });
   }
 
 });

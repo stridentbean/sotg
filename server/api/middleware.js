@@ -16,9 +16,9 @@ var authAPIKey = module.exports.authAPIKey = function(req, res, next) {
     .fetch()
     .then(function(user) {
       if (user) {
+        console.log("User is authenticated");
         req.query.userId = user.get('id');
         next(); //go to next function to resolve API request
-
         utils.insertApiTransaction(requestMethod, route, user); //record apir usage
       } else {
         res.status(404).send('Invalid API key!');

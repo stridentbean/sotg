@@ -96,7 +96,6 @@ module.exports = {
           next(new Error('Keyword does not exist for this user'));
         }
       });
-
   },
 
   getKeywords: function(req, res, next) {
