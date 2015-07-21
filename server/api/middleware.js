@@ -1,7 +1,7 @@
 var User = require('../users/userModel.js');
 
 var authAPIKey = module.exports.authAPIKey = function(req, res, next) {
-  var apiKey = req.query.apiKey;
+  var apiKey = req.body.apiKey;
 
   if(!apiKey) {
     res.status(404).send('Must provide an API key for this endpoint.');
@@ -13,6 +13,7 @@ var authAPIKey = module.exports.authAPIKey = function(req, res, next) {
   .fetch()
   .then(function(user) {
     if(user) {
+      req.body.userId = user.get('id');
       next(); //go to next function to resolve API request
     } else {
       res.status(404).send('Invalid API key!');

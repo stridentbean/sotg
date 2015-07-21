@@ -1,11 +1,34 @@
 var Keyword = require('./keywordModel.js'),
+  User = require('../users/userModel.js'),
+  KeywordUser = require('./keywordUserModel.js'),
   db = require('../db/schema.js');
 
+var addKeywordUser = function(apiKey, keyword, callback) {
+  new User({
+      apiKey: apiKey
+    })
+    .fetch()
+    .then(function(user) {
+      new KeywordUser({
+        keyword_id: keyword.get('id'),
+        user_id: user.get('id')
+      }).upsert(callback);
+    });
+};
+
+var registeredStreams = [1, 2];
+var nextStream = 0;
 
 module.exports = {
 
+  // This is inside module.exports so that we can test it in keywordControllerTests.js
   getLeastUsedStream: function() {
-    return [];
+    var result = nextStream;
+    nextStream++;
+    if (nextStream >= registeredStreams.length) {
+      nextStream = 0;
+    }
+    return result;
   },
 
   // Right now, we are aren't checking to see if this api_key was given to us by an authenticated user.
@@ -15,43 +38,80 @@ module.exports = {
   // makes it to this function, we don't need to worry about the key inside this function.™
   addKeyword: function(req, res, next) {
     var keyword = req.body.keyword,
-      leastUsedStream = getLeastUsedStream();
-    console.log(keyword);
+      apiKey = req.body.apiKey;
+    leastUsedStream = module.exports.getLeastUsedStream();
     new Keyword({
-      keyword: keyword
-    })
-    .fetch()
-    .then(function(exists) {
-      if (exists) {
-        return next({
-          result: 'update',
-          value: exists.get('keyword')
-        });
-      } else {
-        new Keyword({
-          keyword: keyword,
-          streamId: leastUsedStream
-        })
-        .save()
-        .then(function(keyword) {
-          return next({
-            result: 'insert',
-            value: keyword.get('keyword')
+        keyword: keyword
+      })
+      .fetch()
+      .then(function(exists) {
+        if (exists) {
+          addKeywordUser(apiKey, exists, function() {
+            res.send("Added " + keyword + " and " + apiKey + " to database.");
           });
-        });
-      }
-    });
+        } else {
+          new Keyword({
+              keyword: keyword,
+              streamId: leastUsedStream
+            })
+            .save()
+            .then(function(keywordModel) {
+              addKeywordUser(apiKey, keywordModel, function() {
+                res.send("Inserted " + keywordModel + " and " + apiKey + " to database.");
+              });
+            });
+        }
+      });
+  },
+
+  deleteKeyword: function(req, res, next) {
+    var keyword = req.body.keyword,
+      userId = req.body.userId;
+
+    new Keyword({
+        keyword: keyword
+      })
+      .fetch()
+      .then(function(keyword) {
+        if (keyword) {
+
+          new KeywordUser({})
+            .query({
+              where: {
+                keyword_id: keyword.get('id'),
+                user_id: userId
+              }
+            }).destroy();
+
+          keyword.hasZeroUser(function() {
+              console.log('DELETE', keyword);
+              keyword.destroy().then(function() {
+
+                res.send('Removed keyword from user');
+              });
+            },
+            function() {
+
+              res.send('Keyword not removed');
+            });
+        } else {
+          next(new Error('Keyword does not exist for this user'));
+        }
+      });
+
   },
 
   getKeywords: function(req, res, next) {
     var streamId = req.body.streamId;
     var resultArray;
-    new Keyword({streamId: streamId}).fetchAll()
-    .then(function(results) {
-      resultArray = results.map(function(el) {
-        return el.get('keyword');
+    new Keyword({
+        streamId: streamId
+      }).fetchAll()
+      .then(function(results) {
+        resultArray = results.map(function(el) {
+          return el.get('keyword');
+        });
+        res.json(resultArray);
       });
-      res.json(resultArray);
-    });
   }
 };
