@@ -21,7 +21,6 @@ var Keyword = db.Model.extend({
       })
       .fetchAll()
       .then(function(models) {
-        console.log('hasOneuser', models);
         if (models.length === 0) {
           pass();
         } else {

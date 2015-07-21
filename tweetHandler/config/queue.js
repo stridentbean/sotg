@@ -46,16 +46,16 @@ var saveToDB = function(tweet, callback) {
     });
 };
 
-//TODO fix this to delete tweets from DB correctly
 var deleteFromDB = function(deleteMessage, callback) {
-  new Tweet({
-      tweetId: deleteMessage.delete.status.id_str
+  new Tweet()
+    .query({
+      where: {
+        tweetId: deleteMessage.delete.status.id_str
+      }
     })
-    .fetch()
+    .destroy()
     .then(function(tweet) {
       if (tweet) {
-        tweet.destroy();
-        console.log('Successfully DELETE');
         callback();
       } else {
         deletionQ.push(deleteMessage);

@@ -1,6 +1,6 @@
-var apiController = require('./apiController.js');
-var keywordController = require('./keywordController.js');
-var middleware = require('./middleware.js');
+var apiController = require('./apiController.js'),
+  keywordController = require('./keywordController.js'),
+  middleware = require('./middleware.js');
 
 module.exports = function(app) {
   app.get('/key', apiController.getKey);

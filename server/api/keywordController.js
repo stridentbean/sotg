@@ -37,8 +37,8 @@ module.exports = {
   // It might be best to do that in middleware in the route, so if someone
   // makes it to this function, we don't need to worry about the key inside this function.™
   addKeyword: function(req, res, next) {
-    var keyword = req.body.keyword,
-      apiKey = req.body.apiKey;
+    var keyword = req.query.keyword,
+      apiKey = req.query.apiKey;
     leastUsedStream = module.exports.getLeastUsedStream();
     new Keyword({
         keyword: keyword
@@ -65,8 +65,8 @@ module.exports = {
   },
 
   deleteKeyword: function(req, res, next) {
-    var keyword = req.body.keyword,
-      userId = req.body.userId;
+    var keyword = req.query.keyword,
+      userId = req.query.userId;
 
     new Keyword({
         keyword: keyword
@@ -84,15 +84,13 @@ module.exports = {
             }).destroy();
 
           keyword.hasZeroUser(function() {
-              console.log('DELETE', keyword);
               keyword.destroy().then(function() {
 
-                res.send('Removed keyword from user');
+                res.status(200).send('Removed keyword');
               });
             },
             function() {
-
-              res.send('Keyword not removed');
+              res.status(200).send('Removed keyword');
             });
         } else {
           next(new Error('Keyword does not exist for this user'));
@@ -102,7 +100,7 @@ module.exports = {
   },
 
   getKeywords: function(req, res, next) {
-    var streamId = req.body.streamId;
+    var streamId = req.query.streamId;
     var resultArray;
     new Keyword({
         streamId: streamId

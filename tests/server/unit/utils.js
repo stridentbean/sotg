@@ -32,6 +32,7 @@ describe('Utils', function() {
     var PASS = 'password';
     var USER = 'user';
     var routeOne = '/api/keywords/';
+    var methodOne = 'post';
 
     //insert user into database
     before(function(done) {
@@ -49,7 +50,7 @@ describe('Utils', function() {
     });
 
     it('should insert a transaction', function(done) {
-      Utils.insertApiTransaction(routeOne, user, function() {
+      Utils.insertApiTransaction(methodOne, routeOne, user, function() {
 
         new ApiTransaction({
             userId: user.get('id')
@@ -65,9 +66,8 @@ describe('Utils', function() {
 
     it('should execute without a callback', function(done) {
       try {
-        Utils.insertApiTransaction(routeOne, user);
+        Utils.insertApiTransaction(methodOne, routeOne, user);
       } catch (err) {
-        console.log(err);
         should.not.exist(err);
       }
       //this forces the test to be listed when grunt test is run
