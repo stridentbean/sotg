@@ -1,9 +1,22 @@
 exports.createSession = function(req, res, newUser) {
   req.session.regenerate(function() {
     req.session.user = newUser;
-    res.status(201).end();
+    res.status(201);
+    res.end();
   });
 };
+
+exports.destroySession = function(req, res) {
+  req.session.destroy(function(err) {
+    if(err) {
+      res.status(404);
+      res.send(err);
+    } else {
+      res.send(201);
+      res.end();
+    }
+  });
+};  
 
 exports.isLoggedIn = function(req, res) {
   return req.session ? !!req.session.user : false;

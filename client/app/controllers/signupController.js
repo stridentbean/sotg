@@ -9,7 +9,7 @@ angular.module('signupCtrl', [])
       $location.path('/profile');
     })
     .catch(function(err){
-      console.log(err);
+      vm.error = err.data.error;
     });
   };
 });

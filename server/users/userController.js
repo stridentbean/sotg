@@ -31,7 +31,7 @@ module.exports = {
     
     User.authenticate(user, req, res, function(err, response) {
       if (err) {
-        res.status(400);
+        res.status(404);
         res.send(err);
       } else {
         res.status(201); 
@@ -63,8 +63,15 @@ module.exports = {
         }
       });
     } else {
-      return next(new Error('Username should be a valid email'));
+      res.status(404);
+      res.send({
+        error: 'Username should be a valid email'
+      });
     }
+  },
+
+  logout: function(req, res) {
+    sessionUtils.destroySession(req, res);
   },
 
   getProfile: function(req, res) {

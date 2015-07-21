@@ -133,7 +133,7 @@ describe('User Integration', function() {
       };
 
       request(options, function(error, res, body) {
-        res.statusCode.should.equal(400);
+        res.statusCode.should.equal(404);
         done();
       });
     });

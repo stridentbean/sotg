@@ -22,4 +22,11 @@
         <button class="ui button" type="submit" ng-click="signup.signUpUser()">Sign Up</button>
       </form>
     </div>
+    <div ng-show="signup.error" class="ui negative message">
+      <i ng-click="signup.error = null" class="close icon"></i>
+      <div class="header">
+      Whoops!
+      </div>
+      <p>{{ signup.error }}</p>
+    </div>
 </div>

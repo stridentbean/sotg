@@ -1,5 +1,5 @@
 var essoteegeeApp = angular.module('essoteegeeApp', ['ui.router', 'sotgFactory',
-'loginCtrl', 'signupCtrl', 'profileCtrl']);
+'loginCtrl', 'signupCtrl', 'profileCtrl', 'logoutCtrl']);
 essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProvider){
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
@@ -19,6 +19,9 @@ essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProv
     .state('profile', {
       url: '/profile',
       templateUrl: 'app/views/profile.html'
+    })
+    .state('logout', {
+      controller: 'logoutController'
     });
 
 });

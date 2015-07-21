@@ -54,7 +54,7 @@ var User = db.Model.extend({
     .then(function(foundUser) {
       if (foundUser) {
         callback({
-          error: 'User already exists.'
+          error: 'User already exists!'
         });
       } else {
         // make a new user if not one
@@ -72,17 +72,23 @@ var User = db.Model.extend({
     .fetch()
     .then(function(foundUser) {
       if (!foundUser) {
-        callback(new Error('User does not exist'));
+        callback({
+          error: 'User does not exist'
+        });
       } else {
         bcrypt.compare(user.password, foundUser.get('password'), function(err, isMatch) {
           if (err) {
             console.log("Error comparing passwords.");
-            callback(new Error('Error comparing passwords.'));
+            callback({
+              error: 'Error comparing passwords.'
+            });
           } else {
             if (isMatch) {
               sessionUtils.createSession(req, res, foundUser.get('username'));
             } else {
-              callback(new Error('Passwords don\'t match.'));
+              callback({
+                error: 'The password you entered does not match our records.'
+              });
             }
           }
         });
@@ -115,7 +121,8 @@ var User = db.Model.extend({
         });
         res.end();
       } else {
-        res.status.send({
+        res.status(404);
+        res.send({
           error: 'Cannot find user!'
         });
       }
