@@ -3,18 +3,6 @@ var db = require('../db/schema.js'),
   utils = require('../config/utils.js');
 
 module.exports = {
-  getKey: function(req, res, next) {
-    //TODO: need to figure out how to authenticate this
-    var username = req.query.username;
-
-    utils.getApiKey(username, function(apiKey) {
-      if(apiKey) {
-        res.status(200).json({
-          apiKey: apiKey
-        });
-      }
-    });
-  },
 
   getSearch: function(req, res, next) {
     var keyword = req.query.keyword;
