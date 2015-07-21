@@ -4,6 +4,7 @@ var db = require('../db/schema'),
   Promise = require('bluebird'),
   jwt = require('jwt-simple'),
   Keyword = require('../api/keywordModel.js'),
+  sessionUtils = require('../utils/session.js'),
   uuid = require('uuid');
 
 /**
