@@ -13,6 +13,7 @@ var authAPIKey = module.exports.authAPIKey = function(req, res, next) {
   .fetch()
   .then(function(user) {
     if(user) {
+      req.body.userId = user.get('id');
       next(); //go to next function to resolve API request
     } else {
       res.status(404).send('Invalid API key!');
