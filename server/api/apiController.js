@@ -4,10 +4,8 @@ var db = require('../db/schema.js'),
 
 module.exports = {
   getKey: function(req, res, next) {
-    //TODO: set token header on frontend AJAX request
+    //TODO: need to figure out how to authenticate this
     var username = req.query.username;
-        // session_token = req.headers['x-access-token'],
-        // app_name = req.query.app_name;
 
     utils.getApiKey(username, function(apiKey) {
       if(apiKey) {
