@@ -9,7 +9,7 @@ var keywordUserController  = require('../api/keywordUserController.js');
  */
 
 module.exports = function(app) {
-  app.get('/keywords', middleware.authAPIKey, keywordUserController.getKeywords);
+  app.get('/keywords', middleware.authAPIKey, userController.keywords);
   app.post('/signin', userController.signin);
   app.post('/signup', userController.signup);
   app.get('/logout', sessionUtils.checkUser, userController.logout);

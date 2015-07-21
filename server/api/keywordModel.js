@@ -1,6 +1,5 @@
 var db = require('../db/schema'),
-  KeywordUser = require('./keywordUserModel.js'),
-  User = require('../users/userModel.js');
+  KeywordUser = require('./keywordUserModel.js');
 
 var Keyword = db.Model.extend({
   tableName: 'Keyword',
@@ -10,7 +9,7 @@ var Keyword = db.Model.extend({
 
   },
   users: function() {
-    return this.belongsToMany(User);
+    return this.belongsToMany(require('../users/userModel'));
   },
 
   //runs the callback funtion if this keyword has one user listening

@@ -28,7 +28,7 @@ var User = db.Model.extend({
   },
 
   keywords: function() {
-    return this.belongsToMany(Keyword).through(KeywordUser);
+    return this.belongsToMany(require('../api/keywordModel.js'));
   },
 
   /**
@@ -135,6 +135,7 @@ var User = db.Model.extend({
       }
     });
   }
+
 });
 
-module.exports = User;
+module.exports = User
