@@ -115,7 +115,8 @@ var User = db.Model.extend({
         });
         res.end();
       } else {
-        res.status.send({
+        res.status(404);
+        res.send({
           error: 'Cannot find user!'
         });
       }

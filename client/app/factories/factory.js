@@ -53,5 +53,18 @@ angular.module('sotgFactory', [])
     .error(function(data, status, headers, config){
     });
   };
+
+  authFactory.logout = function() {
+    return $http({
+      method: 'GET',
+      url: 'users/logout'
+    })
+    .success(function() {
+      $location.path('/');
+    })
+    .error(function(err){
+      console.log(err);
+    });
+  };
   return authFactory;
 });
