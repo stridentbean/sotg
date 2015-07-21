@@ -51,6 +51,7 @@ db.knex.schema.hasTable('ApiTransaction').then(function(exists) {
       apiTransaction.timestamps();
       apiTransaction.integer('userId').unsigned().references('User.id').notNullable();
       apiTransaction.string('route');
+      apiTransaction.string('method');
     }).then(function(table) {
       console.log('Created table ApiTransaction');
     });
