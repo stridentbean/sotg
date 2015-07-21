@@ -1,0 +1,160 @@
+<div class="ui container masthead vertical segment">
+  <h2 class="ui dividing header">
+    <i class="search icon blue"></i>
+    <div class="content">Search for Tweets
+      <div class="sub header">Find tweets by your specified keyword</div>
+    </div>
+  </h2>
+  <p>Use our endpoint 'api/search' when you want to search our database for Tweets based on keyword. You can only specify one keyword at a time.</p>
+  <h3 class="large header">To get Tweets from our database:</h3>
+  <div class="ui segment aligned">
+    <h3>
+      <div class="ui green horizontal label">GET</div>
+    api/search
+    </h3>
+    <div class="ui list">
+      <div class="item">
+        <div class="huge header">Parameters:</div>
+        <div class="list">
+          <div class="item">
+            <div class="header">apiKey</div> 
+            Your API Key. 
+          </div>
+          <div class="item">
+            <div class="header">keyword</div> 
+            Keyword to run search. 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui hidden divider"></div>    
+  
+  <h2 class="ui dividing header">
+    <i class="zoom icon blue"></i>
+    <div class="content">Add and Delete Keywords
+      <div class="sub header">Keep track of and modify the keywords you request</div>
+    </div>
+  </h2>
+  <p>Use our endpoint 'api/keywords' when you want our servers to track a keyword or if you want us to stop tracking a keyword you have already requested.</p>
+  <h3 "ui segment aligned">To add keywords:</h3>
+  <div class="ui segment aligned">
+    <h3>
+      <div class="ui orange horizontal label">POST</div>
+    api/keywords
+    </h3>
+    <div class="ui list">
+      <div class="item">
+        <div class="huge header">Parameters:</div>
+        <div class="list">
+          <div class="item">
+            <div class="header">apiKey</div> 
+            Your API Key. 
+          </div>
+          <div class="item">
+            <div class="header">keyword</div> 
+            Keyword to run search. 
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ui divider"></div>    
+      <h3>
+        <div class="ui red horizontal label">DELETE</div>
+      api/keywords
+      </h3>
+      <div class="ui list">
+        <div class="item">
+          <div class="huge header">Parameters:</div>
+          <div class="list">
+            <div class="item">
+              <div class="header">apiKey</div> 
+              Your API Key. 
+            </div>
+            <div class="item">
+              <div class="header">keyword</div> 
+              Keyword to run search. 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui hidden divider"></div>    
+    
+    <h2 class="ui dividing header">
+      <i class="heartbeat icon blue"></i>
+      <div class="content">Find Tweets by Sentiment
+        <div class="sub header">Discover whether keywords have positive or negative connotations on Twitter</div>
+      </div>
+    </h2>
+    <p>Use our endpoint 'api/sentiment' to search for tweets containing a keyword based on whether or not they have a positive or negative connotation.</p>
+
+    <h3 class="large header">To find tweets containing keywords based on sentiment:</h3>
+    <div class="ui segment aligned">
+      <h3>
+        <div class="ui green horizontal label">GET</div>
+      api/sentiment
+      </h3>
+      <div class="ui list">
+        <div class="item">
+          <div class="huge header">Parameters:</div>
+          <div class="list">
+            <div class="item">
+              <div class="header">apiKey</div> 
+              Your API Key. 
+            </div>
+            <div class="item">
+              <div class="header">keyword</div> 
+              Keyword to run search. 
+            </div>
+            <div class="item">
+              <div class="header">sentiment</div> 
+              Can be positive or negative 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  <div class="ui hidden divider"></div>    
+    
+    <h2 class="ui dividing header">
+      <i class="wait icon blue"></i>
+      <div class="content">Find Tweets by Time Range
+        <div class="sub header">See how keywords propagate over time</div>
+      </div>
+    </h2>
+    <p>Use our endpoint 'api/time' to search for tweets containing a keyword over a period of time.</p>
+    <h3 class="huge header">To find tweets containing keywords over a time range:</h3>
+    <div class="ui segment aligned">
+      <h3>
+        <div class="ui green horizontal label">GET</div>
+      api/time
+      </h3>
+      <div class="ui list">
+        <div class="item">
+          <div class="huge header">Parameters:</div>
+          <div class="list">
+            <div class="item">
+              <div class="header">apiKey</div> 
+              Your API Key. 
+            </div>
+            <div class="item">
+              <div class="header">keyword</div> 
+              Keyword to run search. 
+            </div>
+            <div class="item">
+              <div class="header">timeStart</div> 
+              The starting time, formatted as milliseconds since the UNIX epoch.
+            </div>
+            <div class="item">
+              <div class="header">timeEnd</div> 
+              The ending time, formatted as milliseconds since the UNIX epoch.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
