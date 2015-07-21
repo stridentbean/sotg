@@ -2,8 +2,8 @@ var SECRET = 'SECRET';
 var db = require('../db/schema'),
   bcrypt = require('bcrypt-nodejs'),
   Promise = require('bluebird'),
-  jwt = require('jwt-simple'),
-  uuid = require('uuid');
+  uuid = require('uuid'),
+  sessionUtils = require('../utils/session.js');
 
 /**
  * Creates a new User
@@ -48,26 +48,26 @@ var User = db.Model.extend({
       });
   },
 
-  addUser: function(user, callback) {
+  addUser: function(user, req, res, callback) {
     new User({username: user.username})
     .fetch()
     .then(function(foundUser) {
       if (foundUser) {
-        callback(new Error('User already exist!'));
+        callback({
+          error: 'User already exists.'
+        });
       } else {
         // make a new user if not one
         new User(user)
         .save()
         .then(function(newUser) {
-          // create token to send back for auth
-          var token = jwt.encode(user, SECRET);
-          callback(null, token);
+          sessionUtils.createSession(req, res, newUser.get('username'));
         });
       }
     });
   },
 
-  authenticate: function(user, callback) {
+  authenticate: function(user, req, res, callback) {
     new User({username: user.username})
     .fetch()
     .then(function(foundUser) {
@@ -80,9 +80,7 @@ var User = db.Model.extend({
             callback(new Error('Error comparing passwords.'));
           } else {
             if (isMatch) {
-              console.log("Passwords match, sending back token");
-              var token = jwt.encode(foundUser, SECRET);
-              callback(null, {token: token});
+              sessionUtils.createSession(req, res, foundUser.get('username'));
             } else {
               callback(new Error('Passwords don\'t match.'));
             }
@@ -101,6 +99,26 @@ var User = db.Model.extend({
   comparePassword: function(candidatePassword, callback) {
     bcrypt.compare(candidatePassword, this.get('password'), function(err, isMatch) {
       callback(isMatch);
+    });
+  }, 
+
+  getProfile: function(user, req, res) {
+    new User(user)
+    .fetch()
+    .then(function(user) {
+      if(user) {
+        res.status(200);
+        res.send({
+          username: user.get('username'), 
+          apiKey: user.get('apiKey'), 
+          keywords: ['a', 'keywords', 'array']
+        });
+        res.end();
+      } else {
+        res.status.send({
+          error: 'Cannot find user!'
+        });
+      }
     });
   }
 });

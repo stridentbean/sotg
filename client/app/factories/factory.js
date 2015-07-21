@@ -15,8 +15,12 @@ angular.module('sotgFactory', [])
       url: 'users/signup',
       data: user
     })
-    .then(function(res){
-      console.log(res);
+    .success(function(data, status, headers, config){
+      console.log(status);
+    })
+    .error(function(data, status, headers, config){
+      console.log(status);
+      console.log(data);
     });
   };
   /**
@@ -30,9 +34,24 @@ angular.module('sotgFactory', [])
       url: 'users/signin',
       data: user
     })
-    .then(function(res){
-      console.log(res);
-    });    
+    .success(function(data, status, headers, config){
+      console.log(status);
+    })
+    .error(function(data, status, headers, config){
+      console.log(status);
+      console.log(data);
+    });
+  };
+
+  authFactory.profile = function(){
+    return $http({
+      method: 'GET', 
+      url: 'users/profile'
+    })
+    .success(function(data, status, headers, config){
+    })
+    .error(function(data, status, headers, config){
+    });
   };
   return authFactory;
 });

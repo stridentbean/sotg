@@ -2,7 +2,8 @@
 var User = require('./userModel.js'),
   jwt = require('jwt-simple'),
   db = require('../db/schema.js'),
-  utils = require('../config/utils.js');
+  utils = require('../config/utils.js'), 
+  sessionUtils = require('../utils/session.js');
 
 // Create an empty Bookshelf User model to interact with the database.
 User = new User();
@@ -23,19 +24,18 @@ module.exports = {
    */
 
   signin: function(req, res, next) {
-    var username = req.body.username,
-      password = req.body.password;
+    var user = {
+      username: req.body.username, 
+      password: req.body.password 
+    };
     
-    User.authenticate({
-      username: username,
-      password: password
-    }, function(err, response) {
+    User.authenticate(user, req, res, function(err, response) {
       if (err) {
         res.status(400);
         res.send(err);
       } else {
-        res.status(201);
-        res.send(response);
+        res.status(201); 
+        res.end();
       }
     });
   },
@@ -52,14 +52,14 @@ module.exports = {
       User.addUser({
         username: username,
         password: password
-      }, function(err, response) {
+      }, req, res, function(err, response) {
         if (err) {
           res.status(400);
           res.send(err);
         } else {
           // The model is currently returning a token. TODO: Handle it.
           res.status(201);
-          res.send(response);
+          res.end();
         }
       });
     } else {
@@ -67,9 +67,10 @@ module.exports = {
     }
   },
 
-  /** checkAuth */
-
-  checkAuth: function(req, res, next) {
-    console.log('checking auth');
+  getProfile: function(req, res) {
+    var user = {
+      username: req.session.user
+    };
+    User.getProfile(user, req, res);
   }
 };
