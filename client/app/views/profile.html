@@ -5,4 +5,12 @@
   <ul>
     <ul ng-repeat="keyword in profile.keywords">{{keyword}}</li>
   </ul>
+  <div ng-show="profile.error" class="ui negative message">
+    <i ng-click="profile.error = null" class="close icon"></i>
+    <div class="header">
+    Whoops!
+    </div>
+    <p>{{ profile.error }}</p>
+    <a ui-sref="login">Go to Log In page.</a>
+  </div>
 </div>
