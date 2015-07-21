@@ -63,12 +63,14 @@ module.exports = {
         }
       });
     } else {
-      return next(new Error('Username should be a valid email'));
+      return next({
+        error: 'Username should be a valid email'
+      });
     }
   },
 
   logout: function(req, res) {
-  sessionUtils.destroySession(req, res);
+    sessionUtils.destroySession(req, res);
   },
 
   getProfile: function(req, res) {
