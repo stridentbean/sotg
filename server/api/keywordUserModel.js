@@ -1,6 +1,6 @@
 var db = require('../config/db.js');
 var keyword_user_join = db.Model.extend({
-  tableName: 'keyword_user',
+  tableName: 'keywords_users',
   defaults: {},
 
   /** 

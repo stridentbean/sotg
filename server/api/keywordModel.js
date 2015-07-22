@@ -2,7 +2,7 @@ var db = require('../db/schema'),
   KeywordUser = require('./keywordUserModel.js');
 
 var Keyword = db.Model.extend({
-  tableName: 'Keyword',
+  tableName: 'Keywords',
   hasTimestamps: true,
   defaults: {},
   inititialize: function() {

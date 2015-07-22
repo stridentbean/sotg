@@ -14,7 +14,7 @@ var db = require('../db/schema'),
  */
 
 var User = db.Model.extend({
-  tableName: 'User',
+  tableName: 'Users',
   hasTimestamps: true,
   defaults: {},
 
