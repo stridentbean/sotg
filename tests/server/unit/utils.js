@@ -50,7 +50,7 @@ describe('Utils', function() {
     });
 
     it('should insert a transaction', function(done) {
-      Utils.insertApiTransaction(methodOne, routeOne, user, function() {
+      Utils.insertApiTransaction(methodOne, routeOne, user, new Date(), function() {
 
         new ApiTransaction({
             userId: user.get('id')
@@ -66,7 +66,7 @@ describe('Utils', function() {
 
     it('should execute without a callback', function(done) {
       try {
-        Utils.insertApiTransaction(methodOne, routeOne, user);
+        Utils.insertApiTransaction(methodOne, routeOne, user, new Date());
       } catch (err) {
         should.not.exist(err);
       }
