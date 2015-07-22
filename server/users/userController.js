@@ -90,6 +90,20 @@ module.exports = {
     var user = {
       username: req.session.user
     };
-    new User().getProfile(user, req, res);
+    new User().getProfile(user, function(err, result) {
+      if (!err) {
+        res.status(200);
+        res.send({
+          username: result.get('username'), 
+          apiKey: result.get('apiKey'), 
+          keywords: []
+        });
+      } else {
+        res.status(404)
+        res.send({
+          error: err
+        })
+      }
+    });
   }
 };
