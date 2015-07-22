@@ -150,6 +150,22 @@ describe('User Integration', function() {
       });
     });
 
+    it('should be able to add hashtagged keyword', function(done) {
+      var keyword = '#cola';
+      new User({})
+      .fetch()
+      .then(function(user) {
+        var options = {
+          'method': 'POST',
+          'uri': 'http://localhost:' + PORT + '/api/keywords?apiKey=' + apiKey + '&keyword=' + encodeURIComponent(keyword)
+        };
+        request(options, function(err, res, body) {
+          res.body.should.be.a('string');
+          done();
+        });
+      });
+    });
+
     it('/users/keywords should return list of keywords', function(done) {
       var keyword = 'cola';
       new User({})
@@ -162,6 +178,9 @@ describe('User Integration', function() {
 
         request(options, function(err, res, body) {
           body.should.be.a('string');
+          keywords = JSON.parse(body);
+          keywords[0].keyword.should.equal('cola');
+          keywords[1].keyword.should.equal('#cola');
           res.statusCode.should.equal(200);
           done();
         });
