@@ -99,10 +99,10 @@ module.exports = {
           keywords: []
         });
       } else {
-        res.status(404)
+        res.status(404);
         res.send({
           error: err
-        })
+        });
       }
     });
   }
