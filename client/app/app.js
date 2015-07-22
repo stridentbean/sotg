@@ -1,4 +1,4 @@
-var essoteegeeApp = angular.module('essoteegeeApp', ['ui.router', 'sotgFactory',
+var essoteegeeApp = angular.module('essoteegeeApp', ['ui.router', 'sotgFactory', 'queryFactory',
 'loginCtrl', 'signupCtrl', 'profileCtrl', 'logoutCtrl', 'queryBuilderCtrl']);
 essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProvider){
   $urlRouterProvider.otherwise('/');
@@ -29,23 +29,21 @@ essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProv
     })
     .state('queryBuilder', {
       url: '/queryBuilder', 
-      templateUrl: 'app/views/queryBuilder.html'
+      templateUrl: 'app/views/queryBuilder.html', 
+      controller: 'queryBuilderController',
+      name: 'queryBuilder'
     })
     .state('queryBuilder.search', {
-      url: '/search', 
-      templateUrl: 'app/views/partials/searchBuilder.html'
+      url: '/search'
     })
     .state('queryBuilder.keyword', {
-      url: '/keyword', 
-      templateUrl: 'app/views/partials/keywordBuilder.html'
+      url: '/keyword'
     })
     .state('queryBuilder.sentiment', {
-      url: '/sentiment', 
-      templateUrl: 'app/views/partials/sentimentBuilder.html'
+      url: '/sentiment'
     })
     .state('queryBuilder.time', {
-      url: '/time', 
-      templateUrl: 'app/views/partials/timeBuilder.html'
+      url: '/time'
     });
 
 });

@@ -1,6 +1,17 @@
 angular.module('queryBuilderCtrl', [])
-.controller('queryBuilderController', function(Auth, $location, $window, $state) {
+.controller('queryBuilderController', function(Auth, QueryBuilder, $location, $window, $state, $scope) {
   var vm = this;
-  vm.$state = $state;
-  console.log(vm.$state.is('queryBuilder.search'));
+  $scope.$state = $state;
+
+  Auth.profile()
+  .then(function(res){
+      $scope.apiKey = res.data.apiKey;
+    })
+    .catch(function(err){
+      $scope.apiKey = 'Your_API_Key';
+    });
+  $scope.apiKey = 'Your_API_Key';
+  $scope.keyword = 'Pizza';
+  $scope.sentiment = 'positive';
+  $scope.httpVerb = 'GET'
 });
