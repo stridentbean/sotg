@@ -5,8 +5,9 @@ var db = require('../db/schema'),
   jwt = require('jwt-simple'),
   Keyword = require('../api/keywordModel.js'),
   sessionUtils = require('../utils/session.js'),
-  uuid = require('uuid');
-  KeywordUser = require('../api/keywordUserModel.js');
+  uuid = require('uuid'),
+  KeywordUser = require('../api/keywordUserModel.js'),
+  API_CALLS_PER_MINUTE = 100.0;
 
 /**
  * Creates a new User
@@ -16,7 +17,10 @@ var db = require('../db/schema'),
 var User = db.Model.extend({
   tableName: 'users',
   hasTimestamps: true,
-  defaults: {},
+  defaults: {
+    throttle: API_CALLS_PER_MINUTE,   //100 api uses per minute
+    lastApiCall: new Date() //leave as default first API call
+  },
 
   /** 
    * Initializes the user with salt and apikey 
@@ -126,6 +130,30 @@ var User = db.Model.extend({
         callback(new Error('Cannot find user!'));
       }
     });
+  },
+
+  /**
+  * Updates a users throttle 
+  *@function
+  *@arg newApiCall {Date} The date/time of the new api call
+  */
+
+  updateThrottle: function(newApiCall) {
+    var lastApiCall = this.get('lastApiCall');
+
+    var timeSinceLastCallInSeconds = (newApiCall - lastApiCall) / 1000;
+
+    //throttleToAdd = the per second refil rate * number of seconds since last call - current api call
+    throttleToAdd = (API_CALLS_PER_MINUTE / 60) * timeSinceLastCallInSeconds - 1;
+    
+    if (throttleToAdd > API_CALLS_PER_MINUTE) {
+      this.set('throttle', API_CALLS_PER_MINUTE);
+    } else {
+      this.set('throttle', this.get('throttle') - 1 + throttleToAdd);
+    }
+
+    this.set('lastApiCall', newApiCall);
+
   }
 
 });
