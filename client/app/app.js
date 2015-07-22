@@ -26,6 +26,10 @@ essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProv
     .state('documentation', {
       url: '/documentation',
       templateUrl: 'app/views/documentation.html'
+    })
+    .state('queryBuilder', {
+      url: '/queryBuilder', 
+      templateUrl: 'app/views/queryBuilder.html'
     });
 
 });
