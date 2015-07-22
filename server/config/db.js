@@ -1,7 +1,7 @@
 // If env variable RDS_HOSTNAME is set, we are on AWS and
 // if we have MYSQL_DATABASE, we are on CircleCI and
 // don't need to use db/config.js
-var config = (process.env.RDS_HOSTNAME || process.env.MYSQL_DATABASE) ? {} : require('../db/config.js');
+var config = (process.env.RDS_HOSTNAME || process.env.MYSQL_DATABASE) ? {} : require('./config')[process.env.NODE_ENV].db;
 var knex = require('knex')({
   client: 'mysql',
   //TODO find the proper address for the 

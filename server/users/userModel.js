@@ -6,6 +6,7 @@ var db = require('../db/schema'),
   Keyword = require('../api/keywordModel.js'),
   sessionUtils = require('../utils/session.js'),
   uuid = require('uuid');
+  KeywordUser = require('../api/keywordUserModel.js');
 
 /**
  * Creates a new User
@@ -13,7 +14,7 @@ var db = require('../db/schema'),
  */
 
 var User = db.Model.extend({
-  tableName: 'User',
+  tableName: 'users',
   hasTimestamps: true,
   defaults: {},
 
@@ -27,7 +28,8 @@ var User = db.Model.extend({
   },
 
   keywords: function() {
-    return this.belongsToMany(Keyword);
+    // We have to require here to prevent circular requires
+    return this.belongsToMany(require('../api/keywordModel.js'));
   },
 
   /**
@@ -134,6 +136,7 @@ var User = db.Model.extend({
       }
     });
   }
+
 });
 
-module.exports = User;
+module.exports = User

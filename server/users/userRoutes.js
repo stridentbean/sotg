@@ -1,5 +1,7 @@
 var userController = require('./userController.js'), 
     sessionUtils = require('../utils/session.js');
+var middleware = require('../api/middleware.js');
+var keywordUserController  = require('../api/keywordUserController.js');
 
 /**
  * A module that routes user activities
@@ -7,6 +9,7 @@ var userController = require('./userController.js'),
  */
 
 module.exports = function(app) {
+  app.get('/keywords', middleware.authAPIKey, userController.keywords);
   app.post('/signin', userController.signin);
   app.post('/signup', userController.signup);
   app.get('/logout', sessionUtils.checkUser, userController.logout);

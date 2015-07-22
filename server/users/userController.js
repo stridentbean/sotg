@@ -5,9 +5,6 @@ var User = require('./userModel.js'),
   utils = require('../config/utils.js'), 
   sessionUtils = require('../utils/session.js');
 
-// Create an empty Bookshelf User model to interact with the database.
-User = new User();
-
 //globals
 //TODO get a better phrase
 var SECRET = 'superDupperSecret';
@@ -29,7 +26,7 @@ module.exports = {
       password: req.body.password 
     };
     
-    User.authenticate(user, req, res, function(err, response) {
+    new User().authenticate(user, req, res, function(err, response) {
       if (err) {
         res.status(404);
         res.send(err);
@@ -49,7 +46,7 @@ module.exports = {
     // Validate inside the controller
     if (utils.validateEmail(username)) {
       // Interact with the database inside the model
-      User.addUser({
+      new User().addUser({
         username: username,
         password: password
       }, req, res, function(err, response) {
@@ -74,10 +71,25 @@ module.exports = {
     sessionUtils.destroySession(req, res);
   },
 
+  keywords: function(req, res) {
+    new User({id: req.query.userId})
+    .keywords()
+    .fetch()
+    .then(function(keywords) {
+      if (keywords.toJSON().length > 0) {
+        res.send(keywords.toJSON());
+      } else {
+        res.status(404).send({
+          error: 'Error getting keywords for this user' // TODO: Better error handle/message
+        });
+      }
+    });
+  },
+
   getProfile: function(req, res) {
     var user = {
       username: req.session.user
     };
-    User.getProfile(user, req, res);
+    new User().getProfile(user, req, res);
   }
 };

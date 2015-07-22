@@ -1,16 +1,16 @@
 var db = require('../db/schema'),
-  KeywordUser = require('./keywordUserModel.js'),
-  User = require('../users/userModel.js');
+  KeywordUser = require('./keywordUserModel.js');
 
 var Keyword = db.Model.extend({
-  tableName: 'Keyword',
+  tableName: 'keywords',
   hasTimestamps: true,
   defaults: {},
   inititialize: function() {
 
   },
   users: function() {
-    return this.belongsToMany(User);
+    // We have to require here to prevent circular requires.
+    return this.belongsToMany(require('../users/userModel'));
   },
 
   //runs the callback funtion if this keyword has one user listening
