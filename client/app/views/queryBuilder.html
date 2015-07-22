@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-controller="queryBuilderController as qb">
   <div class="two wide column">
     <div class="ui big horizontal green label">GET</div>
     <div class="ui big horizontal orange label">POST</div>
@@ -9,15 +9,15 @@
     <div class="ui divider"></div> 
   </div>
 </div>
-<div class="one column centered row">
+<div class="one column centered row" ng-controller="queryBuilderController as qb">
   <button class="ui blue basic button">Submit Query</button>
   <button class="ui blue basic button">Copy to Clipboard</button>
 </div>
-<div class="seven column centered row">
-  <button class="ui labeled icon button" ui-sref="queryBuilder.search"><i class="search icon"></i>Search</button>
-  <button class="ui labeled icon button" ui-sref="queryBuilder.keyword"><i class="zoom icon"></i>Keywords</button>
-  <button class="ui labeled icon button" ui-sref="queryBuilder.sentiment"><i class="heartbeat icon"></i>Sentiment</button>
-  <button class="ui labeled icon blue button" ui-sref="queryBuilder.time"><i class="wait icon"></i>Time Range</button>
+<div class="seven column centered row" ng-controller="queryBuilderController as qb">
+  <button ng-class="{ 'blue' : qb.$state.is('queryBuilder.search') }" class="ui labeled icon button" ui-sref="queryBuilder.search" ><i class="search icon"></i>Search</button>
+  <button ng-class="{ 'blue' : qb.$state.is('queryBuilder.keyword') }" class="ui labeled icon button" ui-sref="queryBuilder.keyword"><i class="zoom icon"></i>Keywords</button>
+  <button ng-class="{ 'blue' : qb.$state.is('queryBuilder.sentiment') }" class="ui labeled icon button" ui-sref="queryBuilder.sentiment"><i class="heartbeat icon"></i>Sentiment</button>
+  <button ng-class="{ 'blue' : qb.$state.is('queryBuilder.time')}" class="ui labeled icon button" ui-sref="queryBuilder.time"><i class="wait icon"></i>Time Range</button>
 </div>
 <div class="ui divider"></div>
 <div class="seven column centered row" ui-view></div>
