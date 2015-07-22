@@ -5,9 +5,11 @@ machine:
     DISPLAY: 8000
     MYSQL_DATABASE: 'circle_test'
     MYSQL_DATABASE_USER: 'ubuntu'
-    MYSQL_DATABASE_PASSWORD: ''
+    MYSQL_DATABASE_PASSWORD: 'ubuntu'
+    MYSQL_DATABASE_SERVER: 'localhost'
 dependencies:
   pre:
+    - mysql -uubuntu -e"SET PASSWORD FOR 'ubuntu'@'localhost' = PASSWORD('ubuntu')"
     - pip install awsebcli
     - eb init sotg -p Node.js -r us-west-2
 test: 
