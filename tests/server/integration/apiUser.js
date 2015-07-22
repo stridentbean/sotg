@@ -141,9 +141,8 @@ describe('User Integration', function() {
       .then(function(user) {
         var options = {
           'method': 'POST',
-          'uri': 'http://localhost:' + PORT + '/api/keywords?apiKey=' + apiKey
-            + '&keyword=' + keyword
-        }
+          'uri': 'http://localhost:' + PORT + '/api/keywords?apiKey=' + apiKey + '&keyword=' + keyword
+        };
         request(options, function(err, res, body) {
           res.body.should.be.a('string');
           done();
