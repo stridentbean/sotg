@@ -76,7 +76,13 @@ module.exports = {
     .keywords()
     .fetch()
     .then(function(keywords) {
-      res.send(keywords.toJSON());
+      if (keywords.toJSON().length > 0) {
+        res.send(keywords.toJSON());
+      } else {
+        res.status(404).send({
+          error: 'Error getting keywords for this user' // TODO: Better error handle/message
+        });
+      }
     });
   },
 

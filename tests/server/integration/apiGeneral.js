@@ -11,7 +11,7 @@ describe('API Endpoint Behavior', function() {
   before(function(done) {
     setTimeout(function() {
       done();
-    }, 1000);
+    }, 250);
   });
 
   after(function(done) {
@@ -39,7 +39,7 @@ describe('API Endpoint Behavior', function() {
       }
     };
       request(getKeywordsOptions, function(error, res, body) {
-        console.log(body);
+        body.should.be.a('string');
         next();
       });
   });
