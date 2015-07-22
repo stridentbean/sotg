@@ -1,5 +1,5 @@
 process.env.PORT = PORT = 8001; // Set port env for test server;
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = process.env.NODE_ENV || 'test';
 
 var request = require('request'),
   queue = require('../../../server/utils/queue.js'),

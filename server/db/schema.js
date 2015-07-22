@@ -9,7 +9,7 @@ var db = require('../config/db.js');
  * Remove all tables from the database 
  */
 
-if (false) {
+db.resetDb = function(callback){
   db.knex.schema.dropTableIfExists('ApiTransaction').then(function(table) {
     console.log('Dropped table ApiTransaction');
 
@@ -26,7 +26,7 @@ if (false) {
   db.knex.schema.dropTableIfExists('Keyword').then(function(table) {
     console.log('Dropped table Keyword');
   });
-}
+};
 
 //create tables
 db.knex.schema.hasTable('User').then(function(exists) {

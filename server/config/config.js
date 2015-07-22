@@ -14,5 +14,13 @@ module.exports = {
       host: '127.0.0.1',
       database: 'sotg'
     }
+  },
+  circleci: {
+    db: {
+      user: 'ubuntu',
+      password: '',
+      host: '127.0.0.1',
+      database: 'circle_test'
+    }
   }
 };
