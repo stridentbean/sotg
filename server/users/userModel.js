@@ -14,7 +14,7 @@ var db = require('../db/schema'),
  */
 
 var User = db.Model.extend({
-  tableName: 'Users',
+  tableName: 'users',
   hasTimestamps: true,
   defaults: {},
 
@@ -28,6 +28,7 @@ var User = db.Model.extend({
   },
 
   keywords: function() {
+    // We have to require here to prevent circular requires
     return this.belongsToMany(require('../api/keywordModel.js'));
   },
 

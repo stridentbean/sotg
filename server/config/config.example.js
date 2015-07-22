@@ -2,7 +2,7 @@ module.exports = {
   test: {
     db: {
       user : 'root',
-      password : 'rootpass',
+      password : '',
       host : '127.0.0.1', 
       database: 'test'
     }
@@ -10,7 +10,7 @@ module.exports = {
   development: {
     db: {
       user: 'root',
-      password: 'rootpass',
+      password: '',
       host: '127.0.0.1',
       database: 'sotg'
     }

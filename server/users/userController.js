@@ -72,7 +72,7 @@ module.exports = {
   },
 
   keywords: function(req, res) {
-    new User({id: req.body.userId})
+    new User({id: req.query.userId})
     .keywords()
     .fetch()
     .then(function(keywords) {

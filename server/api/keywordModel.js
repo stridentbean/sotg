@@ -2,13 +2,14 @@ var db = require('../db/schema'),
   KeywordUser = require('./keywordUserModel.js');
 
 var Keyword = db.Model.extend({
-  tableName: 'Keywords',
+  tableName: 'keywords',
   hasTimestamps: true,
   defaults: {},
   inititialize: function() {
 
   },
   users: function() {
+    // We have to require here to prevent circular requires.
     return this.belongsToMany(require('../users/userModel'));
   },
 
