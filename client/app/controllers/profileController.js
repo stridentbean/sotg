@@ -3,6 +3,7 @@ angular.module('profileCtrl', [])
   var vm = this;
   Auth.profile()
   .then(function(res){
+      console.log(res);
       vm.username = res.data.username; 
       vm.apiKey = res.data.apiKey;
       vm.keywords = res.data.keywords;

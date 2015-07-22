@@ -116,27 +116,18 @@ var User = db.Model.extend({
     });
   }, 
 
-  getProfile: function(user, req, res) {
+  getProfile: function(user, callback) {
     new User(user)
     .fetch()
     .then(function(user) {
       if(user) {
-        res.status(200);
-        res.send({
-          username: user.get('username'), 
-          apiKey: user.get('apiKey'), 
-          keywords: ['a', 'keywords', 'array']
-        });
-        res.end();
+        callback(null, user);
       } else {
-        res.status(404);
-        res.send({
-          error: 'Cannot find user!'
-        });
+        callback(new Error('Cannot find user!'));
       }
     });
   }
 
 });
 
-module.exports = User
+module.exports = User;
