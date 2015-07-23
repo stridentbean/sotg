@@ -12,7 +12,8 @@ angular.module('queryBuilderCtrl', [])
       $scope.isAuth = false;
       $scope.apiKey = 'Your_API_Key';
     });
-  $scope.apiKey = 'Your_API_Key';
+
+  $scope.encodedKeyword = 'Pizza';
   $scope.keyword = 'Pizza';
   $scope.sentiment = 'positive';
   $scope.httpVerb = 'GET';
@@ -20,6 +21,10 @@ angular.module('queryBuilderCtrl', [])
   $scope.endTime = new Date();
   $scope.startTimeMS = $scope.startTime.getTime();
   $scope.endTimeMS = $scope.endTime.getTime();
+
+  $scope.encodeKeyword = function() {
+    $scope.encodedKeyword = encodeURIComponent($scope.keyword); 
+  }
 
   $scope.startTimeConvert = function() {
     $scope.startTimeMS = $scope.startTime.getTime();

@@ -11,10 +11,10 @@
 </div>
 <div class="row">
   <div class="column">
-    <h2 class="ui header" ng-show="$state.is('queryBuilder.search')">http://sotg.xyz/api/search?keyword={{keyword}}&apiKey={{apiKey}}</h2>
-    <h2 class="ui header" ng-show="$state.is('queryBuilder.keyword')">http://sotg.xyz/api/keywords?keyword={{keyword}}&apiKey={{apiKey}}</h2>
-    <h2 class="ui header" ng-show="$state.is('queryBuilder.sentiment')">http://sotg.xyz/api/sentiment?keyword={{keyword}}&sentiment={{sentiment}}&apiKey={{apiKey}}</h2>
-    <h2 class="ui header" ng-show="$state.is('queryBuilder.time')">http://sotg.xyz/api/time?keyword={{keyword}}&startTime={{startTimeMS}}&endTime={{endTimeMS}}&apiKey={{apiKey}}</h2>
+    <h2 class="ui header" ng-show="$state.is('queryBuilder.search')">http://sotg.xyz/api/search?keyword={{encodedKeyword}}&apiKey={{apiKey}}</h2>
+    <h2 class="ui header" ng-show="$state.is('queryBuilder.keyword')">http://sotg.xyz/api/keywords?keyword={{encodedKeyword}}&apiKey={{apiKey}}</h2>
+    <h2 class="ui header" ng-show="$state.is('queryBuilder.sentiment')">http://sotg.xyz/api/sentiment?keyword={{encodedKeyword}}&sentiment={{sentiment}}&apiKey={{apiKey}}</h2>
+    <h2 class="ui header" ng-show="$state.is('queryBuilder.time')">http://sotg.xyz/api/time?keyword={{encodedKeyword}}&startTime={{startTimeMS}}&endTime={{endTimeMS}}&apiKey={{apiKey}}</h2>
     <div class="ui divider"></div> 
   </div>
 </div>
@@ -30,7 +30,7 @@
       <div class="ui blue label">
         Keyword
       </div>
-      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword">
+      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
   </div>
 </div>
 <div class="two column centered row" ng-show="$state.is('queryBuilder.keyword')">
@@ -43,7 +43,7 @@
       <div class="ui blue label">
         Keyword: 
       </div>
-      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword">
+      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
   </div>
 </div>
 <div class="two column centered row" ng-show="$state.is('queryBuilder.sentiment')">
@@ -58,7 +58,7 @@
       <div class="ui blue label">
         Keyword: 
       </div>
-      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword">
+      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
   </div>
 </div>
 <div class="two column centered row" ng-show="$state.is('queryBuilder.time')">
@@ -74,7 +74,7 @@
       <div class="ui blue label">
         Keyword: 
       </div>
-      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword">
+      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
   </div>  
 </div>
 
