@@ -5,7 +5,7 @@
     <div class="ui huge horizontal red label" ng-show="httpVerb === 'DELETE'">Method: {{httpVerb}}</div>
   </div>
   <div class="right floated right aligned column">
-    <button class="ui blue basic button" ng-show="isAuth">Submit Query</button>
+    <button class="ui blue basic button" ng-show="isAuth" ng-click="submitQuery()">Submit Query</button>
     <button class="ui blue basic button" clip-copy="getQuery()">Copy to Clipboard</button>
   </div>
 </div>
@@ -76,5 +76,8 @@
       </div>
       <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
   </div>  
+</div>
+<div class="one column row">
+  <div hljs ng-show="jsonResult" source="jsonResult"></div>
 </div>
 

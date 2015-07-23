@@ -1,6 +1,6 @@
 var essoteegeeApp = angular.module('essoteegeeApp', ['ui.router', 'sotgFactory', 'queryFactory',
-'loginCtrl', 'signupCtrl', 'profileCtrl', 'logoutCtrl', 'queryBuilderCtrl', 'ui.date', 'ngClipboard']);
-essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProvider, ngClipProvider){
+'loginCtrl', 'signupCtrl', 'profileCtrl', 'logoutCtrl', 'queryBuilderCtrl', 'ui.date', 'ngClipboard', 'hljs']);
+essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProvider, ngClipProvider, hljsServiceProvider){
 
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
@@ -49,5 +49,10 @@ essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProv
 
     //set path to .swf file for copying to clipboard
     ngClipProvider.setPath("bower_components/zeroclipboard/dist/ZeroClipboard.swf");
+
+    hljsServiceProvider.setOptions({
+        // replace tab with 4 spaces
+        tabReplace: '    '
+      });
 
 });
