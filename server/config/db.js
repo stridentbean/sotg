@@ -19,7 +19,7 @@ var knex = require('knex')({
   // Here we first check to see if we are on AWS,
   // then we check to see if we are on Docker (MYSQL_DATABASE_...)
   // then we just use the file on our local machine
-  connection: process.env.CLEARDB_DATABASE_URL || {
+  connection: {
     host: hostname,
     user: username,
     password: password,
