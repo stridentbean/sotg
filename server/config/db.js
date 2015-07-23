@@ -11,7 +11,6 @@ var hostname = process.env.RDS_HOSTNAME || process.env.MYSQL_DATABASE_SERVER || 
 var username = process.env.RDS_USERNAME || process.env.MYSQL_DATABASE_USER || config.db.user;
 var password = process.env.RDS_PASSWORD || process.env.MYSQL_DATABASE_PASSWORD || config.db.password;
 var database = process.env.RDS_DB_NAME || process.env.MYSQL_DATABASE || config.db.database;
-console.log(hostname);
 var port = process.env.RDS_PORT || '3306';
 
 var knex = require('knex')({
