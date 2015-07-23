@@ -12,13 +12,7 @@
           <label>Confirm Password</label>
           <input type="password" ng-model="signup.user.confirmPassword" placeholder="******" required />
         </div>
-        <div class="field">
-          <div class="ui checkbox">
-            <input type="checkbox" tabindex="0">
-            <label>I agree to the terms and conditions of this amazing API.</label>
-          </div>
-        </div>
-        <button class="ui button" type="submit" ng-click="signup.signUpUser()">Sign Up</button>
+        <button class="ui green button" type="submit" ng-click="signup.signUpUser()">Sign Up</button>
       </form>
     </div>
     <div ng-show="signup.error" class="ui negative message">
@@ -29,43 +23,3 @@
       <p>{{ signup.error }}</p>
     </div>
 </div>
-
-<!--  <div class="centered five wide column" ng-controller="signupController as signup">
-   <h2 class="ui blue image header">
-     <img src="assets/images/logo.png" class="image">
-     <div class="content">
-       Log-in to your account
-     </div>
-   </h2>
-   <form class="ui large form">
-     <div class="ui stacked segment">
-       <div class="field">
-         <div class="ui left icon input">
-           <i class="user icon"></i>
-           <input type="text" name="email" placeholder="E-mail address">
-         </div>
-       </div>
-       <div class="field">
-         <div class="ui left icon input">
-           <i class="lock icon"></i>
-           <input type="password" name="password" placeholder="Password">
-         </div>
-       </div>
-       <div class="ui fluid large blue submit button">Login</div>
-     </div>
-
-     <div ng-show="signup.error" class="ui negative message">
-      <i ng-click="signup.error = null" class="close icon"></i>
-      <div class="header">
-      Whoops!
-      </div>
-      <p>{{ signup.error }}</p>
-    </div>
-
-   </form>
-
-   <div class="ui message">
-     Already a member? <a ui-sref="login">Log In</a>
-   </div>
- </div>
- -->

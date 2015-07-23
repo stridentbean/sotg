@@ -32,5 +32,24 @@ angular.module('queryBuilderCtrl', [])
 
   $scope.endTimeConvert = function() {
     $scope.endTimeMS = $scope.endTime.getTime();
-  } 
+  };
+
+  $scope.getQuery = function() {
+    if($state.is('queryBuilder.search')) {
+      return 'http://sotg.xyz/api/search?keyword=' + $scope.encodedKeyword + '&apiKey=' + $scope.apiKey;
+    } else if($state.is('queryBuilder.keyword')) {
+      return 'http://sotg.xyz/api/keywords?keyword=' + $scope.encodedKeyword + '&apiKey=' + $scope.apiKey;
+    } else if($state.is('queryBuilder.sentiment')) {
+      return 'http://sotg.xyz/api/sentiment?keyword=' + $scope.encodedKeyword + '&sentiment=' + $scope.sentiment + '&apiKey=' + $scope.apiKey;
+    } else if($state.is('queryBuilder.time')) {
+      return 'http://sotg.xyz/api/time?keyword=' + $scope.encodedKeyword + '&startTime=' + $scope.startTimeMS + '&endTime=' + $scope.endTimeMS + '&apiKey=' + $scope.apiKey;
+    }
+  };
+
+  $scope.submitQuery = function() {
+    var queryURL = $scope.getQuery().slice(16);
+    QueryBuilder.makeQuery(queryURL, $scope.httpVerb, function(data) {
+      $scope.jsonResult = JSON.stringify(data, null, ' ');
+    });
+  };
 });
