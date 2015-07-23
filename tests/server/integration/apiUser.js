@@ -181,10 +181,73 @@ describe('User Integration', function() {
           keywords = JSON.parse(body);
           keywords[0].keyword.should.equal('cola');
           keywords[1].keyword.should.equal('#cola');
+          keywords.length.should.equal(2);
           res.statusCode.should.equal(200);
           done();
         });
       });
+    });
+
+    it('should be able to delete hashtagged keyword', function(done) {
+      var keyword = '#cola';
+      new User({})
+      .fetch()
+      .then(function(user) {
+        var options = {
+          'method': 'DELETE',
+          'uri': 'http://localhost:' + PORT + '/api/keywords?apiKey=' + apiKey + '&keyword=' + encodeURIComponent(keyword)
+        };
+        request(options, function(err, res, body) {
+          res.body.should.be.a('string');
+          done();
+        });
+      });
+    });
+
+    it('/users/keywords should return list of keywords after deletion', function(done) {
+      var keyword = 'cola';
+      new User({})
+      .fetch()
+      .then(function(user) {
+        var options = {
+          'method': 'GET',
+          'uri': 'http://localhost:' + PORT + '/users/keywords?apiKey=' + apiKey + '&keyword=' + keyword
+        };
+
+        request(options, function(err, res, body) {
+          body.should.be.a('string');
+          keywords = JSON.parse(body);
+          keywords[0].keyword.should.equal('cola');
+          keywords.length.should.equal(1);
+          res.statusCode.should.equal(200);
+          done();
+        });
+      });
+    });
+
+    //This should always be the last test in this class as the user will be throttled for some time
+    xit('should throttle the user', function(done) {
+      var keyword = 'cola';
+
+      var validateData = function(err, res, body) {
+        body.should.be.a('string');
+        keywords = JSON.parse(body);
+        keywords[0].keyword.should.equal('cola');
+        keywords.length.should.equal(1);
+        res.statusCode.should.equal(200);
+        
+      };
+
+      for (var i = 0; i < 100; i++) {
+       
+        var options = {
+          'method': 'POST',
+          'uri': 'http://localhost:' + PORT + '/users/keywords?apiKey=' + apiKey + '&keyword=' + keyword
+        };
+
+        request(options, validateData);
+      }
+      done();
     });
   });
   
