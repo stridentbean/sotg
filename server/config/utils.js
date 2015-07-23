@@ -107,19 +107,20 @@ var getTweetsByTimeRange = module.exports.getTweetsByTimeRange = function(keywor
  *@arg route {string} The api route
  *@arg user {User} The user making the api call
  */
-var insertApiTransaction = module.exports.insertApiTransaction = function(method, route, user, done) {
+var insertApiTransaction = module.exports.insertApiTransaction = function(method, route, user, now, done) {
 
     new ApiTransaction({
         userId: user.get('id'),
         route: route,
-        method: method
+        method: method,
+        created_at: now
       })
       .save()
       .then(function(apiTransaction) {
 
         //if there is a callback, call it 
-        if (!!done) {
-          done();
+        if (done) {
+          done(apiTransaction);
         }
       });
 };

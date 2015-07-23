@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 
     jshint: {
       // This is the list of files on which grunt will run JSHint
-      all: ['Gruntfile.js', 'package.json', 'server/**/*.js', 'streaming/**/*.js', 'tweetHandler/**/*.js'],
+      all: ['Gruntfile.js', 'package.json', 'tests/**/*.js', 'server/**/*.js', 'streaming/**/*.js', 'tweetHandler/**/*.js'],
       options: {
         curly: true,
         eqeqeq: true,

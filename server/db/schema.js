@@ -52,6 +52,8 @@ if (process.argv[2] === 'clean'){
         user.string('password');
         // user.string('salt'); bcrypt takes care of this for us
         user.string('apiKey');
+        user.decimal('throttle');
+        user.datetime('lastApiCall');
       }).then(function(table) {
         console.log('Created table users');
         db.knex.schema.hasTable('keywords').then(function(exists) {
