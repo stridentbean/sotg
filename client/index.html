@@ -11,7 +11,7 @@
       <img src="assets/globosaurus.png">
     </div>
     <a class="item" ui-sref="/">Home</a>
-    <a class="item" ui-sref="/">Getting Started</a>
+    <a class="item" ui-sref="queryBuilder.search">Query Builder</a>
     <a class="item" ui-sref="documentation">API Documentation</a>
     <div class="right menu">
       <a class="item" ui-sref="profile">Profile</a>
@@ -20,18 +20,24 @@
       <a class="item" ui-sref="logout">Log Out</a>
     </div>
   </div>
-  <div class="ui grid" ui-view></div>
+  <div class="ui grid container" ui-view></div>
     <link rel="stylesheet" href="bower_components/semantic-ui/dist/semantic.min.css">
+    <link rel="stylesheet" href="components/jquery-ui/themes/smoothness/jquery-ui.css"/>
     <link rel="stylesheet" href="style.css"> 
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/semantic-ui/dist/semantic.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/angular-ui-date/src/date.js"></script>
     <script src="app/app.js"></script>
     <script src="app/controllers/profileController.js"></script>
     <script src="app/controllers/signupController.js"></script>
     <script src="app/controllers/loginController.js"></script>
     <script src="app/controllers/logoutController.js"></script>
-    <script src="app/factories/factory.js"></script> 
+    <script src="app/controllers/queryBuilderController.js"></script>
+    <script src="app/factories/authFactory.js"></script>
+    <script src="app/factories/queryBuilderFactory.js"></script>
   </body>
 </html>
