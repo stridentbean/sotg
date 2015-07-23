@@ -1,12 +1,12 @@
 <div class="two column row">
   <div class="left floated left aligned column">
-    <div class="ui huge horizontal green label" ng-show="httpVerb === 'GET'">Method : {{httpVerb}}</div>
-    <div class="ui huge horizontal orange label" ng-show="httpVerb === 'POST'">Method : {{httpVerb}}</div>
-    <div class="ui huge horizontal red label" ng-show="httpVerb === 'DELETE'">Method : {{httpVerb}}</div>
+    <div class="ui huge horizontal green label" ng-show="httpVerb === 'GET'">Method: {{httpVerb}}</div>
+    <div class="ui huge horizontal orange label" ng-show="httpVerb === 'POST'">Method: {{httpVerb}}</div>
+    <div class="ui huge horizontal red label" ng-show="httpVerb === 'DELETE'">Method: {{httpVerb}}</div>
   </div>
   <div class="right floated right aligned column">
     <button class="ui blue basic button" ng-show="isAuth">Submit Query</button>
-    <button class="ui blue basic button">Copy to Clipboard</button>
+    <button class="ui blue basic button" clip-copy="getQuery()">Copy to Clipboard</button>
   </div>
 </div>
 <div class="row">
