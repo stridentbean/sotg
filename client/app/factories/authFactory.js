@@ -34,10 +34,10 @@ angular.module('sotgFactory', [])
       url: 'users/signin',
       data: user
     })
-    .success(function(data, status, headers, config){
+    .success(function(data, status, headers, config) {
       console.log(status);
     })
-    .error(function(data, status, headers, config){
+    .error(function(data, status, headers, config) {
       console.log(status);
       console.log(data);
     });
@@ -48,9 +48,24 @@ angular.module('sotgFactory', [])
       method: 'GET', 
       url: 'users/profile'
     })
-    .success(function(data, status, headers, config){
+    .success(function(data, status, headers, config) {
+      console.log("Data inside profile, ", data);
+      authFactory.keywords(data)
     })
-    .error(function(data, status, headers, config){
+    .error(function(data, status, headers, config) {
+    });
+  };
+
+  authFactory.keywords = function(user){
+    console.log("User inside keywords", user);
+    // var apiKey = user.apiKey;
+    return $http({
+      method: 'GET', 
+      url: 'users/keywords?apiKey=' + user.apiKey
+    })
+    .success(function(data, status, headers, config) {
+    })
+    .error(function(data, status, headers, config) {
     });
   };
 

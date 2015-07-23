@@ -39,6 +39,7 @@ module.exports = {
   addKeyword: function(req, res, next) {
     var keyword = req.query.keyword,
       apiKey = req.query.apiKey;
+    console.log(keyword);
     leastUsedStream = module.exports.getLeastUsedStream();
     new Keyword({
         keyword: keyword
