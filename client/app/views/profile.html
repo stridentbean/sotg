@@ -1,15 +1,55 @@
-<div ng-controller="profileController as profile">
-  <h2 ng-show="profile.username">username :  {{profile.username}} </h2>
-  <h2 ng-show="profile.apiKey">API Key :  {{profile.apiKey}} </h2>
-  <ul>
-    <ul ng-repeat="keyword in profile.keywords">{{keyword.keyword}}</li>
-  </ul>
-  <div ng-show="profile.error" class="ui negative message">
-    <i ng-click="profile.error = null" class="close icon"></i>
-    <div class="header">
-    Whoops!
-    </div>
-    <p>{{ profile.error }}</p>
-    <a ui-sref="login">Go to Log In page.</a>
+<div class="two column row" ng-controller="profileController as profile">
+<div class="column" ng-show="profile.username">
+<h1 class="ui dividing header">Your Profile</h1>
+<div class="ui segments">
+  <div class="ui segment">
+    <h2 class="ui header left align" >
+      <i class="user icon blue"></i>
+      <div class="content">Username  
+      </div> 
+    </h2>
+  <p class="profileInfo">{{profile.username}}</p>
   </div>
-</div>
+  <div class="ui segment">
+    <h2 class="ui header left align" ng-show="profile.apiKey">
+      <i class="privacy icon blue"></i>
+      <div class="content">API Key   
+      </div> 
+    </h2>
+    <p class="profileInfo">{{profile.apiKey}}</p>
+  </div>
+  </div>
+  </div>
+  <div class="column" ng-show="profile.username">
+    <h1 class="ui dividing header">Your Keywords</h1>
+      <div class="ui segments">
+        <div class="ui segment">
+          <div class="ui big blue label keywordLabel" ng-repeat="keyword in profile.keywords" ng-click="profile.deleteKeyword(keyword)">
+            {{keyword.keyword}}
+            <i class="delete icon"></i>
+          </div>  
+      </div>
+    </div>
+    <h1 class="ui dividing header">Add Keywords</h1>
+    <div class="ui segments">
+      <div class="ui segment">
+        <div class="ui input">
+          <input type="text" ng-model="profile.addKeywordInput" placeholder="Add a keyword">
+        </div>
+          <button class="ui green icon button" ng-click="profile.addKeyword()">
+          <i class="plus icon"></i>
+          </button>
+      </div>
+    </div>
+    </div>
+    <div ng-show="profile.error" class="ui centered row">
+      <div class="ui negative message">
+        <i ng-click="profile.error = null" class="close icon"></i>
+        <div class="header">
+        Whoops!
+        </div>
+        <p>{{ profile.error }}</p>
+        <a ui-sref="login">Go to Log In page.</a>
+      </div>
+    </div>
+  </div>

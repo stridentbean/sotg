@@ -1,7 +1,16 @@
-h1 {
+.bigTitle {
   font-size: 8em !important;
 }
 
 #ui-datepicker-div {
   display: none;
+}
+
+.profileInfo {
+  margin-left: 20px;
+  font-size: 1.2em;
+}
+
+.keywordLabel {
+  margin: 10px !important;
 }

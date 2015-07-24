@@ -49,6 +49,7 @@ angular.module('queryBuilderCtrl', [])
   $scope.submitQuery = function() {
     var queryURL = $scope.getQuery().slice(16);
     QueryBuilder.makeQuery(queryURL, $scope.httpVerb, function(data) {
+      data = data.slice(0, 50);
       $scope.jsonResult = JSON.stringify(data, null, ' ');
     });
   };

@@ -16,7 +16,7 @@ module.exports = function(app, express) {
   app.use(bodyParser.json());
   app.use(express.static(__dirname + '/../../client'));
   
-  app.use(session({secret: 'whatever', cookie: {maxAge: 360000}, 
+  app.use(session({secret: 'whatever', cookie: {maxAge: 3600000}, 
     saveUninitialized: true, resave: true}));
   
   app.use('/users', userRouter); 
