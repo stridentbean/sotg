@@ -14,4 +14,5 @@ module.exports = function(app) {
   app.post('/signup', userController.signup);
   app.get('/logout', sessionUtils.checkUser, userController.logout);
   app.get('/profile', sessionUtils.checkUser, userController.getProfile);
+  app.post('/password', userController.setPassword);
 };

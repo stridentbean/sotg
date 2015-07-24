@@ -67,6 +67,19 @@ module.exports = {
     }
   },
 
+  setPassword: function(req, res, next) {
+    var user = req.body.user;
+    var password = req.body.password;
+    new User().setPassword(user, password, function(err, result) {
+      if (err) {
+        // TODO: Fix status codes
+        res.status(500).send("Could not update password: " + err);
+      } else {
+        res.status(200).send(result);
+      }
+    });
+  },
+
   logout: function(req, res) {
     sessionUtils.destroySession(req, res);
   },
@@ -86,7 +99,7 @@ module.exports = {
 
   getProfile: function(req, res) {
     var user = {
-      username: req.session.user
+      username: req.body.user
     };
     new User().getProfile(user, function(err, result) {
       if (!err) {

@@ -29,6 +29,7 @@ var User = db.Model.extend({
   initialize: function() {
     this.on('creating', this.hashPassword);
     this.on('creating', this.generateApiKey);
+    this.on('updating', this.hashPassword);
   },
 
   keywords: function() {
@@ -118,7 +119,27 @@ var User = db.Model.extend({
     bcrypt.compare(candidatePassword, this.get('password'), function(err, isMatch) {
       callback(isMatch);
     });
-  }, 
+  },
+
+  // TODO: Password is being re-hashed every time
+  // any property on user is updated and saved.
+  // This is because of the this.on('updating') in
+  // the initialize function.
+  setPassword: function(user, password, callback) {
+    console.log(user);
+    console.log(password);
+    new User({username: user})
+    .fetch()
+    .then(function (model) {
+      model.save({
+        password: password
+      }, {
+        method: 'update'
+      }).then(function(model) {
+        callback(null, "New password set for user: " + model.get('username'));
+      });
+    });
+  },
 
   getProfile: function(user, callback) {
     new User(user)
