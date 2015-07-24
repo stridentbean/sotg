@@ -1,7 +1,7 @@
 /**
-  * Schema for mySql
-  *@module db/schema
-  */
+ * Schema for mySql
+ *@module db/schema
+ */
 
 var db = require('../config/db.js');
 
@@ -14,7 +14,7 @@ var db = require('../config/db.js');
 // To set an environment variable and drop/create the 'test' database
 // prepend the command with NODE_ENV=test
 // Like this: 'NODE_ENV=test node server/db/schema.js clean'
-if (process.argv[2] === 'clean'){
+if (process.argv[2] === 'clean') {
 
   db.knex.schema.dropTableIfExists('keywords_users').then(function(table) {
     console.log('Dropped table keywords_users');
@@ -36,6 +36,9 @@ if (process.argv[2] === 'clean'){
   });
   db.knex.schema.dropTableIfExists('tweets').then(function(table) {
     console.log('Dropped table tweets');
+  });
+  db.knex.schema.dropTableIfExists('streaming_servers').then(function(table) {
+    console.log('Dropped table streaming_servers');
   });
 
   setTimeout(function() {
@@ -61,7 +64,7 @@ if (process.argv[2] === 'clean'){
             db.knex.schema.createTable('keywords', function(keyword) {
               keyword.increments('id').primary();
               keyword.string('keyword');
-              keyword.integer('streamId');
+              keyword.string('streamId');
               keyword.timestamps();
             }).then(function(table) {
               console.log('Created table keywords');
@@ -118,6 +121,19 @@ if (process.argv[2] === 'clean'){
       });
     }
   });
+
+  db.knex.schema.hasTable('streaming_servers').then(function(exists) {
+    if (!exists) {
+      db.knex.schema.createTable('streaming_servers', function(table) {
+        table.increments('id').primary();
+        table.string('key');
+        table.timestamps();
+        table.boolean('registered');
+      }).then(function(table) {
+        console.log('Created table streaming_servers');
+      });
+    }
+  });
 }
 
 if (process.argv[2] === 'create') {
@@ -143,6 +159,10 @@ db.truncateAllTables = function(done) {
 
   });
   db.knex.raw('delete from keywords').then(function(then) {
+
+  });
+  
+  db.knex.raw('delete from streaming_servers').then(function(then) {
 
   });
 

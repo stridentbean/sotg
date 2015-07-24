@@ -146,7 +146,7 @@ var User = db.Model.extend({
     //throttleToAdd = the per second refil rate * number of seconds since last call - current api call
     throttleToAdd = (API_CALLS_PER_MINUTE / 60) * timeSinceLastCallInSeconds - 1;
     
-    if (throttleToAdd > API_CALLS_PER_MINUTE) {
+    if (throttleToAdd + this.get('throttle') > API_CALLS_PER_MINUTE) {
       this.set('throttle', API_CALLS_PER_MINUTE);
     } else {
       this.set('throttle', this.get('throttle') - 1 + throttleToAdd);

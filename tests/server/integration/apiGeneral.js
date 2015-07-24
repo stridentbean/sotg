@@ -8,7 +8,9 @@ var request = require('request'),
 
 describe('API Endpoint Behavior', function() {
   require('../../../server/server'); // Spin up the server;
+  
   before(function(done) {
+    var load = require('../../../server/utils/startupTasks.js'); //reload keys into database
     setTimeout(function() {
       done();
     }, 250);
@@ -38,9 +40,22 @@ describe('API Endpoint Behavior', function() {
         'streamId': 1
       }
     };
-      request(getKeywordsOptions, function(error, res, body) {
-        body.should.be.a('string');
-        next();
-      });
+    request(getKeywordsOptions, function(error, res, body) {
+      body.should.be.a('string');
+      next();
+    });
+  });
+
+  it('should return "success" on /streamingKey endpoint', function(next) {
+
+    var options = {
+      'method': 'GET',
+      'uri': 'http://localhost:' + PORT + '/api/streamingKey',
+    };
+    request(options, function(error, res, body) {
+      res.statusCode.should.equal(200);
+      res.body.should.be.a('string');
+      next();
+    });
   });
 });

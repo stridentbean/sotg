@@ -2,6 +2,7 @@ var request = require('request'),
   fs = require('fs'),
   Twit = require('twit'),
   Timer = require('timer-stopwatch'),
+  key = null,   //a key to the api server
   credentials = process.env.CONSUMER_KEY ? null : require('./config.js'),
   API_ADDRESS = process.env.API_ADDRESS || '127.0.0.1',
   HANDLER_ADDRESS = process.env.HANDLER_ADDRESS || '127.0.0.1',
@@ -53,12 +54,10 @@ var createTimer = function() {
 };
 
 var startStream = function() {
+
   var options = {
     'method': 'GET',
-    'uri': 'http://' + API_ADDRESS + ':' + API_PORT + '/api/keywords',
-    'json' : {
-      streamId: 1
-    }
+    'uri': 'http://' + API_ADDRESS + ':' + API_PORT + '/api/keywords?streamId=' + key,
   };
 
   request(options, function(error, res, body) {
@@ -126,5 +125,19 @@ var initStream = function(stream) {
 createTimer();
 timer.start();
 
-//init global stream
-startStream();
+var options = {
+  'method': 'GET',
+  'uri': 'http://' + API_ADDRESS + ':' + API_PORT + '/api/streamingKey',
+};
+
+request(options, function(error, res, body) {
+  key = res.body;
+
+  if(res.statusCode === 400) {
+    throw new Error(key);
+  } else {
+    console.log('Your Streaming Key: ' + key);
+    //init global stream
+    startStream();
+  }
+});
