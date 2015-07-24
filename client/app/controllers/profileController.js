@@ -1,6 +1,11 @@
 angular.module('profileCtrl', [])
 .controller('profileController', function(Auth, QueryBuilder, $location, $window) {
   var vm = this;
+  vm.updatePassword = function() {
+    Auth.updatePassword(vm.username, vm.user.newPassword)
+    .then(function(res) {
+    });
+  };
   Auth.profile()
   .then(function(res){
       vm.username = res.data.username; 

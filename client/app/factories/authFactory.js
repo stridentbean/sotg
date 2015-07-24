@@ -81,5 +81,23 @@ angular.module('sotgFactory', [])
       console.log(err);
     });
   };
+
+  authFactory.updatePassword = function(username, password) {
+    console.log("authFactory.updatePassword");
+    return $http({
+      method: 'POST',
+      url: 'users/password',
+      data: JSON.stringify({
+        user: username,
+        password: password
+      })
+    })
+    .success(function() {
+      console.log("Updated password.");
+    })
+    .error(function(err) {
+      console.log("Couldn't update password. Error: ", err);
+    });
+  };
   return authFactory;
 });

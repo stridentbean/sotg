@@ -99,7 +99,7 @@ module.exports = {
 
   getProfile: function(req, res) {
     var user = {
-      username: req.body.user
+      username: req.session.user
     };
     new User().getProfile(user, function(err, result) {
       if (!err) {
