@@ -34,9 +34,9 @@
     <div class="ui segments">
       <div class="ui segment">
         <div class="ui input">
-          <input type="text" ng-model="profile.addKeywordInput" placeholder="Add a keyword">
+          <input class="addKeyword" type="text" ng-model="profile.addKeywordInput" placeholder="Add a keyword" tabindex=1 autofocus="autofocus" ng-keypress="profile.enterFromAddInput($event)">
         </div>
-          <button class="ui green icon button" ng-click="profile.addKeyword()">
+          <button class="ui green icon button" ng-click="profile.addKeyword()" tabindex=2>
           <i class="plus icon"></i>
           </button>
       </div>

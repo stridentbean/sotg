@@ -24,7 +24,7 @@ angular.module('queryBuilderCtrl', [])
 
   $scope.encodeKeyword = function() {
     $scope.encodedKeyword = encodeURIComponent($scope.keyword); 
-  }
+  };
 
   $scope.startTimeConvert = function() {
     $scope.startTimeMS = $scope.startTime.getTime();

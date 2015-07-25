@@ -4,21 +4,20 @@
         <h3>Sign-up to get started!</h3>
         <div class="field">
           <label>Email Address</label>
-          <input type="email" name="user-email" ng-model="signup.user.username" placeholder="text@blahblah.com" required/>
+          <input type="email" name="user-email" ng-model="signup.user.username" placeholder="username@email.com" tabindex=1 autofocus="autofocus" required/>
         </div>
         <div class="field">
           <label>Password</label>
-          <input type="password" ng-model="signup.user.password" placeholder="******" required />
+          <input type="password" ng-model="signup.user.password" placeholder="******" tabindex=2 required />
           <label>Confirm Password</label>
-          <input type="password" ng-model="signup.user.confirmPassword" placeholder="******" required />
+          <input type="password" ng-model="signup.user.confirmPassword" placeholder="******" tabindex=3 required ng-change="matchPassword()"/>
         </div>
-        <button class="ui green button" type="submit" ng-click="signup.signUpUser()">Sign Up</button>
+        <button class="ui green button" type="submit" ng-click="signup.signUpUser()" tabindex=4 >Sign Up</button>
       </form>
     </div>
     <div ng-show="signup.error" class="ui negative message">
       <i ng-click="signup.error = null" class="close icon"></i>
       <div class="header">
-      Whoops!
       </div>
       <p>{{ signup.error }}</p>
     </div>
