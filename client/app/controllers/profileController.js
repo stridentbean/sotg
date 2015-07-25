@@ -26,15 +26,17 @@ angular.module('profileCtrl', [])
     };
 
     vm.addKeyword = function() {
-      console.log(vm.addKeywordInput);
-      var queryURL = 'api/keywords?keyword=' + encodeURIComponent(vm.addKeywordInput) + '&apiKey=' + vm.apiKey;
-      QueryBuilder.makeQuery(queryURL, 'POST', function(){})
-      .then(function(){
-        Auth.keywords(vm)
-        .then(function(res) {
-          vm.keywords = res.data;
-          vm.addKeywordInput = '';
+      if(vm.addKeywordInput !== '' && vm.addKeywordInput !== undefined) {
+        
+        var queryURL = 'api/keywords?keyword=' + encodeURIComponent(vm.addKeywordInput) + '&apiKey=' + vm.apiKey;
+        QueryBuilder.makeQuery(queryURL, 'POST', function(){})
+        .then(function(){
+          Auth.keywords(vm)
+          .then(function(res) {
+            vm.keywords = res.data;
+            vm.addKeywordInput = '';
+          });
         });
-      });
+      }
     };
 });
