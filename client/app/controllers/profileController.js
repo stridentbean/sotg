@@ -35,8 +35,16 @@ angular.module('profileCtrl', [])
           .then(function(res) {
             vm.keywords = res.data;
             vm.addKeywordInput = '';
+
+            angular.element('.addKeyword').trigger('focus');
           });
         });
+      }
+    };
+
+    vm.enterFromAddInput = function(keyEvent) {
+      if (keyEvent.which === 13) { //enter key
+        vm.addKeyword();
       }
     };
 });
