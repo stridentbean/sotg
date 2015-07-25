@@ -20,7 +20,12 @@ angular.module('profileCtrl', [])
       .then(function(){
         Auth.keywords(vm)
         .then(function(res) {
-          vm.keywords = res.data;
+          if(typeof res.data === 'string') {  //if there are no keywords in the db
+            vm.keywords = [];
+          } else {
+            vm.keywords = res.data;
+          }
+          console.log('keywords', vm.keywords);
         });
       });
     };
