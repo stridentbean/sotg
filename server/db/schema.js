@@ -57,6 +57,8 @@ if (process.argv[2] === 'clean') {
         user.string('apiKey');
         user.decimal('throttle');
         user.datetime('lastApiCall');
+        user.string('resetPasswordToken');
+        user.integer('resetPasswordExpires');
       }).then(function(table) {
         console.log('Created table users');
         db.knex.schema.hasTable('keywords').then(function(exists) {

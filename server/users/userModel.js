@@ -124,7 +124,7 @@ var User = db.Model.extend({
   // any property on user is updated and saved.
   // This is because of the this.on('updating') in
   // the initialize function.
-  setPassword: function(user, password, callback) {
+  updatePassword: function(user, password, callback) {
     console.log(user);
     console.log(password);
     var cipher = Promise.promisify(bcrypt.hash);

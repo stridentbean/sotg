@@ -67,10 +67,14 @@ module.exports = {
     }
   },
 
-  setPassword: function(req, res, next) {
+  sendPasswordResetToken: function(req, res, next) {
+    
+  },
+
+  updatePassword: function(req, res, next) {
     var user = req.body.user;
     var password = req.body.password;
-    new User().setPassword(user, password, function(err, result) {
+    new User().updatePassword(user, password, function(err, result) {
       if (err) {
         // TODO: Fix status codes
         res.status(500).send("Could not update password: " + err);

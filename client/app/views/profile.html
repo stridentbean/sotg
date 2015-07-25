@@ -9,6 +9,7 @@
           </div> 
         </h2>
         <p class="profileInfo">{{profile.username}}</p>
+        <button class="ui green button" type="Reset Password" ng-click="profile.resetPassword()">Reset Password</button>
       </div>
       <div class="ui segment">
         <h2 class="ui header left align" ng-show="profile.apiKey">
@@ -20,6 +21,8 @@
       </div>
     </div>
   </div>
+
+
   <div ng-show="profile.username" class="column">
     <form class="ui form">
       <div class="field">

@@ -99,5 +99,22 @@ angular.module('sotgFactory', [])
       console.log("Couldn't update password. Error: ", err);
     });
   };
+
+  authFactory.resetPassword = function(username) {
+    return $http({
+      method: 'POST',
+      url: 'users/password/reset',
+      data: {
+        username: username
+      }
+    })
+    .success(function() {
+      console.log("Resetting password for ", username);
+    })
+    .error(function(err) {
+      console.log("Error resetting password for ", username);
+    });
+  };
+
   return authFactory;
 });
