@@ -5,9 +5,9 @@ angular.module('signupCtrl', [])
   vm.signUpUser = function(){
     if(vm.user.password !== vm.user.confirmPassword) {
       if(vm.user.confirmPassword) {
-        vm.error = "Your passwords do not match."
+        vm.error = "Your passwords do not match.";
       } else {
-        vm.error = "You must confirm your password in order to sign up."
+        vm.error = "You must confirm your password in order to sign up.";
       }
     } else {
       Auth.signup(vm.user)

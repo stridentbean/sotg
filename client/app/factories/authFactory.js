@@ -50,7 +50,7 @@ angular.module('sotgFactory', [])
     })
     .success(function(data, status, headers, config) {
       console.log("Data inside profile, ", data);
-      authFactory.keywords(data)
+      authFactory.keywords(data);
     })
     .error(function(data, status, headers, config) {
     });
