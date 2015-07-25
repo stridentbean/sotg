@@ -61,10 +61,10 @@ var startStream = function() {
   };
 
   request(options, function(error, res, body) {
-    console.log(body);
+    console.log('Current Keywords:', body);
     if (error) {
       console.error(error);
-    } else if (body.length === 0) {
+    } else if (typeof body === 'string') {  //if the array being sent over is [] empty, it will be sent over as a string
       stream = T.stream('statuses/sample');
       initStream(stream);
     } else {

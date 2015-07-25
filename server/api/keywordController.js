@@ -161,7 +161,7 @@ module.exports = {
 
   getKeywords: function(req, res, next) {
     var streamId = req.query.streamId;
-    var resultArray;
+    var resultArray = [];
     new Keyword()
       .query('where', 'streamId', '=', streamId)
       .fetchAll()
@@ -170,7 +170,7 @@ module.exports = {
           return el.get('keyword');
         });
 
-        res.json(resultArray);
+        res.status(200).send(resultArray);
       });
   }
 };
