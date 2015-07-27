@@ -9,7 +9,12 @@
           </div> 
         </h2>
         <p class="profileInfo">{{profile.username}}</p>
-        <button class="ui green button" type="Reset Password" ng-click="profile.resetPassword()">Reset Password</button>
+      </div>
+      <div class="ui segment">
+        <button class="ui green button" type="Reset Password" ng-click="profile.sendPasswordResetEmail()">Reset Password</button>
+        <div ng-show="profile.resetPasswordClicked" class="">
+          Hello World
+        </div>
       </div>
       <div class="ui segment">
         <h2 class="ui header left align" ng-show="profile.apiKey">

@@ -100,6 +100,22 @@ angular.module('sotgFactory', [])
     });
   };
 
+  authFactory.sendPasswordResetEmail = function (username) {
+    return $http({
+      method: 'POST',
+      url: 'users/password/forgot',
+      data: {
+        username: username
+      }
+    })
+    .success(function() {
+      console.log("Resetting password for ", username);
+    })
+    .error(function(err) {
+      console.log("Error resetting password for ", username);
+    });
+  };
+
   authFactory.resetPassword = function(username) {
     return $http({
       method: 'POST',

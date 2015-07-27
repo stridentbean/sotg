@@ -14,6 +14,13 @@ angular.module('profileCtrl', [])
     });
   };
 
+  vm.sendPasswordResetEmail = function() {
+    Auth.sendPasswordResetEmail(vm.username)
+    .then(function(res) {
+      console.log("Response from Auth.sendPasswordResetEmail: ", res);
+    });
+  };
+
   Auth.profile()
   .then(function(res){
       vm.username = res.data.username; 

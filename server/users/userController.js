@@ -3,7 +3,10 @@ var User = require('./userModel.js'),
   jwt = require('jwt-simple'),
   db = require('../db/schema.js'),
   utils = require('../config/utils.js'), 
-  sessionUtils = require('../utils/session.js');
+  uuid = require('uuid'),
+  sessionUtils = require('../utils/session.js'),
+  mailTransporter = require('../config/nodemailer.config.js').transporter,
+  mailOptions = require('../config/nodemailer.config.js').options;
 
 //globals
 //TODO get a better phrase
@@ -67,8 +70,25 @@ module.exports = {
     }
   },
 
-  sendPasswordResetToken: function(req, res, next) {
-    
+  sendPasswordResetEmail: function(req, res, next) {
+    console.log("Sending email to: ", req.body.username);
+    var token = uuid.v4();
+    new User({username: req.body.username})
+    .set('resetPasswordToken', token)
+    .save()
+    .then(function(res) {
+      console.log("Saved user with reset password token.");
+    });
+    mailOptions.html =
+      '<a href="http://localhost:8000/password/reset?token=' + token +'">Reset Password</a>';
+    mailTransporter.sendMail(mailOptions, function(err, info) {
+      if (err) {
+        return console.log(err);
+      } else {
+        console.log('Message sent: ' + info.response);
+        res.send(info.response);
+      }
+    });
   },
 
   updatePassword: function(req, res, next) {
