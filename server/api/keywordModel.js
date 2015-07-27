@@ -1,4 +1,5 @@
 var db = require('../db/schema'),
+  request = require('request'),
   KeywordUser = require('./keywordUserModel.js');
 
 var Keyword = db.Model.extend({

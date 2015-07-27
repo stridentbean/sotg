@@ -3,8 +3,7 @@ var Keyword = require('./keywordModel.js'),
   KeywordUser = require('./keywordUserModel.js'),
   StreamingServer = require('./streamingServerModel.js'),
   db = require('../db/schema.js'),
-  _ = require('underscore'),
-  Promise = require('bluebird');
+  _ = require('underscore');
 
 var ONE_HOUR = 60 * 60 * 1000;
 var TWENTY_MINUTES = 20 * 60 * 1000;
@@ -24,7 +23,8 @@ var addKeywordUser = function(apiKey, keyword, callback) {
 };
 
 var getRegisteredStreams = function(callback) {
-  now = new Date();new StreamingServer()
+  now = new Date();
+  new StreamingServer()
     .query('where', 'registered', '=', true) //get all streams that were used recently
     .fetchAll()
     .then(function(collection) {
@@ -119,6 +119,17 @@ module.exports = {
             addKeywordUser(apiKey, keywordModel, function() {
               res.send("Inserted " + keywordModel + " and " + apiKey + " to database.");
             });
+
+            new StreamingServer({
+              key: keywordModel.get('streamId')
+              })
+              .fetch()
+              .then(function(model) {
+                console.log(model);
+                model.sendToStreamingServer(keywordModel, function(isSuccessful){
+
+                });
+              });
           });
         }
       });
@@ -144,14 +155,31 @@ module.exports = {
               }
             }).destroy();
 
+            //TODO Refactor
           keyword.hasZeroUser(function() {
               keyword.destroy().then(function() {
 
                 res.status(200).send('Removed keyword');
+
+                new StreamingServer({
+                    key: keyword.streamId
+                  })
+                  .fetch()
+                  .then(function(model) {
+                    model.deleteFromStreamingServer(keyword);
+                  });
               });
             },
             function() {
               res.status(200).send('Removed keyword');
+
+              new StreamingServer({
+                  key: leastUsedStream
+                })
+                .fetch()
+                .then(function(model) {
+                  model.deleteFromStreamingServer(keyword);
+                });
             });
         } else {
           next(new Error('Keyword does not exist for this user'));

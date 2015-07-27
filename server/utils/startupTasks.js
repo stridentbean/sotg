@@ -3,7 +3,6 @@ var StreamingServers = require('../api/streamingServerModel.js'),
 
 //allow time for the database to create tables
 setTimeout(function() {
-
   new StreamingServers()
     .fetchAll()
     .then(function(models) {

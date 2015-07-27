@@ -108,7 +108,7 @@ describe('User Integration', function() {
       };
 
       request(options, function(error, res, body) {
-        console.log(res.body);
+        
         res.statusCode.should.equal(201);
         //TODO: Make test more robust
         done();

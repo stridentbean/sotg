@@ -131,6 +131,8 @@ if (process.argv[2] === 'clean') {
         table.string('key');
         table.timestamps();
         table.boolean('registered');
+        table.string('ip');
+        table.integer('port');
       }).then(function(table) {
         console.log('Created table streaming_servers');
       });
@@ -164,9 +166,12 @@ db.truncateAllTables = function(done) {
 
   });
   
-  db.knex.raw('delete from streaming_servers').then(function(then) {
+  db.knex.raw('update streaming_servers set registered = false').then(function(then) {
 
   });
+  // db.knex.raw('delete from streaming_servers').then(function(then) {
+
+  // });
 
   done();
 };
