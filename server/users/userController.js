@@ -80,7 +80,7 @@ module.exports = {
       console.log("Saved user with reset password token.");
     });
     mailOptions.html =
-      '<a href="http://localhost:8000/password/reset?token=' + token +'">Reset Password</a>';
+      '<a href="http://localhost:8000/users/password/reset?token=' + token +'">Reset Password</a>';
     mailTransporter.sendMail(mailOptions, function(err, info) {
       if (err) {
         return console.log(err);
@@ -89,6 +89,11 @@ module.exports = {
         res.send(info.response);
       }
     });
+  },
+
+  resetPassword: function(req, res, next) {
+    console.log("Resetting password with token: ", req.query.token);
+    res.send("Resetting password with token: ", req.query.token);
   },
 
   updatePassword: function(req, res, next) {
