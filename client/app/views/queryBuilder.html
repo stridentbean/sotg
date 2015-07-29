@@ -7,7 +7,6 @@
       <div class="ui huge horizontal red label" ng-show="httpVerb === 'DELETE'">Method: {{httpVerb}}</div>
     </div>
     <div class="right floated right aligned four wide column">
-      <button class="ui blue basic button" ng-show="isAuth" ng-click="submitQuery()">Submit Query</button>
       <button class="ui blue button" clip-copy="getQuery()">
         <i class="copy icon"></i>
         Copy to Clipboard
@@ -24,12 +23,6 @@
       <div class="ui divider"></div> 
     </div>
   </div>
-<!--   <div class="seven column centered row">
-    <button ng-click="httpVerb = 'GET'" ng-class="{ 'blue' : $state.is('queryBuilder.search') }" class="ui labeled icon button" ui-sref="queryBuilder.search" ><i class="search icon"></i>Search</button>
-    <button ng-click="httpVerb = 'POST'" ng-class="{ 'blue' : $state.is('queryBuilder.keyword') }" class="ui labeled icon button" ui-sref="queryBuilder.keyword"><i class="zoom icon"></i>Keywords</button>
-    <button ng-click="httpVerb = 'GET'" ng-class="{ 'blue' : $state.is('queryBuilder.sentiment') }" class="ui labeled icon button" ui-sref="queryBuilder.sentiment"><i class="heartbeat icon"></i>Sentiment</button>
-    <button ng-click="httpVerb = 'GET'" ng-class="{ 'blue' : $state.is('queryBuilder.time') }" class="ui labeled icon button" ui-sref="queryBuilder.time"><i class="wait icon"></i>Time Range</button>
-  </div> -->
   <div class="ten column row">
     <div class="three wide column"></div>
     <div class="two wide column">
@@ -106,11 +99,18 @@
               <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
           </div>  
         </div>
-        <div class="ui clearing segment">
+        <div class="ui segment">
           <button class="ui right floated green button" ng-show="isAuth" ng-click="submitQuery()">Submit Query</button>
         </div>
       </div>
     </div>
   </div>
-  <div hljs ng-show="jsonResult" source="jsonResult"></div>
+  <div class="sixteen column centered row">
+    <div class="ten wide column">
+      <div class="ui inverted segment">
+        <h2 class="ui centered header" ng-hide="jsonResult">JSON data will appear here</h2>
+        <div hljs ng-show="jsonResult" source="jsonResult"></div>
+      </div>
+    </div>
+  </div>
 </div>

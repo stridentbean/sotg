@@ -23,3 +23,13 @@
   background-image: url('../../assets/earth.jpg');
   height: 500px;
 }
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  background: #1b1c1d;
+  color: #f8f8f8;
+  -webkit-text-size-adjust: none;
+}
+
