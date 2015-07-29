@@ -3,7 +3,6 @@ angular.module('loginCtrl', [])
   var vm = this;
   vm.user = {};
   vm.logInUser = function(){
-    console.log(vm.user);
     Auth.login(vm.user)
     .then(function(){
       $location.path('/profile');
@@ -19,11 +18,11 @@ angular.module('loginCtrl', [])
     }
     Auth.requestReset(vm.user.username)
     .then(function(res) {
-      console.log("loginController.requestReset -> ", res);
+      // console.log("loginController.requestReset -> ", res);
       vm.forgotPasswordResponse = res.data;
     })
     .catch(function(res) {
-      console.log("loginController.requestRest catch -> ", res);
+      // console.log("loginController.requestRest catch -> ", res);
       vm.forgotPasswordResponse = res.data;
     });
   };

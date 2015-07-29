@@ -5,8 +5,7 @@ angular.module('resetPasswordCtrl', [])
   vm.resetPassword = function() {
     Auth.updatePassword(vm.user, vm.newPassword)
     .then(function(res) {
-      console.log("Reset password with token: " + vm.user);
-      console.log(res);
+      // console.log("Reset password with token: " + vm.user);
     });
   };
 });

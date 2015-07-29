@@ -10,14 +10,12 @@ angular.module('profileCtrl', [])
   vm.resetPassword = function() {
     Auth.resetPassword(vm.username)
     .then(function(res) {
-      console.log("Inside profileController resetPassword");
     });
   };
 
   vm.sendPasswordResetEmail = function() {
     Auth.sendPasswordResetEmail(vm.username)
     .then(function(res) {
-      console.log("Response from Auth.sendPasswordResetEmail: ", res);
     });
   };
 
@@ -45,7 +43,6 @@ angular.module('profileCtrl', [])
           } else {
             vm.keywords = res.data;
           }
-          console.log('keywords', vm.keywords);
         });
       });
     };
