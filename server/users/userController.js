@@ -77,21 +77,29 @@ module.exports = {
     var username = req.query.username;
     console.log("Sending email to: ", username);
     var token = uuid.v4();
-    new User({username: req.body.username})
-    .set('resetPasswordToken', token)
-    .save()
-    .then(function(res) {
-      console.log("Saved user with reset password token.");
-    });
-    mailOptions.html =
-      '<a href="http://localhost:8000/users/password/reset?token=' + token +'">Reset Password</a>';
-    mailTransporter.sendMail(mailOptions, function(err, info) {
-      if (err) {
-        res.send(err);
-        return console.log(err);
+    new User({username: req.query.username})
+    .fetch()
+    .then(function(user) {
+      if (!user) {
+        console.log("User " + req.query.username + " not found.");
+        res.json({error: "User " + req.query.username + " not found."});
       } else {
-        console.log('Message sent: ' + info.response);
-        res.send(info.response);
+        console.log("User " + user.get('username') +" found.");
+        user.set('resetPasswordToken', token)
+        .save()
+        .then(function(result) {
+          console.log("Saved user " + req.query.username + " with reset password token.");
+          mailOptions.html = '<a href="http://localhost:8000/users/password/reset?token=' + token +'">Reset Password</a>';
+          mailTransporter.sendMail(mailOptions, function(err, info) {
+            if (err) {
+              res.send(err);
+              return console.log(err);
+            } else {
+              console.log('Message sent: ' + info.response);
+              res.send({success: "Check your email for the password reset link!"});
+            }
+          });
+        });
       }
     });
   },
