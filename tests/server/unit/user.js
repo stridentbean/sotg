@@ -92,6 +92,17 @@ describe('User', function() {
     });
   });
 
+  it('add a dublicate keyword', function(done) {
+    user.addKeyword(keyword1, function(status) {
+      status.code.should.equal(2);
+      user.getKeywords(function(keywords) {
+        keywords.length.should.equal(1);
+        keywords.models[0].get('streamId').should.be.a('string');
+        done();
+      });
+    });
+  });
+
   it('add a keyword to a second user', function(done) {
     user2.addKeyword(keyword1, function() {
       user2.getKeywords(function(keywords) {
@@ -121,8 +132,8 @@ describe('User', function() {
   });
 
   it('delete a keyword', function(done) {
-    user.removeKeyword(keyword2, function(res) {
-      res.status.should.equal(0);
+    user.removeKeyword(keyword2, function(status) {
+      status.code.should.equal(0);
 
       user.getKeywords(function(keywords) {
         keywords.length.should.equal(1);
@@ -132,8 +143,8 @@ describe('User', function() {
   });
 
   it('delete a keyword that exists for another usser', function(done) {
-    user.removeKeyword(keyword1, function(res) {
-      res.status.should.equal(1);
+    user.removeKeyword(keyword1, function(status) {
+      status.code.should.equal(1);
 
       user.getKeywords(function(keywords) {
         keywords.length.should.equal(0);
@@ -143,8 +154,8 @@ describe('User', function() {
   });
 
   it('delete a keyword that does not exist', function(done) {
-    user.removeKeyword('blarg', function(res) {
-      res.status.should.equal(2);
+    user.removeKeyword('blarg', function(status) {
+      status.code.should.equal(2);
 
       user.getKeywords(function(keywords) {
         keywords.length.should.equal(0);

@@ -48,6 +48,7 @@ var User = db.Model.extend({
       .then(function(keywordModel) {
 
         if (keywordModel) { //if this is keyword exists already
+
           new KeywordUser({
               keyword_id: keywordModel.get('id'),
               user_id: user.get('id')
@@ -58,6 +59,12 @@ var User = db.Model.extend({
                 code: 0,
                 message: 'keyword user created'
               });
+            })
+            .catch(function(err) {    //catch duplicate error
+              callback({
+                code: 2,
+                message: 'keyword exists'
+              });
             });
 
         } else { //if this keyword is new
@@ -66,9 +73,16 @@ var User = db.Model.extend({
             .then(function(keywordCollection) {
 
               utils.getLeastUsedStream(function(stream) {
+                
+                //allow the user to add keywords even if no stream is available
+                var streamId = null;
+                if(stream) {
+                  streamId = stream.key;
+                }
+
                 new Keyword({
                     keyword: keyword,
-                    streamId: stream.key
+                    streamId: streamId
                   })
                   .save()
                   .then(function(newKeywordModel) {
@@ -138,14 +152,14 @@ var User = db.Model.extend({
                       .destroy()
                       .then(function() {
                         done({
-                          status: 0,
+                          code: 0,
                           message: 'keyword deleted'
                         });
                       });
 
                   } else {
                     done({
-                      status: 1,
+                      code: 1,
                       message: 'keyword user relation deleted'
                     });
                   }
@@ -155,7 +169,7 @@ var User = db.Model.extend({
             });
         } else {
           done({
-            status: 2,
+            code: 2,
             message: 'unknown keyword'
           });
         }
