@@ -7,22 +7,21 @@
   </head>
   <body ng-app="essoteegeeApp">
   <!-- TODO: Make this a fixed menu bar -->
-  <div class="ui stackable menu">
-    <div class="item">
-      <img src="assets/globosaurus.png">
+    <div class="ui inverted fixed menu">
+      <div class="item">
+        <img src="assets/globosaurus.png">
+      </div>
+      <a class="item" ui-sref="/">Home</a>
+      <a class="item" ui-sref="queryBuilder.search">Query Builder</a>
+      <a class="item" ui-sref="documentation">Documentation</a>
+      <div class="right menu">
+        <a class="right item" ui-sref="profile">Profile</a>
+        <a class="right item" ui-sref="login">Log In</a>
+        <a class="right item" ui-sref="signup">Sign Up</a>
+        <a class="right item" ui-sref="logout">Log Out</a>
+      </div>
     </div>
-    <a class="item" ui-sref="/">Home</a>
-    <a class="item" ui-sref="queryBuilder.search">Query Builder</a>
-    <a class="item" ui-sref="documentation">API Documentation</a>
-    <a class="item" ui-sref="demos">Demos</a>
-    <div class="right menu">
-      <a class="item" ui-sref="profile">Profile</a>
-      <a class="item" ui-sref="login">Log In</a>
-      <a class="item" ui-sref="signup">Sign Up</a>
-      <a class="item" ui-sref="logout">Log Out</a>
-    </div>
-  </div>
-  <div class="ui grid container" ui-view></div>
+    <div class="main-content" ui-view></div>
     <link rel="stylesheet" href="bower_components/semantic-ui/dist/semantic.min.css">
     <link rel="stylesheet" href="bower_components/jquery-ui/themes/flick/jquery-ui.css"/>
     <link rel="stylesheet" href="bower_components/highlightjs/styles/xcode.css">

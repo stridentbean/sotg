@@ -14,3 +14,12 @@
 .keywordLabel {
   margin: 10px !important;
 }
+
+.main-content {
+  margin-top: 45px !important;
+}
+
+#landingImage {
+  background-image: url('../../assets/earth.jpg');
+  height: 500px;
+}
