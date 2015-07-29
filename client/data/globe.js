@@ -5,7 +5,7 @@ var container, controls;
     var windowHalfX = window.innerWidth / 2;
     var windowHalfY = window.innerHeight / 2;
     var data = [-7.18, 37.3];
-
+    var animateId;
 var init = function () {
         container = document.getElementById( 'container' );
         camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 2000 );
@@ -68,14 +68,14 @@ var onWindowResize = function () {
 };
 
 var animate = function () {
-  requestAnimationFrame( animate );
+  animateId = requestAnimationFrame( animate );
   render();
   controls.update();
 };
 
 var render = function () {
   camera.lookAt( scene.position );
-  group.rotation.y -= 0.005;
+  // group.rotation.y -= 0.005;
   renderer.render( scene, camera );
 
 };
@@ -96,7 +96,7 @@ var addDensity = function (data) {
         var geom = new THREE.Geometry();
         // material to use for each of our elements. Could use a set of materials to
         // add colors relative to the density. Not done here.
-        var cubeMat = new THREE.MeshLambertMaterial({color: 0xff0000,opacity:1});
+        var cubeMat = new THREE.MeshLambertMaterial({color: 0xff0000});
         // for (var i = 0 ; i < data.length-1 ; i++) {
  
             var value = parseFloat(1000);
@@ -104,10 +104,10 @@ var addDensity = function (data) {
             // calculate the position where we need to start the cube
             var position = latLongToVector3(data[0], data[1], 200, 2);
             // create the cube
-            var cube = new THREE.Mesh(new THREE.BoxGeometry(50, 50, 50));
+            var cube = new THREE.Mesh(new THREE.SphereGeometry(5, 10, 10));
  
             // position the cube correctly
-            // cube.lookAt( new THREE.Vector3(0,0,0) );
+            cube.lookAt( new THREE.Vector3(0,0,0) );
  
             // // merge with main model
             // THREE.GeometryUtils.merge(geom,cube);
@@ -120,7 +120,9 @@ var addDensity = function (data) {
         // and add the total mesh to the scene
         // scene.add(total);
         scene.add(cube);
-        cube.position = position;
+        cube.position.x = position.x;
+        cube.position.y = position.y;
+        cube.position.z = position.z;
 };
 
 init();
