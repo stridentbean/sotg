@@ -1,12 +1,11 @@
 angular.module('resetPasswordCtrl', [])
 .controller('resetPasswordController', function( Auth, $location) {
   var vm = this;
-  console.log($location.search().token);
-  vm.token = $location.search().token;
+  vm.user = $location.search().user;
   vm.resetPassword = function() {
-    Auth.resetPassword(vm.token)
+    Auth.updatePassword(vm.user, vm.newPassword)
     .then(function(res) {
-      console.log("Reset password with token: " + vm.token);
+      console.log("Reset password with token: " + vm.user);
       console.log(res);
     });
   };

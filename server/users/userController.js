@@ -84,11 +84,12 @@ module.exports = {
         console.log("User " + req.query.username + " not found.");
         res.json({error: "User " + req.query.username + " not found."});
       } else {
-        console.log("User " + user.get('username') +" found.");
+        console.log("User " + user.get('username') + " found. Setting resetPasswordToken.");
         user.set('resetPasswordToken', token)
         .save()
         .then(function(result) {
           console.log("Saved user " + req.query.username + " with reset password token.");
+          // TODO: don't hardcode server address
           mailOptions.html = '<a href="http://localhost:8000/users/password/reset?token=' + token +'">Reset Password</a>';
           mailTransporter.sendMail(mailOptions, function(err, info) {
             if (err) {
@@ -105,16 +106,21 @@ module.exports = {
   },
 
   resetPassword: function(req, res, next) {
-    console.log("Resetting password with token: ", req.query.token);
-    var token = req.query.token;
-    new User({resetPasswordToken: token})
+    var user;
+    if (req.query.user) {
+      user = {username: req.query.user};
+    } else if (req.query.token) {
+      user = {resetPasswordToken: req.query.token};
+    }
+    console.log("Resetting password with: ", user);
+    new User(user)
     .fetch()
     .then(function(user) {
       if (user) {
-        console.log("Fetched user: ", user);
-        res.redirect('/resetPassword?token=' + token);
+        console.log("Fetched user: ", user.get('username'));
+        res.redirect('/resetPassword?user=' + user.get('username'));
       } else {
-        res.redirect('/resetPassword?token=invalid');
+        res.redirect('/resetPassword?user=invalid');
       }
     });
   },

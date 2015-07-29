@@ -86,7 +86,7 @@ angular.module('sotgFactory', [])
     console.log("authFactory.updatePassword");
     return $http({
       method: 'POST',
-      url: 'users/password',
+      url: 'users/password/update',
       data: JSON.stringify({
         user: username,
         password: password
@@ -130,10 +130,10 @@ angular.module('sotgFactory', [])
     });
   };
 
-  authFactory.resetPassword = function(token) {
+  authFactory.resetPassword = function(user) {
     return $http({
       method: 'POST',
-      url: 'users/password/reset?token=' + token,
+      url: 'users/password/reset?user=' + user,
     })
     .success(function() {
       console.log("Resetting password for ", token);
