@@ -170,12 +170,14 @@ var getLeastUsedStream = module.exports.getLeastUsedStream = function(callback) 
 
   db.knex.raw('select streaming_servers.key, count(*) \
     from streaming_servers\
-    join keywords\
+    left join keywords\
     on keywords.streamId = streaming_servers.key\
+    where streaming_servers.registered = true\
     group by streaming_servers.key\
     order by count( * )\
     limit 1 ')
     .then(function(data) {
+      console.log('leastUsedStream', data[0][0]);
       callback(data[0][0]);
     });
 };
