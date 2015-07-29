@@ -1,83 +1,116 @@
-<div class="two column row">
-  <div class="left floated left aligned column">
-    <div class="ui huge horizontal green label" ng-show="httpVerb === 'GET'">Method: {{httpVerb}}</div>
-    <div class="ui huge horizontal orange label" ng-show="httpVerb === 'POST'">Method: {{httpVerb}}</div>
-    <div class="ui huge horizontal red label" ng-show="httpVerb === 'DELETE'">Method: {{httpVerb}}</div>
+<div class="ui grid">
+  <div class="ten column row">
+    <div class="column"></div>
+    <div class="left floated left aligned four wide column">
+      <div class="ui huge horizontal green label" ng-show="httpVerb === 'GET'">Method: {{httpVerb}}</div>
+      <div class="ui huge horizontal orange label" ng-show="httpVerb === 'POST'">Method: {{httpVerb}}</div>
+      <div class="ui huge horizontal red label" ng-show="httpVerb === 'DELETE'">Method: {{httpVerb}}</div>
+    </div>
+    <div class="right floated right aligned four wide column">
+      <button class="ui blue basic button" ng-show="isAuth" ng-click="submitQuery()">Submit Query</button>
+      <button class="ui blue button" clip-copy="getQuery()">
+        <i class="copy icon"></i>
+        Copy to Clipboard
+      </button>
+    </div>
+    <div class="column"></div>
   </div>
-  <div class="right floated right aligned column">
-    <button class="ui blue basic button" ng-show="isAuth" ng-click="submitQuery()">Submit Query</button>
-    <button class="ui blue basic button" clip-copy="getQuery()">Copy to Clipboard</button>
+  <div class="centered row">
+    <div class="fourteen wide column">
+      <h2 class="ui header" ng-show="$state.is('queryBuilder.search')">http://sotg.xyz/api/search?keyword={{encodedKeyword}}&apiKey={{apiKey}}</h2>
+      <h2 class="ui header" ng-show="$state.is('queryBuilder.keyword')">http://sotg.xyz/api/keywords?keyword={{encodedKeyword}}&apiKey={{apiKey}}</h2>
+      <h2 class="ui header" ng-show="$state.is('queryBuilder.sentiment')">http://sotg.xyz/api/sentiment?keyword={{encodedKeyword}}&sentiment={{sentiment}}&apiKey={{apiKey}}</h2>
+      <h2 class="ui header" ng-show="$state.is('queryBuilder.time')">http://sotg.xyz/api/time?keyword={{encodedKeyword}}&startTime={{startTimeMS}}&endTime={{endTimeMS}}&apiKey={{apiKey}}</h2>
+      <div class="ui divider"></div> 
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="column">
-    <h2 class="ui header" ng-show="$state.is('queryBuilder.search')">http://sotg.xyz/api/search?keyword={{encodedKeyword}}&apiKey={{apiKey}}</h2>
-    <h2 class="ui header" ng-show="$state.is('queryBuilder.keyword')">http://sotg.xyz/api/keywords?keyword={{encodedKeyword}}&apiKey={{apiKey}}</h2>
-    <h2 class="ui header" ng-show="$state.is('queryBuilder.sentiment')">http://sotg.xyz/api/sentiment?keyword={{encodedKeyword}}&sentiment={{sentiment}}&apiKey={{apiKey}}</h2>
-    <h2 class="ui header" ng-show="$state.is('queryBuilder.time')">http://sotg.xyz/api/time?keyword={{encodedKeyword}}&startTime={{startTimeMS}}&endTime={{endTimeMS}}&apiKey={{apiKey}}</h2>
-    <div class="ui divider"></div> 
-  </div>
-</div>
-<div class="seven column centered row">
-  <button ng-click="httpVerb = 'GET'" ng-class="{ 'blue' : $state.is('queryBuilder.search') }" class="ui labeled icon button" ui-sref="queryBuilder.search" ><i class="search icon"></i>Search</button>
-  <button ng-click="httpVerb = 'POST'" ng-class="{ 'blue' : $state.is('queryBuilder.keyword') }" class="ui labeled icon button" ui-sref="queryBuilder.keyword"><i class="zoom icon"></i>Keywords</button>
-  <button ng-click="httpVerb = 'GET'" ng-class="{ 'blue' : $state.is('queryBuilder.sentiment') }" class="ui labeled icon button" ui-sref="queryBuilder.sentiment"><i class="heartbeat icon"></i>Sentiment</button>
-  <button ng-click="httpVerb = 'GET'" ng-class="{ 'blue' : $state.is('queryBuilder.time') }" class="ui labeled icon button" ui-sref="queryBuilder.time"><i class="wait icon"></i>Time Range</button>
-</div>
-
-<div class="two column centered row" ng-show="$state.is('queryBuilder.search')">
-  <div class="ui labeled icon input">
-      <div class="ui blue label">
-        Keyword
+<!--   <div class="seven column centered row">
+    <button ng-click="httpVerb = 'GET'" ng-class="{ 'blue' : $state.is('queryBuilder.search') }" class="ui labeled icon button" ui-sref="queryBuilder.search" ><i class="search icon"></i>Search</button>
+    <button ng-click="httpVerb = 'POST'" ng-class="{ 'blue' : $state.is('queryBuilder.keyword') }" class="ui labeled icon button" ui-sref="queryBuilder.keyword"><i class="zoom icon"></i>Keywords</button>
+    <button ng-click="httpVerb = 'GET'" ng-class="{ 'blue' : $state.is('queryBuilder.sentiment') }" class="ui labeled icon button" ui-sref="queryBuilder.sentiment"><i class="heartbeat icon"></i>Sentiment</button>
+    <button ng-click="httpVerb = 'GET'" ng-class="{ 'blue' : $state.is('queryBuilder.time') }" class="ui labeled icon button" ui-sref="queryBuilder.time"><i class="wait icon"></i>Time Range</button>
+  </div> -->
+  <div class="ten column row">
+    <div class="three wide column"></div>
+    <div class="two wide column">
+      <div class="ui vertical fluid tabular menu">
+        <a class="item" ng-click="httpVerb = 'GET'" ng-class="{ 'active' : $state.is('queryBuilder.search') }" ui-sref="queryBuilder.search">
+          <i class="search icon"></i>
+          Search
+        </a>
+        <a class="item" ng-click="httpVerb = 'POST'" ng-class="{ 'active' : $state.is('queryBuilder.keyword') }" ui-sref="queryBuilder.keyword">
+          <i class="zoom icon"></i>
+          Keywords
+        </a>
+        <a class="item" ng-click="httpVerb = 'GET'" ng-class="{ 'active' : $state.is('queryBuilder.sentiment') }" ui-sref="queryBuilder.sentiment">
+          <i class="heartbeat icon"></i>
+          Sentiment
+        </a>
+        <a class="item" ng-click="httpVerb = 'GET'" ng-class="{ 'active' : $state.is('queryBuilder.time') }" ui-sref="queryBuilder.time">
+          <i class="wait icon"></i>
+          Time Range
+        </a>
       </div>
-      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
-  </div>
-</div>
-<div class="two column centered row" ng-show="$state.is('queryBuilder.keyword')">
-  <div class="ui buttons">
-    <button class="ui positive button" ng-click="httpVerb = 'POST'">Add</button>
-    <div class="or"></div>
-    <button class="ui negative button" ng-click="httpVerb = 'DELETE'">Delete</button>
-  </div>
-  <div class="ui labeled icon input">
-      <div class="ui blue label">
-        Keyword: 
+    </div>
+    <div class="eight wide stretched column">
+      <div class="ui segments">
+        <div class="ui attached segment" ng-show="$state.is('queryBuilder.search')">
+          <div class="ui labeled icon input">
+              <div class="ui blue label">
+                Keyword
+              </div>
+              <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
+          </div>
+        </div>
+        <div class="ui attached segment" ng-show="$state.is('queryBuilder.keyword')">
+          <div class="ui buttons">
+            <button class="ui positive button" ng-click="httpVerb = 'POST'">Add</button>
+            <div class="or"></div>
+            <button class="ui negative button" ng-click="httpVerb = 'DELETE'">Delete</button>
+          </div>
+          <div class="ui labeled icon input">
+              <div class="ui blue label">
+                Keyword: 
+              </div>
+              <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
+          </div>
+        </div>
+        <div class="ui attached segment" ng-show="$state.is('queryBuilder.sentiment')">
+          <div class="ui labeled icon input">
+              <div class="ui buttons">
+                <button class="ui positive button" ng-click="sentiment = 'positive'">Positive</button>
+                <div class="or"></div>
+                <button class="ui negative button" ng-click="sentiment = 'negative'">Negative</button>
+              </div>
+          </div>
+          <div class="ui labeled icon input">
+              <div class="ui blue label">
+                Keyword: 
+              </div>
+              <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
+          </div>
+        </div>
+        <div class="ui attached segment" ng-show="$state.is('queryBuilder.time')">
+          <div class="ui left icon input">
+            <input type="text" placeholder="MM/DD/YYYY" ui-date ng-model="startTime" ng-change="startTimeConvert()"/> 
+            <i class="inverted blue circular calendar icon"></i>
+          </div>
+          <div class="ui left icon input">
+            <input type="text" placeholder="MM/DD/YYYY" ui-date ng-model="endTime" ng-change="endTimeConvert()"/> 
+            <i class="inverted blue circular calendar icon"></i>
+          </div>
+          <div class="ui labeled icon input">
+              <div class="ui blue label">
+                Keyword: 
+              </div>
+              <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
+          </div>  
+        </div>
+        <div class="ui clearing segment">
+          <button class="ui right floated green button" ng-show="isAuth" ng-click="submitQuery()">Submit Query</button>
+        </div>
       </div>
-      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
+    </div>
   </div>
-</div>
-<div class="two column centered row" ng-show="$state.is('queryBuilder.sentiment')">
-  <div class="ui labeled icon input">
-      <div class="ui buttons">
-        <button class="ui positive button" ng-click="sentiment = 'positive'">Positive</button>
-        <div class="or"></div>
-        <button class="ui negative button" ng-click="sentiment = 'negative'">Negative</button>
-      </div>
-  </div>
-  <div class="ui labeled icon input">
-      <div class="ui blue label">
-        Keyword: 
-      </div>
-      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
-  </div>
-</div>
-<div class="two column centered row" ng-show="$state.is('queryBuilder.time')">
-  <div class="ui left icon input">
-    <input type="text" placeholder="MM/DD/YYYY" ui-date ng-model="startTime" ng-change="startTimeConvert()"/> 
-    <i class="inverted blue circular calendar icon"></i>
-  </div>
-  <div class="ui left icon input">
-    <input type="text" placeholder="MM/DD/YYYY" ui-date ng-model="endTime" ng-change="endTimeConvert()"/> 
-    <i class="inverted blue circular calendar icon"></i>
-  </div>
-  <div class="ui labeled icon input">
-      <div class="ui blue label">
-        Keyword: 
-      </div>
-      <input type="text" placeholder="Enter Keyword Here" ng-model="keyword" ng-change="encodeKeyword()">
-  </div>  
-</div>
-<div class="one column row">
   <div hljs ng-show="jsonResult" source="jsonResult"></div>
 </div>
-
