@@ -2,6 +2,8 @@ var _ = require('underscore'),
   db = require('../db/schema.js'),
   User = require('../users/userModel.js'),
   Tweet = require('../../tweetHandler/tweets/tweetModel.js'), 
+  Keyword = require('../api/keywordModel.js'),
+  StreamingServer = require('../api/streamingServerModel.js'),
   ApiTransaction = require('../apiTransactions/apiTransactionModel.js'),
   uuid = require('uuid');
 
@@ -138,4 +140,69 @@ var insertApiTransaction = module.exports.insertApiTransaction = function(method
 var validateEmail = module.exports.validateEmail = function(email) {
   var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
   return re.test(email);
+};
+
+var getRegisteredStreams = module.exports.getRegisteredStreams = function(callback) {
+  now = new Date();
+  new StreamingServer()
+    .query('where', 'registered', '=', true) //get all streams that were used recently
+    .fetchAll()
+    .then(function(collection) {
+      var streams = [];
+
+      collection.forEach(function(stream) {
+        // streams.push(stream.get('key'));
+        streams.push(stream);
+      });
+
+      callback(streams);
+    });
+};
+
+var getLeastUsedStream = module.exports.getLeastUsedStream = function(callback) {
+  getRegisteredStreams(function(registeredStreams) {
+
+    new Keyword()
+      .fetchAll()
+      .then(function(keywordCollection) {
+
+        // var streamIds = []; //stores just the stream ids
+
+        //add the registered streams. This will ensure every possible stream 
+        //can be considered as the least used, even if the stream is empty
+        // registeredStreams.forEach(function(stream) {
+        //   streamIds.push(stream);
+        // });
+
+
+
+        //parsing the stream ids out of the keywordCollection
+        keywordCollection.forEach(function(keyword) {
+          //TODO MAKE THESE ALL MODELS
+          // streamIds.push(stream.get('streamId'));
+          registeredStreams.push(stream);
+        });
+
+        var groups = _.groupBy(registeredStreams, function(stream) {
+          return stream.id;
+        });
+
+        var leastUsedStream = {
+          stream: '',
+          count: Number.MAX_VALUE
+        };
+
+        //find least used
+        _.each(groups, function(item, key) {
+
+          if (groups[key].length < leastUsedStream.count) {
+            leastUsedStream.stream = groups[key];
+            leastUsedStream.count = groups[key].length;
+          }
+        });
+
+        callback(leastUsedStream.stream[0]);
+      });
+
+  });
 };

@@ -5,38 +5,20 @@ var Keyword = require('./keywordModel.js'),
   db = require('../db/schema.js'),
   _ = require('underscore');
 
-var ONE_HOUR = 60 * 60 * 1000;
-var TWENTY_MINUTES = 20 * 60 * 1000;
-var ONE_MINUTE = 60 * 1000;
+// var addKeywordUser = function(apiKey, keyword, callback) {
+//   new User({
+//       apiKey: apiKey
+//     })
+//     .fetch()
+//     .then(function(user) {
+//       new KeywordUser({
+//         keyword_id: keyword.get('id'),
+//         user_id: user.get('id')
+//       }).upsert(callback);
+//     });
+// };
 
-var addKeywordUser = function(apiKey, keyword, callback) {
-  new User({
-      apiKey: apiKey
-    })
-    .fetch()
-    .then(function(user) {
-      new KeywordUser({
-        keyword_id: keyword.get('id'),
-        user_id: user.get('id')
-      }).upsert(callback);
-    });
-};
 
-var getRegisteredStreams = function(callback) {
-  now = new Date();
-  new StreamingServer()
-    .query('where', 'registered', '=', true) //get all streams that were used recently
-    .fetchAll()
-    .then(function(collection) {
-      var streams = [];
-
-      collection.forEach(function(stream) {
-        streams.push(stream.get('key'));
-      });
-
-      callback(streams);
-    });
-};
 
 var registeredStreams = [];
 var nextStream = 0;
@@ -44,49 +26,49 @@ var nextStream = 0;
 module.exports = {
 
   // This is inside module.exports so that we can test it in keywordControllerTests.js
-  getLeastUsedStream: function(callback) {
-    getRegisteredStreams(function(registeredStreams) {
+  // getLeastUsedStream: function(callback) {
+  //   getRegisteredStreams(function(registeredStreams) {
 
-      new Keyword()
-        .fetchAll()
-        .then(function(collection) {
+  //     new Keyword()
+  //       .fetchAll()
+  //       .then(function(collection) {
 
-          var streamIds = [];   //stores just the stream ids
+  //         var streamIds = [];   //stores just the stream ids
 
-          //add the registered streams. This will ensure every possible stream 
-          //can be considered as the least used, even if the stream is empty
-          registeredStreams.forEach(function(stream) {
-            streamIds.push(stream);
-          });
+  //         //add the registered streams. This will ensure every possible stream 
+  //         //can be considered as the least used, even if the stream is empty
+  //         registeredStreams.forEach(function(stream) {
+  //           streamIds.push(stream);
+  //         });
 
-          //parsing the stream ids out of the collection
-          collection.forEach(function(stream) {
-            streamIds.push(stream.get('streamId'));
-          });
+  //         //parsing the stream ids out of the collection
+  //         collection.forEach(function(stream) {
+  //           streamIds.push(stream.get('streamId'));
+  //         });
 
-          var groups = _.groupBy(streamIds, function(stream) {
-            return stream;
-          });
+  //         var groups = _.groupBy(streamIds, function(stream) {
+  //           return stream;
+  //         });
 
-          var leastUsedStream = {
-            stream: '',
-            count: Number.MAX_VALUE
-          };
+  //         var leastUsedStream = {
+  //           stream: '',
+  //           count: Number.MAX_VALUE
+  //         };
 
-          //find least used
-          _.each(groups, function(item, key) {
+  //         //find least used
+  //         _.each(groups, function(item, key) {
 
-            if(groups[key].length < leastUsedStream.count) {
-              leastUsedStream.stream = key;
-              leastUsedStream.count = groups[key].length;
-            }
-          });
+  //           if(groups[key].length < leastUsedStream.count) {
+  //             leastUsedStream.stream = key;
+  //             leastUsedStream.count = groups[key].length;
+  //           }
+  //         });
 
-          callback(leastUsedStream.stream);
-        });
+  //         callback(leastUsedStream.stream);
+  //       });
 
-    });
-  },
+  //   });
+  // },
 
   // Right now, we are aren't checking to see if this api_key was given to us by an authenticated user.
   // What if Alice sends a GET request with Bob's API key? Is that a problem?
@@ -102,37 +84,10 @@ module.exports = {
       new Keyword({
         keyword: keyword
       })
-      .fetch()
-      .then(function(exists) {
-        if (exists) {
-          addKeywordUser(apiKey, exists, function() {
-            res.send("Added " + keyword + " and " + apiKey + " to database.");
-          });
-        } else {
-
-          new Keyword({
-            keyword: keyword,
-            streamId: leastUsedStream
-          })
-          .save()
-          .then(function(keywordModel) {
-            addKeywordUser(apiKey, keywordModel, function() {
-              res.send("Inserted " + keywordModel + " and " + apiKey + " to database.");
-            });
-
-            new StreamingServer({
-              key: keywordModel.get('streamId')
-              })
-              .fetch()
-              .then(function(model) {
-                console.log(model);
-                model.sendToStreamingServer(keywordModel, function(isSuccessful){
-
-                });
-              });
-          });
-        }
+      .upsert(function() {
+        res.status(201).send('keyword inserted');
       });
+
     });
   },
 
@@ -161,25 +116,25 @@ module.exports = {
 
                 res.status(200).send('Removed keyword');
 
-                new StreamingServer({
-                    key: keyword.streamId
-                  })
-                  .fetch()
-                  .then(function(model) {
-                    model.deleteFromStreamingServer(keyword);
-                  });
+                // new StreamingServer({
+                //     key: keyword.streamId
+                //   })
+                //   .fetch()
+                //   .then(function(model) {
+                //     model.deleteFromStreamingServer(keyword);
+                //   });
               });
             },
             function() {
               res.status(200).send('Removed keyword');
 
-              new StreamingServer({
-                  key: leastUsedStream
-                })
-                .fetch()
-                .then(function(model) {
-                  model.deleteFromStreamingServer(keyword);
-                });
+              // new StreamingServer({
+              //     key: leastUsedStream
+              //   })
+              //   .fetch()
+              //   .then(function(model) {
+              //     model.deleteFromStreamingServer(keyword);
+              //   });
             });
         } else {
           next(new Error('Keyword does not exist for this user'));

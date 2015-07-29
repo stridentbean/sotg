@@ -8,45 +8,32 @@ var keyword_user_join = db.Model.extend({
    *@function
    */
   initialize: function() {
+
   },
 
   upsert: function(callback) {
     var context = this;
     new keyword_user_join({
-      keyword_id: this.get('keyword_id'),
-      user_id: this.get('user_id')
-    })
-    .fetch()
-    .then(function(exists) {
-      if (exists) {
-        callback();
-      } else {
-        new keyword_user_join({
-          keyword_id: context.get('keyword_id'),
-          user_id: context.get('user_id')
-        })
-        .save()
-        .then(function(model) {
+        keyword_id: this.get('keyword_id'),
+        user_id: this.get('user_id')
+      })
+      .fetch()
+      .then(function(exists) {
+        if (exists) {
           callback();
-        });
-      }
-    });
-  },
-
-  getKeywords: function(keyword, userId, callback) {
-    new keyword_user_join({
-      keyword_id: keyword,
-      user_id: userId
-    })
-    .fetchAll()
-    .then(function(keyword_user) {
-      console.log(keyword_user);
-      callback(keyword_user);
-    });
+        } else {
+          new keyword_user_join({
+              keyword_id: context.get('keyword_id'),
+              user_id: context.get('user_id')
+            })
+            .save()
+            .then(function(model) {
+              callback();
+            });
+        }
+      });
   }
 
 });
 
 module.exports = keyword_user_join;
-
-
