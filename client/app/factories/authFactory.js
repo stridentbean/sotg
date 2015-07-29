@@ -49,7 +49,6 @@ angular.module('sotgFactory', [])
       url: 'users/profile'
     })
     .success(function(data, status, headers, config) {
-      console.log("Data inside profile, ", data);
       authFactory.keywords(data);
     })
     .error(function(data, status, headers, config) {
@@ -57,7 +56,6 @@ angular.module('sotgFactory', [])
   };
 
   authFactory.keywords = function(user){
-    console.log("User inside keywords", user);
     // var apiKey = user.apiKey;
     return $http({
       method: 'GET', 
@@ -81,5 +79,65 @@ angular.module('sotgFactory', [])
       console.log(err);
     });
   };
+
+  authFactory.updatePassword = function(username, password) {
+    return $http({
+      method: 'POST',
+      url: 'users/password/update',
+      data: JSON.stringify({
+        user: username,
+        password: password
+      })
+    })
+    .success(function() {
+      // console.log("Updated password.");
+    })
+    .error(function(err) {
+      // console.log("Couldn't update password. Error: ", err);
+    });
+  };
+
+  authFactory.requestReset = function(username) {
+    return $http({
+      method: 'POST',
+      url: 'users/password/requestReset?username=' + username
+    })
+    .success(function() {
+      // console.log("Posted to /users/password/requestReset?username=" + username);
+    })
+    .error(function(err) {
+      // console.log("Errored while posting to /users/password/requestReset?username=" + username);
+    });
+  };
+
+  authFactory.sendPasswordResetEmail = function (username) {
+    return $http({
+      method: 'POST',
+      url: 'users/password/forgot',
+      data: {
+        username: username
+      }
+    })
+    .success(function() {
+      // console.log("Resetting password for ", username);
+    })
+    .error(function(err) {
+      // console.log("Error resetting password for ", username);
+    });
+  };
+
+  authFactory.resetPassword = function(user) {
+    return $http({
+      method: 'POST',
+      url: 'users/password/reset?user=' + user,
+    })
+    .success(function() {
+      // console.log("Resetting password for ", token);
+    })
+    .error(function(err) {
+      // console.log("Error resetting password for ", token);
+    });
+  };
+
   return authFactory;
 });

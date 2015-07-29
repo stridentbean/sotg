@@ -43,7 +43,7 @@ if (process.argv[2] === 'clean') {
 
   setTimeout(function() {
     process.exit();
-  }, 250);
+  }, 500);
 } else {
   //create tables
   db.knex.schema.hasTable('users').then(function(exists) {
@@ -57,6 +57,8 @@ if (process.argv[2] === 'clean') {
         user.string('apiKey');
         user.decimal('throttle');
         user.datetime('lastApiCall');
+        user.string('resetPasswordToken');
+        user.integer('resetPasswordExpires');
       }).then(function(table) {
         console.log('Created table users');
         db.knex.schema.hasTable('keywords').then(function(exists) {
@@ -139,7 +141,7 @@ if (process.argv[2] === 'clean') {
 if (process.argv[2] === 'create') {
   setTimeout(function() {
     process.exit();
-  }, 250);
+  }, 500);
 }
 
 

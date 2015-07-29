@@ -118,7 +118,35 @@ var User = db.Model.extend({
     bcrypt.compare(candidatePassword, this.get('password'), function(err, isMatch) {
       callback(isMatch);
     });
-  }, 
+  },
+
+  // TODO: Password is being re-hashed every time
+  // any property on user is updated and saved.
+  // This is because of the this.on('updating') in
+  // the initialize function.
+  updatePassword: function(user, password, callback) {
+    console.log(user);
+    console.log(password);
+    var cipher = Promise.promisify(bcrypt.hash);
+    // return a promise - bookshelf will wait for the promise
+    // to resolve before completing the create action
+    cipher(password, null, null)
+    .then(function(hash) {
+      new User({username: user})
+      .fetch()
+      .then(function (model) {
+        console.log("Model: ", model);
+        console.log("Hash: ", hash);
+        model.save({
+          password: hash
+        }, {
+          method: 'update'
+        }).then(function(model) {
+          callback(null, "New password set for user: " + model.get('username'));
+        });
+      });
+    });
+  },
 
   getProfile: function(user, callback) {
     new User(user)

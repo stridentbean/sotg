@@ -1,5 +1,5 @@
 var essoteegeeApp = angular.module('essoteegeeApp', ['ui.router', 'sotgFactory', 'queryFactory',
-'loginCtrl', 'signupCtrl', 'profileCtrl', 'logoutCtrl', 'queryBuilderCtrl','globeCtrl', 'ui.date', 'ngClipboard', 'hljs']);
+'loginCtrl', 'signupCtrl', 'profileCtrl', 'resetPasswordCtrl', 'logoutCtrl', 'queryBuilderCtrl','globeCtrl', 'ui.date', 'ngClipboard', 'hljs']);
 essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProvider, ngClipProvider, hljsServiceProvider){
 
   $urlRouterProvider.otherwise('/');
@@ -57,6 +57,10 @@ essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProv
     })
     .state('queryBuilder.time', {
       url: '/time'
+    })
+    .state('resetPassword', {
+      url: '/resetPassword',
+      templateUrl: 'app/views/resetPassword.html'
     });
 
     //set path to .swf file for copying to clipboard

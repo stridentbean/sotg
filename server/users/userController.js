@@ -3,7 +3,10 @@ var User = require('./userModel.js'),
   jwt = require('jwt-simple'),
   db = require('../db/schema.js'),
   utils = require('../config/utils.js'), 
-  sessionUtils = require('../utils/session.js');
+  uuid = require('uuid'),
+  sessionUtils = require('../utils/session.js'),
+  mailTransporter = require('../config/nodemailer.config.js').transporter,
+  mailOptions = require('../config/nodemailer.config.js').options;
 
 //globals
 //TODO get a better phrase
@@ -65,6 +68,74 @@ module.exports = {
         error: 'Username should be a valid email'
       });
     }
+  },
+
+  sendPasswordResetEmail: function(req, res, next) {
+      },
+
+  requestReset: function(req, res, next) {
+    var username = req.query.username;
+    console.log("Sending email to: ", username);
+    var token = uuid.v4();
+    new User({username: req.query.username})
+    .fetch()
+    .then(function(user) {
+      if (!user) {
+        console.log("User " + req.query.username + " not found.");
+        res.json({error: "User " + req.query.username + " not found."});
+      } else {
+        console.log("User " + user.get('username') + " found. Setting resetPasswordToken.");
+        user.set('resetPasswordToken', token)
+        .save()
+        .then(function(result) {
+          console.log("Saved user " + req.query.username + " with reset password token.");
+          // TODO: don't hardcode server address
+          mailOptions.html = '<a href="http://localhost:8000/users/password/reset?token=' + token +'">Reset Password</a>';
+          mailTransporter.sendMail(mailOptions, function(err, info) {
+            if (err) {
+              res.send(err);
+              return console.log(err);
+            } else {
+              console.log('Message sent: ' + info.response);
+              res.send({success: "Check your email for the password reset link!"});
+            }
+          });
+        });
+      }
+    });
+  },
+
+  resetPassword: function(req, res, next) {
+    var user;
+    if (req.query.user) {
+      user = {username: req.query.user};
+    } else if (req.query.token) {
+      user = {resetPasswordToken: req.query.token};
+    }
+    console.log("Resetting password with: ", user);
+    new User(user)
+    .fetch()
+    .then(function(user) {
+      if (user) {
+        console.log("Fetched user: ", user.get('username'));
+        res.redirect('/resetPassword?user=' + user.get('username'));
+      } else {
+        res.redirect('/resetPassword?user=invalid');
+      }
+    });
+  },
+
+  updatePassword: function(req, res, next) {
+    var user = req.body.user;
+    var password = req.body.password;
+    new User().updatePassword(user, password, function(err, result) {
+      if (err) {
+        // TODO: Fix status codes
+        res.status(500).send("Could not update password: " + err);
+      } else {
+        res.status(200).send(result);
+      }
+    });
   },
 
   logout: function(req, res) {

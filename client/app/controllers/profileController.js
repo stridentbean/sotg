@@ -1,6 +1,24 @@
 angular.module('profileCtrl', [])
 .controller('profileController', function(Auth, QueryBuilder, $location, $window) {
   var vm = this;
+  vm.updatePassword = function() {
+    Auth.updatePassword(vm.username, vm.user.newPassword)
+    .then(function(res) {
+    });
+  };
+
+  vm.resetPassword = function() {
+    Auth.resetPassword(vm.username)
+    .then(function(res) {
+    });
+  };
+
+  vm.sendPasswordResetEmail = function() {
+    Auth.sendPasswordResetEmail(vm.username)
+    .then(function(res) {
+    });
+  };
+
   Auth.profile()
   .then(function(res){
       vm.username = res.data.username; 
@@ -25,7 +43,6 @@ angular.module('profileCtrl', [])
           } else {
             vm.keywords = res.data;
           }
-          console.log('keywords', vm.keywords);
         });
       });
     };
@@ -52,4 +69,5 @@ angular.module('profileCtrl', [])
         vm.addKeyword();
       }
     };
+
 });

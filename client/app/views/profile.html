@@ -1,24 +1,49 @@
 <div class="two column row" ng-controller="profileController as profile">
-<div class="column" ng-show="profile.username">
-<h1 class="ui dividing header">Your Profile</h1>
-<div class="ui segments">
-  <div class="ui segment">
-    <h2 class="ui header left align" >
-      <i class="user icon blue"></i>
-      <div class="content">Username  
-      </div> 
-    </h2>
-  <p class="profileInfo">{{profile.username}}</p>
+  <div class="column" ng-show="profile.username">
+    <h1 class="ui dividing header">Your Profile</h1>
+    <div class="ui segments">
+      <div class="ui segment">
+        <h2 class="ui header left align" >
+          <i class="user icon blue"></i>
+          <div class="content">Username  
+          </div> 
+        </h2>
+        <p class="profileInfo">{{profile.username}}</p>
+      </div>
+      <div class="ui segment">
+        <button class="ui green button" type="Reset Password" ng-click="profile.sendPasswordResetEmail()">Reset Password</button>
+        <div ng-show="profile.resetPasswordClicked" class="">
+          Hello World
+        </div>
+      </div>
+      <div class="ui segment">
+        <h2 class="ui header left align" ng-show="profile.apiKey">
+          <i class="privacy icon blue"></i>
+          <div class="content">API Key   
+          </div> 
+        </h2>
+        <p class="profileInfo">{{profile.apiKey}}</p>
+      </div>
+    </div>
   </div>
-  <div class="ui segment">
-    <h2 class="ui header left align" ng-show="profile.apiKey">
-      <i class="privacy icon blue"></i>
-      <div class="content">API Key   
-      </div> 
-    </h2>
-    <p class="profileInfo">{{profile.apiKey}}</p>
-  </div>
-  </div>
+
+
+  <div ng-show="profile.username" class="column">
+    <form class="ui form">
+      <div class="field">
+        <label>Old Password</label>
+        <input type="password" name="old-password" ng-model="profile.user.oldPassword" placeholder="old password" required/>
+      </div>
+      <div class="field">
+        <label>New Password</label>
+        <input type="password" ng-model="profile.user.newPassword" placeholder="******" required />
+      </div>
+      <div class="field">
+        <label>Re-enter New Password</label>
+        <input type="password" ng-model="login.user.confirmNewPassword" placeholder="******" required />
+      </div>
+      <button class="ui green button" type="Change Password" ng-click="profile.updatePassword()">Log In</button>
+    </form>
   </div>
   <div class="column" ng-show="profile.username">
     <h1 class="ui dividing header">Your Keywords</h1>
@@ -41,15 +66,15 @@
           </button>
       </div>
     </div>
-    </div>
-    <div ng-show="profile.error" class="ui centered row">
-      <div class="ui negative message">
-        <i ng-click="profile.error = null" class="close icon"></i>
-        <div class="header">
+  </div>
+  <div ng-show="profile.error" class="ui centered row">
+    <div class="ui negative message">
+      <i ng-click="profile.error = null" class="close icon"></i>
+      <div class="header">
         Whoops!
-        </div>
-        <p>{{ profile.error }}</p>
-        <a ui-sref="login">Go to Log In page.</a>
       </div>
+      <p>{{ profile.error }}</p>
+      <a ui-sref="login">Go to Log In page.</a>
     </div>
   </div>
+</div>

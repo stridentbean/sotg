@@ -10,12 +10,29 @@
           <input type="password" ng-model="login.user.password" placeholder="******" tabindex=2 required />
         </div>
         <button class="ui green button" type="submit" ng-click="login.logInUser()" tabindex=3 >Log In</button>
+        <div>
+          <a ng-click="login.requestReset()" type="submit" href="#">Forgot Password?</a>
+        </div>
       </form>
+    </div>
+    <div ng-show="login.forgotPasswordResponse.error" class="ui negative message">
+      <i ng-click="login.forgotPasswordResponse = null" class="close icon"></i>
+      <div class="header">
+        Missing Email!
+      </div>
+      <p>{{ login.forgotPasswordResponse.error }}</p>
+    </div>
+    <div ng-show="login.forgotPasswordResponse.success" class="ui positive message">
+      <i ng-click="login.forgotPasswordResponse = null" class="close icon"></i>
+      <div class="header">
+        Reset Password Email Sent!
+      </div>
+      <p>{{ login.forgotPasswordResponse.success }}</p>
     </div>
     <div ng-show="login.error" class="ui negative message">
       <i ng-click="login.error = null" class="close icon"></i>
       <div class="header">
-      Whoops!
+        Whoops!
       </div>
       <p>{{ login.error }}</p>
     </div>
