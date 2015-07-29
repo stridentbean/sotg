@@ -16,4 +16,5 @@ module.exports = function(app) {
   app.get('/profile', sessionUtils.checkUser, userController.getProfile);
   app.post('/password/forgot', userController.sendPasswordResetEmail);
   app.get('/password/reset', userController.resetPassword);
+  app.post('/password/requestReset', userController.requestReset);
 };

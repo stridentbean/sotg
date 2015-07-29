@@ -12,4 +12,10 @@ angular.module('loginCtrl', [])
       vm.error = err.data.error;
     });
   };
+  vm.requestReset = function() {
+    Auth.requestReset(vm.user.username)
+    .then(function() {
+      
+    });
+  };
 });

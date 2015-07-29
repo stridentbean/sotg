@@ -71,7 +71,11 @@ module.exports = {
   },
 
   sendPasswordResetEmail: function(req, res, next) {
-    console.log("Sending email to: ", req.body.username);
+      },
+
+  requestReset: function(req, res, next) {
+    var username = req.query.username;
+    console.log("Sending email to: ", username);
     var token = uuid.v4();
     new User({username: req.body.username})
     .set('resetPasswordToken', token)
@@ -83,6 +87,7 @@ module.exports = {
       '<a href="http://localhost:8000/users/password/reset?token=' + token +'">Reset Password</a>';
     mailTransporter.sendMail(mailOptions, function(err, info) {
       if (err) {
+        res.send(err);
         return console.log(err);
       } else {
         console.log('Message sent: ' + info.response);
@@ -93,7 +98,17 @@ module.exports = {
 
   resetPassword: function(req, res, next) {
     console.log("Resetting password with token: ", req.query.token);
-    res.send("Resetting password with token: ", req.query.token);
+    var token = req.query.token;
+    new User({resetPasswordToken: token})
+    .fetch()
+    .then(function(user) {
+      if (user) {
+        console.log("Fetched user: ", user);
+        res.redirect('/resetPassword?token=' + token);
+      } else {
+        res.redirect('/resetPassword?token=invalid');
+      }
+    });
   },
 
   updatePassword: function(req, res, next) {

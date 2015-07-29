@@ -100,6 +100,20 @@ angular.module('sotgFactory', [])
     });
   };
 
+  authFactory.requestReset = function(username) {
+    console.log("Initiating requestReset.");
+    return $http({
+      method: 'POST',
+      url: 'users/password/requestReset?username=' + username
+    })
+    .success(function() {
+      console.log("Posted to /users/password/requestReset?username=" + username);
+    })
+    .error(function(err) {
+      console.log("Errored while posting to /users/password/requestReset?username=" + username);
+    });
+  };
+
   authFactory.sendPasswordResetEmail = function (username) {
     return $http({
       method: 'POST',
@@ -116,19 +130,16 @@ angular.module('sotgFactory', [])
     });
   };
 
-  authFactory.resetPassword = function(username) {
+  authFactory.resetPassword = function(token) {
     return $http({
       method: 'POST',
-      url: 'users/password/reset',
-      data: {
-        username: username
-      }
+      url: 'users/password/reset?token=' + token,
     })
     .success(function() {
-      console.log("Resetting password for ", username);
+      console.log("Resetting password for ", token);
     })
     .error(function(err) {
-      console.log("Error resetting password for ", username);
+      console.log("Error resetting password for ", token);
     });
   };
 
