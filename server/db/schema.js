@@ -43,7 +43,7 @@ if (process.argv[2] === 'clean') {
 
   setTimeout(function() {
     process.exit();
-  }, 250);
+  }, 500);
 } else {
   //create tables
   db.knex.schema.hasTable('users').then(function(exists) {
@@ -141,7 +141,7 @@ if (process.argv[2] === 'clean') {
 if (process.argv[2] === 'create') {
   setTimeout(function() {
     process.exit();
-  }, 250);
+  }, 500);
 }
 
 
