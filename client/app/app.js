@@ -28,6 +28,18 @@ essoteegeeApp.config(function ($stateProvider, $urlRouterProvider, $locationProv
       url: '/documentation',
       templateUrl: 'app/views/documentation.html'
     })
+    .state('demos', {
+      url: '/demos',
+      templateUrl: 'app/views/demos.html'
+    })
+    .state('demos.globe', {
+      url: '/globe',
+      templateUrl: 'app/views/partials/globe.html'
+    })
+    .state('demos.wordcloud', {
+      url: '/wordcloud',
+      templateUrl: 'app/views/partials/wordcloud.html'
+    })
     .state('queryBuilder', {
       url: '/queryBuilder', 
       templateUrl: 'app/views/queryBuilder.html', 

@@ -20,7 +20,7 @@ var init = function () {
         controls.addEventListener( 'change', render );
         
         var loader = new THREE.TextureLoader();
-        loader.load( 'land_ocean_ice_cloud_2048.jpg', function ( texture ) {
+        loader.load( '../assets/land_ocean_ice_cloud_2048.jpg', function ( texture ) {
           var geometry = new THREE.SphereGeometry( 200, 35, 35 );
           var material = new THREE.MeshBasicMaterial( { map: texture, overdraw: 0.5 } );
           var mesh = new THREE.Mesh( geometry, material );
