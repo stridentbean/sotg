@@ -2,6 +2,8 @@ process.env.PORT = PORT = 8001; // Set port for test server
 process.env.NODE_TEST_ENV = 'test';
 
 var User = require('../../../server/users/userModel.js'),
+  StreamingServer = require('../../../server/api/streamingServerModel.js'),
+  Keyword = require('../../../server/api/keywordModel.js'),  
   db = require('../../../server/config/db.js'),
   request = require('request'),
   Q = require('q'),
@@ -22,7 +24,24 @@ describe('User Integration', function() {
   before(function(done) {
     require('../../../server/server.js'); // Spin up the server
     setTimeout(function() {
-      schema.truncateAllTables(done);
+      schema.truncateAllTables(function() {
+        new StreamingServer({
+            registered: true
+          })
+          .save()
+          .then(function(streamingModel) {
+
+            new Keyword({
+                streamId: streamingModel.get('key'),
+                keyword: 'cola'
+              })
+              .save()
+              .then(function(keywordModel) {
+
+                done();
+              });
+          });
+      });
     }, 250);
   });
   

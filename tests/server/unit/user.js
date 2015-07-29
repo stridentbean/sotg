@@ -1,5 +1,6 @@
 var User = require('../../../server/users/userModel.js'),
-  db = require('../../../server/config/db.js'),
+  StreamingServer = require('../../../server/api/streamingServerModel.js'),
+  Keyword = require('../../../server/api/keywordModel.js'),  db = require('../../../server/config/db.js'),
   Q = require('q'),
   should = require('chai').should();
 
@@ -8,7 +9,7 @@ var User = require('../../../server/users/userModel.js'),
  * @class
  */
 
-describe.only('User', function() {
+describe('User', function() {
 
   var keyword1 = 'cola', keyword2 = 'usa';
   var user;
@@ -34,7 +35,22 @@ describe.only('User', function() {
             .then(function(model2) {
               user2 = model2;
 
-              next();
+              new StreamingServer({
+                  registered: true
+                })
+                .save()
+                .then(function(streamingModel) {
+
+                  new Keyword({
+                      streamId: streamingModel.get('key'),
+                      keyword: 'cola'
+                    })
+                    .save()
+                    .then(function(keywordModel) {
+
+                      next();
+                    });
+                });
             });
         });
     });
@@ -70,7 +86,7 @@ describe.only('User', function() {
     user.addKeyword(keyword1, function() {
       user.getKeywords(function(keywords) {
         keywords.length.should.equal(1);
-        keywords[0].get('streamId').should.be.a('string');
+        keywords.models[0].get('streamId').should.be.a('string');
         done();
       });
     });
@@ -80,7 +96,7 @@ describe.only('User', function() {
     user2.addKeyword(keyword1, function() {
       user2.getKeywords(function(keywords) {
         keywords.length.should.equal(1);
-        keywords[0].get('streamId').should.be.a('string');
+        keywords.models[0].get('streamId').should.be.a('string');
         done();
       });
     });
@@ -90,8 +106,8 @@ describe.only('User', function() {
     user.addKeyword(keyword2, function() {
       user.getKeywords(function(keywords) {
         keywords.length.should.equal(2);
-        keywords[0].get('streamId').should.be.a('string');
-        keywords[1].get('streamId').should.be.a('string');
+        keywords.models[0].get('streamId').should.be.a('string');
+        keywords.models[1].get('streamId').should.be.a('string');
         done();
       });
     });
@@ -115,7 +131,7 @@ describe.only('User', function() {
     });
   });
 
-  it('delete all keywords', function(done) {
+  it('delete a keyword that exists for another usser', function(done) {
     user.removeKeyword(keyword1, function(res) {
       res.status.should.equal(1);
 

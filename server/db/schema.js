@@ -169,9 +169,9 @@ db.truncateAllTables = function(done) {
   db.knex.raw('update streaming_servers set registered = false').then(function(then) {
 
   });
-  // db.knex.raw('delete from streaming_servers').then(function(then) {
+  db.knex.raw('delete from streaming_servers').then(function(then) {
 
-  // });
+  });
 
   done();
 };

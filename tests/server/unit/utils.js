@@ -140,8 +140,8 @@ describe('Utils', function() {
     });
 
     describe('getLeastUsedStream', function() {
-      var firstStreamId;
-      var secondStreamId;
+      var streamId1;
+      var streamId2;
 
       //insert user into database
       before(function(done) {
@@ -150,51 +150,72 @@ describe('Utils', function() {
         });
       });
 
-      it('should find the least used stream of 1 unused stream', function(done) {
+      it('should find the least used stream of 1 registered stream', function(done) {
         new StreamingServer({
             registered: true
           })
           .save()
-          .then(function(model) {
+          .then(function(streamingModel) {
+            
+            streamId1 = streamingModel.get('key');
+
+            new Keyword({
+                streamId: streamId1,
+                keyword: 'usa'
+              })
+              .save()
+              .then(function(keywordModel) {
+
+                Utils.getLeastUsedStream(function(stream) {
+                  stream.should.be.a('object');
+                  stream.key.should.equal(streamingModel.get('key'));
+                  
+                  done();
+                });
+              });
+          });
+      });
+
+      it('should find the least used stream of 1 registered and 1 unregistered streams', function(done) {
+        new StreamingServer({
+            registered: false
+          })
+          .save()
+          .then(function(streamingModel) {
+
             Utils.getLeastUsedStream(function(stream) {
               stream.should.be.a('object');
-              stream.get('key').should.equal(model.get('key'));
-              firstStreamId = model.get('key');
+              stream.key.should.be.a('string');
+              stream.key.should.equal(streamId1);
+
+              streamId2 = streamingModel.get('key');
               done();
             });
           });
       });
 
-      it('should find the least used stream of 2 unused streams', function(done) {
+      it('should find the least used stream of 2 registered and 1 unregistered streams', function(done) {
+
         new StreamingServer({
             registered: true
           })
           .save()
-          .then(function(model) {
+          .then(function(streamingModel) {
 
-            Utils.getLeastUsedStream(function(stream) {
-              stream.should.be.a('object');
-              stream.get('key').should.be.a('string');
-              secondStreamId = model.get('key');
-              done();
-            });
-          });
-      });
+            new Keyword({
+                streamId: streamId2,
+                keyword: 'cola'
+              })
+              .save()
+              .then(function(keywordModel) {
 
-      xit('should find the least used stream of 1 unused and 1 used streams', function(done) {
-        new Keyword({
-            streamId: secondStreamId,
-            keyword: 'cola'
-          })
-          .save()
-          .then(function(model) {
-
-            Utils.getLeastUsedStream(function(stream) {
-              stream.should.be.a('object');
-              stream.get('key').should.be.a('string');
-              stream.get('key').should.equal(firstStreamId);
-              done();
-            });
+                Utils.getLeastUsedStream(function(stream) {
+                  stream.should.be.a('object');
+                  stream.key.should.be.a('string');
+                  stream.key.should.equal(streamId1);
+                  done();
+                });
+              });
           });
       });
     });

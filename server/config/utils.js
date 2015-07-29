@@ -159,50 +159,23 @@ var getRegisteredStreams = module.exports.getRegisteredStreams = function(callba
     });
 };
 
+/**
+ * Returns an object representing the least used stream
+ *@function
+ *@arg callback {function} function to be called when the least stream is found
+ */
+
 var getLeastUsedStream = module.exports.getLeastUsedStream = function(callback) {
-  getRegisteredStreams(function(registeredStreams) {
+  /*jshint multistr: true */
 
-    new Keyword()
-      .fetchAll()
-      .then(function(keywordCollection) {
-
-        // var streamIds = []; //stores just the stream ids
-
-        //add the registered streams. This will ensure every possible stream 
-        //can be considered as the least used, even if the stream is empty
-        // registeredStreams.forEach(function(stream) {
-        //   streamIds.push(stream);
-        // });
-
-
-
-        //parsing the stream ids out of the keywordCollection
-        keywordCollection.forEach(function(keyword) {
-          //TODO MAKE THESE ALL MODELS
-          // streamIds.push(stream.get('streamId'));
-          registeredStreams.push(stream);
-        });
-
-        var groups = _.groupBy(registeredStreams, function(stream) {
-          return stream.id;
-        });
-
-        var leastUsedStream = {
-          stream: '',
-          count: Number.MAX_VALUE
-        };
-
-        //find least used
-        _.each(groups, function(item, key) {
-
-          if (groups[key].length < leastUsedStream.count) {
-            leastUsedStream.stream = groups[key];
-            leastUsedStream.count = groups[key].length;
-          }
-        });
-
-        callback(leastUsedStream.stream[0]);
-      });
-
-  });
+  db.knex.raw('select streaming_servers.key, count(*) \
+    from streaming_servers\
+    join keywords\
+    on keywords.streamId = streaming_servers.key\
+    group by streaming_servers.key\
+    order by count( * )\
+    limit 1 ')
+    .then(function(data) {
+      callback(data[0][0]);
+    });
 };

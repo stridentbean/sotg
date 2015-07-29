@@ -5,21 +5,6 @@ var Keyword = require('./keywordModel.js'),
   db = require('../db/schema.js'),
   _ = require('underscore');
 
-// var addKeywordUser = function(apiKey, keyword, callback) {
-//   new User({
-//       apiKey: apiKey
-//     })
-//     .fetch()
-//     .then(function(user) {
-//       new KeywordUser({
-//         keyword_id: keyword.get('id'),
-//         user_id: user.get('id')
-//       }).upsert(callback);
-//     });
-// };
-
-
-
 var registeredStreams = [];
 var nextStream = 0;
 
@@ -77,68 +62,32 @@ module.exports = {
   // makes it to this function, we don't need to worry about the key inside this function.™
   addKeyword: function(req, res, next) {
     var keyword = req.query.keyword,
-      apiKey = req.query.apiKey;
+      apiKey = req.query.apiKey,
+      userId = req.query.userId;
 
-    module.exports.getLeastUsedStream(function(leastUsedStream) {
-
-      new Keyword({
-        keyword: keyword
+    new User({
+        id: userId
       })
-      .upsert(function() {
-        res.status(201).send('keyword inserted');
+      .fetch()
+      .then(function(userModel) {
+        userModel.addKeyword(keyword, function(status) {
+          res.status(200).send(status.message);
+        });
       });
-
-    });
   },
 
   deleteKeyword: function(req, res, next) {
     var keyword = req.query.keyword,
       userId = req.query.userId;
 
-    new Keyword({
-        keyword: keyword
+    new User({
+        id: userId
       })
       .fetch()
-      .then(function(keyword) {
-        if (keyword) {
-
-          new KeywordUser({})
-            .query({
-              where: {
-                keyword_id: keyword.get('id'),
-                user_id: userId
-              }
-            }).destroy();
-
-            //TODO Refactor
-          keyword.hasZeroUser(function() {
-              keyword.destroy().then(function() {
-
-                res.status(200).send('Removed keyword');
-
-                // new StreamingServer({
-                //     key: keyword.streamId
-                //   })
-                //   .fetch()
-                //   .then(function(model) {
-                //     model.deleteFromStreamingServer(keyword);
-                //   });
-              });
-            },
-            function() {
-              res.status(200).send('Removed keyword');
-
-              // new StreamingServer({
-              //     key: leastUsedStream
-              //   })
-              //   .fetch()
-              //   .then(function(model) {
-              //     model.deleteFromStreamingServer(keyword);
-              //   });
-            });
-        } else {
-          next(new Error('Keyword does not exist for this user'));
-        }
+      .then(function(userModel) {
+        userModel.removeKeyword(keyword, function(status) {
+          res.status(200).send(status.message);
+        });
       });
   },
 

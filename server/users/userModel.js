@@ -5,6 +5,7 @@ var db = require('../db/schema'),
   jwt = require('jwt-simple'),
   Keyword = require('../api/keywordModel.js'),
   KeywordUser = require('../api/keywordUserModel.js'),
+  utils = require('../config/utils.js'),
   sessionUtils = require('../utils/session.js'),
   uuid = require('uuid'),
   KeywordUser = require('../api/keywordUserModel.js'),
@@ -46,31 +47,41 @@ var User = db.Model.extend({
       .fetch()
       .then(function(keywordModel) {
 
-        if (keywordModel) { //if this is a unique keyword
+        if (keywordModel) { //if this is keyword exists already
           new KeywordUser({
               keyword_id: keywordModel.get('id'),
               user_id: user.get('id')
             })
             .save()
             .then(function(keywordUserModel) {
-              callback();
+              callback({
+                code: 0,
+                message: 'keyword user created'
+              });
             });
 
-        } else {
+        } else { //if this keyword is new
           user.keywords()
             .fetch()
             .then(function(keywordCollection) {
-              new Keyword({
-                  keyword: keyword
-                })
-                .save()
-                .then(function(newKeywordModel) {
 
-                  keywordCollection.attach(newKeywordModel)
-                    .then(function(newCollection) {
-                      callback();
-                    });
-                });
+              utils.getLeastUsedStream(function(stream) {
+                new Keyword({
+                    keyword: keyword,
+                    streamId: stream.key
+                  })
+                  .save()
+                  .then(function(newKeywordModel) {
+
+                    keywordCollection.attach(newKeywordModel)
+                      .then(function(newCollection) {
+                        callback({
+                          code: 1,
+                          message: 'keyword created'
+                        });
+                      });
+                  });
+              });
             });
         }
 
