@@ -2,7 +2,7 @@ var express = require('express');
 
 var app = express(),
   server, 
-  PORT = 5001;  //default port
+  PORT = process.env.STREAMING_PORT || 5001;  //default port
 
 var keywords = {};
 require('./config/middleware.js')(app, express, keywords);
