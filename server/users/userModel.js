@@ -60,7 +60,7 @@ var User = db.Model.extend({
                 message: 'keyword user created'
               });
             })
-            .catch(function(err) {    //catch duplicate error
+            .catch(function(err) { //catch duplicate error
               callback({
                 code: 2,
                 message: 'keyword exists'
@@ -73,10 +73,10 @@ var User = db.Model.extend({
             .then(function(keywordCollection) {
 
               utils.getLeastUsedStream(function(stream) {
-                
+
                 //allow the user to add keywords even if no stream is available
                 var streamId = null;
-                if(stream) {
+                if (stream) {
                   streamId = stream.key;
                 }
 
@@ -91,7 +91,8 @@ var User = db.Model.extend({
                       .then(function(newCollection) {
                         callback({
                           code: 1,
-                          message: 'keyword created'
+                          message: 'keyword created',
+                          keywordModel: newKeywordModel
                         });
                       });
                   });
@@ -147,13 +148,17 @@ var User = db.Model.extend({
 
                   if (keywordUserCollection.length === 0) {
                     //delete the entire keyword
-
+                    var copy = new Keyword({
+                      keyword: keywordModel.get('keyword'),
+                      streamId: keywordModel.get('streamId')
+                    });
                     keywordModel
                       .destroy()
                       .then(function() {
                         done({
                           code: 0,
-                          message: 'keyword deleted'
+                          message: 'keyword deleted',
+                          keywordModel: copy
                         });
                       });
 

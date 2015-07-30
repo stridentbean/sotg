@@ -177,7 +177,10 @@ var getLeastUsedStream = module.exports.getLeastUsedStream = function(callback) 
     order by count( * )\
     limit 1 ')
     .then(function(data) {
-      console.log('leastUsedStream', data[0][0]);
-      callback(data[0][0]);
+      if(data) {
+        callback(data[0][0]);
+      } else {
+        callback(null);
+      }
     });
 };

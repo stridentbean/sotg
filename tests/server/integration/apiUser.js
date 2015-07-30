@@ -33,7 +33,7 @@ describe('User Integration', function() {
 
             new Keyword({
                 streamId: streamingModel.get('key'),
-                keyword: 'cola'
+                keyword: 'randomKeyword'
               })
               .save()
               .then(function(keywordModel) {

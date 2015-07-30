@@ -10,51 +10,6 @@ var nextStream = 0;
 
 module.exports = {
 
-  // This is inside module.exports so that we can test it in keywordControllerTests.js
-  // getLeastUsedStream: function(callback) {
-  //   getRegisteredStreams(function(registeredStreams) {
-
-  //     new Keyword()
-  //       .fetchAll()
-  //       .then(function(collection) {
-
-  //         var streamIds = [];   //stores just the stream ids
-
-  //         //add the registered streams. This will ensure every possible stream 
-  //         //can be considered as the least used, even if the stream is empty
-  //         registeredStreams.forEach(function(stream) {
-  //           streamIds.push(stream);
-  //         });
-
-  //         //parsing the stream ids out of the collection
-  //         collection.forEach(function(stream) {
-  //           streamIds.push(stream.get('streamId'));
-  //         });
-
-  //         var groups = _.groupBy(streamIds, function(stream) {
-  //           return stream;
-  //         });
-
-  //         var leastUsedStream = {
-  //           stream: '',
-  //           count: Number.MAX_VALUE
-  //         };
-
-  //         //find least used
-  //         _.each(groups, function(item, key) {
-
-  //           if(groups[key].length < leastUsedStream.count) {
-  //             leastUsedStream.stream = key;
-  //             leastUsedStream.count = groups[key].length;
-  //           }
-  //         });
-
-  //         callback(leastUsedStream.stream);
-  //       });
-
-  //   });
-  // },
-
   // Right now, we are aren't checking to see if this api_key was given to us by an authenticated user.
   // What if Alice sends a GET request with Bob's API key? Is that a problem?
   // Either way, we need to at least check and see if this api_key is valid.
@@ -72,6 +27,35 @@ module.exports = {
       .then(function(userModel) {
         userModel.addKeyword(keyword, function(status) {
           res.status(200).send(status.message);
+
+          //if this is a new keyword
+          if (status.code === 1) {
+            var keywordModel = status.keywordModel;
+
+            new StreamingServer({
+                key: keywordModel.get('streamId')
+              })
+              .fetch()
+              .then(function(streamingModel) {
+
+                //TODO this if is only needed to support unit tests
+                if (streamingModel.get('ip') !== null) {
+
+                  streamingModel.sendToStreamingServer(keywordModel.get('keyword'), function(success) {
+                    if (success) {
+                      streamingModel.register();
+                      streamingModel.save();
+                    } else {
+                      streamingModel.unregister();
+                      streamingModel.save();
+                      keywordModel.set('streamId', null);
+                      keywordModel.save();
+                    }
+                  });
+
+                }
+              });
+          }
         });
       });
   },
@@ -87,6 +71,34 @@ module.exports = {
       .then(function(userModel) {
         userModel.removeKeyword(keyword, function(status) {
           res.status(200).send(status.message);
+
+          if (status.code === 0) {
+            var keywordModel = status.keywordModel;
+
+            new StreamingServer({
+                key: keywordModel.get('streamId')
+              })
+              .fetch()
+              .then(function(streamingModel) {
+
+                //TODO this if is only needed to support unit tests
+                if (streamingModel.get('ip') !== null) {
+
+                  streamingModel.deleteFromStreamingServer(keywordModel.get('keyword'), function(success) {
+                    if (success) {
+                      streamingModel.register();
+                      streamingModel.save();
+                    } else {
+                      streamingModel.unregister();
+                      streamingModel.save();
+                      keywordModel.set('streamId', null);
+                      keywordModel.save();
+                    }
+                  });
+                }
+
+              });
+          }
         });
       });
   },

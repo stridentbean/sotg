@@ -43,7 +43,7 @@ describe('User', function() {
 
                   new Keyword({
                       streamId: streamingModel.get('key'),
-                      keyword: 'cola'
+                      keyword: 'randomword'
                     })
                     .save()
                     .then(function(keywordModel) {
@@ -83,7 +83,9 @@ describe('User', function() {
   });
 
   it('add a keyword', function(done) {
-    user.addKeyword(keyword1, function() {
+    user.addKeyword(keyword1, function(status) {
+      status.code.should.equal(1);
+      should.exist(status.keywordModel);
       user.getKeywords(function(keywords) {
         keywords.length.should.equal(1);
         keywords.models[0].get('streamId').should.be.a('string');
@@ -134,6 +136,7 @@ describe('User', function() {
   it('delete a keyword', function(done) {
     user.removeKeyword(keyword2, function(status) {
       status.code.should.equal(0);
+      should.exist(status.keywordModel);
 
       user.getKeywords(function(keywords) {
         keywords.length.should.equal(1);

@@ -3,7 +3,7 @@ var keywords = {};
 module.exports = {
   addKeyword: function(req, res, next) {
     var keyword = req.query.keyword;
-    console.log(keywords);
+    
     if (keyword) {
       if (keywords.hasOwnProperty(keyword)) {
         res.status(200).send('keyword is already added');
@@ -14,11 +14,12 @@ module.exports = {
     } else {
       res.status(400).send('invalid keyword');
     }
+    console.log(keywords, keyword);
   },
 
   deleteKeyword: function(req, res, next) {
     var keyword = req.query.keyword;
-    console.log(keywords);
+
     if (keyword) {
       if (keywords.hasOwnProperty(keyword)) {
         delete keywords[keyword];
@@ -29,6 +30,7 @@ module.exports = {
     } else {
       res.status(400).send('invalid keyword');
     }
+    console.log(keywords, keyword);
   },
 
   ping: function(req, res, next) {

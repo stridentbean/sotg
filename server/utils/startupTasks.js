@@ -20,7 +20,6 @@ setTimeout(function() {
 //check to see if streaming servers stop pooling, if so unregister them
 setInterval(function() {
 
-  // var StreamingServers = require('../api/streamingServerModel.js');
   new StreamingServers()
     .query(function(qb) {
       qb.where('registered', '=', true)
@@ -28,13 +27,14 @@ setInterval(function() {
     })
     .fetchAll()
     .then(function(streamingServers) {
-      // console.log('fetched', streamingServers.length);
       streamingServers.forEach(function(server) {
-        server.set('registered', false);
+        server.unregister();
         server.save();
-        // console.log('unregister', server);
       });
     });
+
+  new StreamingServers()
+    .resetKeywordsWithNullStream();
 }, 15 * 60 * 1000); //every 15 minutes
 
 module.exports = {};

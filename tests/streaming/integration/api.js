@@ -20,7 +20,7 @@ describe('Streaming Server Integration', function() {
   before(function(done) {
     var load = require('../../../server/utils/startupTasks.js');
 
-    require('../../../streaming/server2.js'); // Spin up the server
+    require('../../../streaming/server.js'); // Spin up the server
     setTimeout(function() {
       schema.truncateAllTables(done);
     }, 250);
