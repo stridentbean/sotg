@@ -4,6 +4,7 @@ angular.module('globeCtrl', [])
  $rootScope.$on('$stateChangeSuccess', function(){
     if(!$state.is('demos.globe')){
       cancelAnimationFrame( animateId );
+      controls.enabled = false;
       console.log('killed');
     }
  });
